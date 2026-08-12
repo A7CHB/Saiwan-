@@ -11,10 +11,9 @@ import { Reveal } from "@/components/motion/reveal";
 /**
  * Featured pieces, laid out editorially rather than as a uniform grid.
  *
- * The lead piece is set large and offset; the rest fall into a staggered
- * three-up beneath it, each column nudged vertically so the eye travels
- * diagonally instead of scanning rows. With fewer than three products the
- * layout degrades to a plain row rather than leaving holes.
+ * Three pieces, not a catalogue: one set large with its specification beside
+ * it, then two more in a staggered pair. A home page should show enough to make
+ * someone open the collection, and the collection is one click away.
  */
 export function FeaturedCollection({
   d,
@@ -28,7 +27,7 @@ export function FeaturedCollection({
   if (products.length === 0) return null;
 
   const [lead, ...rest] = products;
-  const stagger = ["lg:mt-0", "lg:mt-16", "lg:mt-8"];
+  const stagger = ["lg:mt-0", "lg:mt-14"];
 
   return (
     <section className="section bg-sunken">
@@ -38,15 +37,15 @@ export function FeaturedCollection({
           title={d.home.featured.title}
           body={d.home.featured.body}
           cta={{ href: localePath(locale, "/collection"), label: d.home.featured.cta }}
-          className="mb-16 lg:mb-20"
+          className="mb-12 lg:mb-16"
         />
 
         {/* Lead piece — the image column is held to the smaller share of the
             grid so a 4:5 plate never grows taller than the viewport on a wide
             desktop, and the copy sits centred against it rather than dropping
             to the baseline and leaving a void. */}
-        <Reveal kind="rise" className="mb-16 lg:mb-24">
-          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-20">
+        <Reveal kind="rise" className="mb-14 lg:mb-20">
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
             <ProductCard product={lead} size="large" priority index={0} showTagline={false} />
 
             <div>
@@ -55,7 +54,7 @@ export function FeaturedCollection({
                 {lead.tagline ?? d.home.featured.body}
               </p>
 
-              <dl className="mt-9 grid max-w-xl gap-x-10 gap-y-5 sm:grid-cols-2">
+              <dl className="mt-8 grid max-w-2xl gap-x-12 gap-y-4 sm:grid-cols-2">
                 <div className="border-t border-line pt-4">
                   <dt className="eyebrow mb-2 text-[0.5625rem]">{d.product.segmentLabel}</dt>
                   <dd className="text-sm text-muted">{d.product.segments[lead.segment]}</dd>
@@ -91,9 +90,13 @@ export function FeaturedCollection({
           </div>
         </Reveal>
 
+        {/* The supporting pair sits in a narrower, end-aligned block: two
+            full-width plates would repeat the lead's scale and add a screen of
+            height for no extra information. The offset also keeps the section
+            asymmetric rather than settling into rows. */}
         {rest.length > 0 ? (
-          <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-            {rest.slice(0, 3).map((product, index) => (
+          <div className="grid grid-cols-2 gap-x-6 gap-y-12 sm:gap-x-8 lg:ms-auto lg:max-w-3xl">
+            {rest.slice(0, 2).map((product, index) => (
               <Reveal key={product.id} delay={index * 110} className={stagger[index % stagger.length]}>
                 <ProductCard product={product} index={index + 1} />
               </Reveal>

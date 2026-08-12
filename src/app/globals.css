@@ -105,7 +105,7 @@
   --radius-sm: 3px;
   --radius-md: 4px;
 
-  --spacing-section: clamp(5rem, 3rem + 9vw, 11rem);
+  --spacing-section: clamp(3.5rem, 2.25rem + 4.5vw, 7rem);
   --spacing-gutter: clamp(1.25rem, 0.5rem + 3vw, 4.5rem);
 }
 
@@ -532,29 +532,6 @@
   @keyframes saiwan-spin {
     to {
       transform: rotate(360deg);
-    }
-  }
-
-  /* Hero scroll cue — a short fill travelling along a hairline. */
-  @keyframes saiwan-scroll-cue {
-    0% {
-      transform: translateX(-110%);
-    }
-    60%,
-    100% {
-      transform: translateX(320%);
-    }
-  }
-  [dir="rtl"] .scroll-cue {
-    animation-name: saiwan-scroll-cue-rtl;
-  }
-  @keyframes saiwan-scroll-cue-rtl {
-    0% {
-      transform: translateX(110%);
-    }
-    60%,
-    100% {
-      transform: translateX(-320%);
     }
   }
 

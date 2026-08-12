@@ -85,10 +85,9 @@ const en = {
       eyebrow: "Outdoor shade, engineered",
       title: "Shade with the",
       titleAccent: "presence of architecture",
-      body: "Saiwan builds shade the way a building is built — proportioned, engineered and finished to be lived beneath for decades.",
+      body: "Engineered like architecture, and made to be lived beneath for decades.",
       primaryCta: "Explore the collection",
       secondaryCta: "Speak with Saiwan",
-      scrollHint: "Begin",
     },
     intro: {
       eyebrow: "The house",
@@ -143,9 +142,6 @@ const en = {
     },
     craft: {
       eyebrow: "Materials & craftsmanship",
-      title: "What it is made of is what it becomes",
-      body: "Three material decisions carry almost all of a canopy's lifespan. We make them the same way every time.",
-      cta: "Explore materials",
     },
     quiz: {
       eyebrow: "Consultation",
@@ -159,14 +155,6 @@ const en = {
       title: "Installed",
       body: "Recent environments shaped by Saiwan shade.",
       cta: "Open the gallery",
-    },
-    cta: {
-      eyebrow: "Begin",
-      title: "Tell us about the space",
-      body: "Send a photograph and a rough measurement. We will come back with a specification, a finish direction and a price — usually the same day.",
-      primary: "Start on WhatsApp",
-      secondary: "Browse the collection",
-      note: "No account required. We reply in English, Arabic and Kurdish.",
     },
   },
 

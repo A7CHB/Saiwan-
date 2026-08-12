@@ -19,10 +19,14 @@ import { cn } from "@/lib/utils";
 export function GalleryMosaic({
   items,
   dense = false,
+  uniform = false,
   className,
 }: {
   items: GalleryView[];
   dense?: boolean;
+  /** Equal square tiles in a single row — the home page's taster, where the
+   *  full mosaic's tall spans would cost most of a screen for four images. */
+  uniform?: boolean;
   className?: string;
 }) {
   const { d, t } = useLocale();
@@ -31,7 +35,9 @@ export function GalleryMosaic({
   if (items.length === 0) return null;
 
   const spanClass = (span: GalleryView["span"]) =>
-    span === "WIDE"
+    uniform
+      ? "aspect-square"
+      : span === "WIDE"
       ? "sm:col-span-2 aspect-4/3"
       : span === "TALL"
         ? "row-span-2 aspect-3/4 sm:aspect-auto"
@@ -51,7 +57,7 @@ export function GalleryMosaic({
       <ul
         className={cn(
           "grid grid-cols-2 gap-2 sm:gap-3",
-          dense ? "lg:grid-cols-4" : "lg:grid-cols-3",
+          uniform ? "sm:grid-cols-4" : dense ? "lg:grid-cols-4" : "lg:grid-cols-3",
           "auto-rows-auto",
           className,
         )}

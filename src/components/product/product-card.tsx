@@ -42,7 +42,7 @@ export function ProductCard({
       ? "(max-width: 768px) 100vw, 50vw"
       : size === "compact"
         ? "(max-width: 640px) 50vw, 220px"
-        : "(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw";
+        : "(max-width: 640px) 46vw, (max-width: 1024px) 46vw, 26vw";
 
   return (
     <article className="group relative">

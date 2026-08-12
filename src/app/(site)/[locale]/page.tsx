@@ -10,8 +10,7 @@ import { Manifesto } from "@/components/home/manifesto";
 import { FeaturedCollection } from "@/components/home/featured";
 import { Difference } from "@/components/home/difference";
 import { Showcase } from "@/components/home/showcase";
-import { Craft } from "@/components/home/craft";
-import { QuizTeaser, ClosingCta } from "@/components/home/closing";
+import { QuizTeaser } from "@/components/home/closing";
 import { SectionHeader } from "@/components/ui/section-header";
 import { GalleryMosaic } from "@/components/site/gallery-mosaic";
 import { notFound } from "next/navigation";
@@ -55,7 +54,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   const [d, featured, materials, gallery, media] = await Promise.all([
     getDictionary(locale),
-    getFeaturedProducts(locale, 4),
+    getFeaturedProducts(locale, 3),
     getMaterials(locale),
     getGallery(locale),
     getContent("home.media", locale, MEDIA_FALLBACK),
@@ -99,18 +98,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               title={d.home.inspiration.title}
               body={d.home.inspiration.body}
               cta={{ href: localePath(locale, "/inspiration"), label: d.home.inspiration.cta }}
-              className="mb-14"
+              className="mb-10"
             />
-            <GalleryMosaic items={gallery.slice(0, 6)} />
+            <GalleryMosaic items={gallery.slice(0, 4)} uniform />
           </div>
         </section>
       ) : null}
 
-      <Craft d={d} materials={materials} images={media.craftImages} />
-
       <QuizTeaser d={d} locale={locale} image={media.quizImage} />
-
-      <ClosingCta d={d} locale={locale} />
 
     </>
   );
