@@ -1,5 +1,20 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
+
+/**
+ * tailwind-merge only knows Tailwind's stock scales, so the custom font sizes
+ * declared in `@theme` (`text-title`, `text-lead`, …) look to it like colour
+ * utilities. Merging `cn("text-title", "text-fg")` would then drop the size and
+ * silently render a display heading at body scale. Teaching it the scale keeps
+ * size and colour in separate conflict groups.
+ */
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      "font-size": [{ text: ["display", "hero", "title", "heading", "lead"] }],
+    },
+  },
+});
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
