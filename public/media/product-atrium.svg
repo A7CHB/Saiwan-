@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" width="1200" height="1600" role="img">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6E5F6E"/>
+      <stop offset="55%" stop-color="#4A4152"/>
+      <stop offset="100%" stop-color="#2B2733"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#211D22" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#211D22" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4A4152" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#2B2733" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4A4152" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#4A4152" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#4A4152" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#C08B52" stop-opacity="0.16"/>
+      <stop offset="50%" stop-color="#C08B52" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#211D22" stop-opacity="0.22"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="54.0"/></filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3"/></filter>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#sky)"/>
+  <circle cx="529.1655950546265" cy="677.4051031565667" r="66" fill="#E8B87A" opacity="0.5" filter="url(#soft)"/>
+  <rect x="-60.0" y="936.4" width="213.9" height="219.6" fill="#211D22" opacity="0.16"/>
+  <rect x="117.0" y="1043.6" width="122.4" height="112.4" fill="#211D22" opacity="0.21"/>
+  <rect x="257.0" y="1017.8" width="250.5" height="138.2" fill="#211D22" opacity="0.26"/>
+  <rect x="474.2" y="1052.5" width="267.3" height="103.5" fill="#211D22" opacity="0.16"/>
+  <rect x="805.2" y="833.6" width="130.2" height="322.4" fill="#211D22" opacity="0.21"/>
+  <rect x="932.7" y="842.9" width="222.5" height="313.1" fill="#211D22" opacity="0.26"/>
+  <rect x="1130.1" y="817.9" width="286.1" height="338.1" fill="#211D22" opacity="0.16"/>
+  <rect x="0" y="1152" width="1200" height="448" fill="url(#ground)"/>
+  
+    <g opacity="0.92">
+      <ellipse cx="600.0" cy="1353.7" rx="546.7" ry="26.3" fill="#211D22" opacity="0.28"/>
+      <path fill="#211D22" d="
+        M -281.8 895.9
+        C 53.3 624.9 406.0 580.7 600.0 580.7
+        C 794.0 580.7 1146.7 624.9 1481.8 895.9
+        C 1182.0 971.0 899.8 971.0 600.0 907.2
+        C 300.2 971.0 18.0 971.0 -281.8 895.9
+        Z" />
+      <line x1="600.0" y1="599.7" x2="-34.9" y2="747.2" stroke="#E8B87A" stroke-width="6.17" opacity="0.16"/><line x1="600.0" y1="599.7" x2="282.6" y2="627.1" stroke="#E8B87A" stroke-width="6.17" opacity="0.16"/><line x1="600.0" y1="599.7" x2="600.0" y2="587.0" stroke="#E8B87A" stroke-width="6.17" opacity="0.16"/><line x1="600.0" y1="599.7" x2="917.4" y2="627.1" stroke="#E8B87A" stroke-width="6.17" opacity="0.16"/><line x1="600.0" y1="599.7" x2="1234.9" y2="747.2" stroke="#E8B87A" stroke-width="6.17" opacity="0.16"/>
+      <rect x="585.9" y="498.2" width="28.2" height="90.1" fill="#211D22"/>
+      <rect x="580.6" y="580.7" width="38.8" height="750.5" fill="#211D22"/>
+      <rect x="467.7" y="1331.2" width="264.5" height="22.5" fill="#211D22"/>
+    </g>
+  <rect x="0" y="896" width="1200" height="352" fill="url(#haze)"/>
+  <rect x="0" y="0" width="1200" height="1600" fill="url(#sweep)"/>
+  <rect x="0" y="0" width="1200" height="1600" filter="url(#grain)" opacity="0.055"/>
+</svg>

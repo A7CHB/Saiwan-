@@ -1,0 +1,117 @@
+import type { Metadata } from "next";
+import { isLocale, localePath, type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n";
+import { buildMetadata } from "@/lib/seo";
+import { getFeaturedProducts } from "@/lib/data/products";
+import { getContent, getGallery, getMaterials } from "@/lib/data/catalog";
+
+import { Hero } from "@/components/home/hero";
+import { Manifesto } from "@/components/home/manifesto";
+import { FeaturedCollection } from "@/components/home/featured";
+import { Difference } from "@/components/home/difference";
+import { Showcase } from "@/components/home/showcase";
+import { Craft } from "@/components/home/craft";
+import { QuizTeaser, ClosingCta } from "@/components/home/closing";
+import { SectionHeader } from "@/components/ui/section-header";
+import { GalleryMosaic } from "@/components/site/gallery-mosaic";
+import { notFound } from "next/navigation";
+
+/** Media defaults — overridden by the `home.media` content block. */
+const MEDIA_FALLBACK = {
+  heroImage: "/media/hero-terrace.svg",
+  heroImageMobile: "/media/portrait-terrace.svg",
+  manifestoImage: "/media/portrait-canopy.svg",
+  quizImage: "/media/hero-dusk.svg",
+  craftImages: ["/media/detail-frame.svg", "/media/detail-fabric.svg", "/media/detail-hardware.svg"],
+  showcaseImages: [
+    "/media/detail-frame.svg",
+    "/media/detail-fabric.svg",
+    "/media/detail-hardware.svg",
+    "/media/portrait-mast.svg",
+  ],
+};
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  const d = await getDictionary(locale);
+  return buildMetadata({
+    locale,
+    path: "",
+    title: d.meta.defaultTitle,
+    description: d.meta.defaultDescription,
+    keywords: d.meta.keywords,
+  });
+}
+
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: raw } = await params;
+  if (!isLocale(raw)) notFound();
+  const locale = raw as Locale;
+
+  const [d, featured, materials, gallery, media] = await Promise.all([
+    getDictionary(locale),
+    getFeaturedProducts(locale, 4),
+    getMaterials(locale),
+    getGallery(locale),
+    getContent("home.media", locale, MEDIA_FALLBACK),
+  ]);
+
+  // "Look closer" is driven by the material list so the admin controls it.
+  const showcaseItems = materials.slice(0, 4).map((material, index) => ({
+    id: material.id,
+    name: material.name,
+    description: material.description,
+    image: media.showcaseImages[index] ?? MEDIA_FALLBACK.showcaseImages[index] ?? null,
+  }));
+
+  return (
+    <>
+      <Hero
+        image={media.heroImage}
+        imageMobile={media.heroImageMobile}
+        imageAlt={d.meta.tagline}
+        eyebrow={d.home.hero.eyebrow}
+        title={d.home.hero.title}
+        titleAccent={d.home.hero.titleAccent}
+        body={d.home.hero.body}
+      />
+
+      <Manifesto d={d} image={media.manifestoImage} imageAlt={d.home.intro.title} />
+
+      <FeaturedCollection d={d} locale={locale} products={featured} />
+
+      <Difference d={d} />
+
+      <Showcase items={showcaseItems} />
+
+      {/* Inspiration — a first taste of the gallery, capped so the home page
+          stays a trailer for /inspiration rather than a duplicate of it. */}
+      {gallery.length > 0 ? (
+        <section className="section">
+          <div className="shell">
+            <SectionHeader
+              eyebrow={d.home.inspiration.eyebrow}
+              title={d.home.inspiration.title}
+              body={d.home.inspiration.body}
+              cta={{ href: localePath(locale, "/inspiration"), label: d.home.inspiration.cta }}
+              className="mb-14"
+            />
+            <GalleryMosaic items={gallery.slice(0, 6)} />
+          </div>
+        </section>
+      ) : null}
+
+      <Craft d={d} materials={materials} images={media.craftImages} />
+
+      <QuizTeaser d={d} locale={locale} image={media.quizImage} />
+
+      <ClosingCta d={d} locale={locale} />
+
+    </>
+  );
+}

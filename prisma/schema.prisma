@@ -1,0 +1,444 @@
+// Saiwan — data model
+//
+// Provider is SQLite for zero-config development. To move to Postgres change
+// `provider` to "postgresql" and point DATABASE_URL at the cluster; every model
+// below is portable (no SQLite-specific types are used). Enum-like columns are
+// plain strings validated by Zod at the edge of the app (src/lib/constants.ts)
+// because SQLite has no native enum support.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Identity & access
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  phone        String?
+  role         String   @default("CUSTOMER") // CUSTOMER | STAFF | ADMIN
+  locale       String   @default("en")
+  isActive     Boolean  @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sessions   Session[]
+  favorites  Favorite[]
+  inquiries  Inquiry[]
+  auditLogs  AuditLog[]
+
+  @@index([role])
+}
+
+/// Opaque, server-side revocable sessions. The cookie carries a signed JWT
+/// holding only the session id + role (fast edge checks); authority always
+/// rests with this row (see src/lib/auth/session.ts).
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  userAgent String?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  meta      String? // JSON
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Catalogue
+// ---------------------------------------------------------------------------
+
+model Category {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  translations CategoryTranslation[]
+  products     Product[]
+}
+
+model CategoryTranslation {
+  id              String @id @default(cuid())
+  categoryId      String
+  locale          String
+  name            String
+  tagline         String?
+  description     String?
+  metaTitle       String?
+  metaDescription String?
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, locale])
+  @@index([locale])
+}
+
+model Product {
+  id         String  @id @default(cuid())
+  slug       String  @unique
+  sku        String?
+  categoryId String
+
+  status     String  @default("DRAFT") // DRAFT | PUBLISHED | ARCHIVED
+  isFeatured Boolean @default(false)
+  order      Int     @default(0)
+
+  price        Float?
+  currency     String  @default("USD")
+  showPrice    Boolean @default(false)
+  availability String  @default("IN_STOCK") // IN_STOCK | MADE_TO_ORDER | OUT_OF_STOCK | DISCONTINUED
+  leadTimeDays Int?
+
+  // Discovery attributes — power /find-your-shade and collection filters.
+  style      String  @default("MODERN") // MODERN | CLASSIC | MINIMAL | RESORT
+  useCases   String  @default("[]")     // JSON string[]: garden, pool, restaurant, hotel, rooftop, terrace, balcony
+  segment    String  @default("BOTH")   // RESIDENTIAL | COMMERCIAL | BOTH
+  coverageM2 Float?
+  priceTier  Int     @default(2) // 1 essential · 2 signature · 3 bespoke
+
+  viewCount     Int @default(0)
+  whatsappCount Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category     Category             @relation(fields: [categoryId], references: [id])
+  translations ProductTranslation[]
+  images       ProductImage[]
+  sizes        ProductSize[]
+  colors       ProductColor[]
+  materials    ProductMaterial[]
+  favorites    Favorite[]
+  inquiries    Inquiry[]
+  events       AnalyticsEvent[]
+
+  accessories   ProductAccessory[] @relation("ProductToAccessory")
+  accessoryFor  ProductAccessory[] @relation("AccessoryToProduct")
+
+  @@index([status, isFeatured])
+  @@index([categoryId])
+  @@index([style])
+}
+
+model ProductTranslation {
+  id        String @id @default(cuid())
+  productId String
+  locale    String
+
+  name        String
+  tagline     String?
+  description String?
+  craft       String? // materials & craftsmanship narrative
+  /// JSON string[] — short benefit lines shown on the product page.
+  features    String  @default("[]")
+  /// JSON {label,value}[] — the technical specification table.
+  specs       String  @default("[]")
+
+  metaTitle       String?
+  metaDescription String?
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, locale])
+  @@index([locale])
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  url       String
+  alt       String?
+  order     Int     @default(0)
+  width     Int?
+  height    Int?
+  /// When set, the image is revealed as the hero shot for that colourway.
+  colorId   String?
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  color   Color?  @relation(fields: [colorId], references: [id], onDelete: SetNull)
+
+  @@index([productId, order])
+}
+
+model Color {
+  id    String @id @default(cuid())
+  slug  String @unique
+  hex   String
+  order Int    @default(0)
+
+  translations ColorTranslation[]
+  products     ProductColor[]
+  images       ProductImage[]
+}
+
+model ColorTranslation {
+  id      String @id @default(cuid())
+  colorId String
+  locale  String
+  name    String
+
+  color Color @relation(fields: [colorId], references: [id], onDelete: Cascade)
+
+  @@unique([colorId, locale])
+}
+
+model Size {
+  id      String  @id @default(cuid())
+  slug    String  @unique
+  label   String // "3.0 × 3.0 m" — numeric, locale-independent
+  shape   String  @default("SQUARE") // SQUARE | ROUND | RECTANGLE | OCTAGON
+  widthCm Int?
+  depthCm Int?
+  areaM2  Float?
+  order   Int     @default(0)
+
+  products ProductSize[]
+}
+
+model ProductSize {
+  id        String @id @default(cuid())
+  productId String
+  sizeId    String
+  order     Int    @default(0)
+  /// Optional per-size price override; falls back to Product.price.
+  price     Float?
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size    Size    @relation(fields: [sizeId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, sizeId])
+}
+
+model ProductColor {
+  id        String @id @default(cuid())
+  productId String
+  colorId   String
+  order     Int    @default(0)
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  color   Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, colorId])
+}
+
+model Material {
+  id    String @id @default(cuid())
+  slug  String @unique
+  order Int    @default(0)
+
+  translations MaterialTranslation[]
+  products     ProductMaterial[]
+}
+
+model MaterialTranslation {
+  id          String  @id @default(cuid())
+  materialId  String
+  locale      String
+  name        String
+  description String?
+
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@unique([materialId, locale])
+}
+
+model ProductMaterial {
+  id         String @id @default(cuid())
+  productId  String
+  materialId String
+
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, materialId])
+}
+
+model ProductAccessory {
+  id          String @id @default(cuid())
+  productId   String
+  accessoryId String
+  order       Int    @default(0)
+
+  product   Product @relation("ProductToAccessory", fields: [productId], references: [id], onDelete: Cascade)
+  accessory Product @relation("AccessoryToProduct", fields: [accessoryId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, accessoryId])
+}
+
+// ---------------------------------------------------------------------------
+// Customer activity
+// ---------------------------------------------------------------------------
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([userId])
+}
+
+model Inquiry {
+  id        String @id @default(cuid())
+  reference String @unique // SW-2A4F91 — quoted to the customer on WhatsApp
+
+  userId    String?
+  productId String?
+
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  locale        String @default("en")
+
+  /// JSON — the exact configuration the customer assembled.
+  /// { sizeLabel, colorName, quantity, accessories[], productName }
+  configuration String @default("{}")
+  message       String?
+
+  status     String  @default("NEW") // NEW | CONTACTED | QUOTED | CONFIRMED | COMPLETED | CANCELLED
+  source     String  @default("PRODUCT") // PRODUCT | QUIZ | CONTACT | GENERAL
+  adminNotes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  product Product?       @relation(fields: [productId], references: [id], onDelete: SetNull)
+  events  InquiryEvent[]
+
+  @@index([status, createdAt])
+  @@index([customerPhone])
+}
+
+model InquiryEvent {
+  id        String   @id @default(cuid())
+  inquiryId String
+  status    String
+  note      String?
+  actor     String?
+  createdAt DateTime @default(now())
+
+  inquiry Inquiry @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+
+  @@index([inquiryId])
+}
+
+// ---------------------------------------------------------------------------
+// Editorial content
+// ---------------------------------------------------------------------------
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String?
+  tag       String   @default("villa") // villa | pool | restaurant | hotel | rooftop | garden
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  span      String   @default("NORMAL") // NORMAL | WIDE | TALL — drives the mosaic
+  createdAt DateTime @default(now())
+
+  translations GalleryItemTranslation[]
+}
+
+model GalleryItemTranslation {
+  id       String  @id @default(cuid())
+  itemId   String
+  locale   String
+  caption  String?
+  location String?
+
+  item GalleryItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, locale])
+}
+
+/// Generic, admin-editable content blocks (hero copy, section intros, about
+/// page, banners). `value` is JSON so a block can hold structured fields.
+model ContentBlock {
+  id        String   @id @default(cuid())
+  key       String
+  locale    String
+  value     String   @default("{}")
+  updatedAt DateTime @updatedAt
+
+  @@unique([key, locale])
+  @@index([key])
+}
+
+/// Admin overrides layered on top of the file-based dictionaries. Lets the
+/// business correct wording in any language without a deploy.
+model Translation {
+  id        String   @id @default(cuid())
+  locale    String
+  namespace String   @default("common")
+  key       String
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@unique([locale, namespace, key])
+  @@index([locale])
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Analytics
+// ---------------------------------------------------------------------------
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  type      String // page_view | product_view | whatsapp_click | inquiry | search | quiz_complete
+  productId String?
+  path      String?
+  locale    String   @default("en")
+  visitorId String?
+  meta      String? // JSON
+  createdAt DateTime @default(now())
+
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([type, createdAt])
+  @@index([productId])
+  @@index([createdAt])
+}
