@@ -183,12 +183,26 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
 
 /** Renders a JSON-LD block. Kept in one place so escaping is handled once. */
 export function JsonLd({ data }: { data: object | object[] }) {
+  // Several entities on one page are emitted as a single document with an
+  // `@graph`, not as a top-level JSON array. Both are valid JSON-LD, but a bare
+  // array has no `@context` at the root, and consumers that read
+  // `data["@context"]` before anything else throw on it.
+  const payload = Array.isArray(data)
+    ? {
+        "@context": "https://schema.org",
+        "@graph": data.map((entity) => {
+          const { ["@context"]: _context, ...rest } = entity as Record<string, unknown>;
+          return rest;
+        }),
+      }
+    : data;
+
   return (
     <script
       type="application/ld+json"
       // JSON.stringify output is escaped for the one sequence that can break
       // out of a <script> element.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(payload).replace(/</g, "\\u003c") }}
     />
   );
 }

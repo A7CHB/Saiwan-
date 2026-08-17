@@ -7,21 +7,6 @@ export const dynamic = "force-dynamic";
 
 const schema = z.object({ productId: z.string().min(1).max(40) });
 
-/** Is this piece saved by the current user? Answers false for guests. */
-export async function GET(request: NextRequest) {
-  const user = await getSessionUser();
-  const productId = request.nextUrl.searchParams.get("productId");
-
-  if (!user || !productId) return NextResponse.json({ saved: false });
-
-  const favorite = await prisma.favorite.findUnique({
-    where: { userId_productId: { userId: user.id, productId } },
-    select: { id: true },
-  });
-
-  return NextResponse.json({ saved: Boolean(favorite) }, { headers: { "Cache-Control": "no-store" } });
-}
-
 export async function POST(request: NextRequest) {
   const user = await getSessionUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });

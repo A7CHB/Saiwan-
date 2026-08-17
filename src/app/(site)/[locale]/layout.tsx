@@ -8,6 +8,7 @@ import { fontVariables } from "@/lib/fonts";
 import { buildMetadata, JsonLd, organizationSchema, websiteSchema } from "@/lib/seo";
 import { getCategories } from "@/lib/data/catalog";
 import { getSessionUser } from "@/lib/auth/session";
+import { getFavoriteProductIds } from "@/lib/data/favorites";
 
 import { ThemeScript } from "@/components/theme/theme-script";
 import { ThemeProvider } from "@/components/theme/theme-provider";
@@ -16,6 +17,7 @@ import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { WhatsAppFloat } from "@/components/site/whatsapp-float";
 import { CompareProvider } from "@/components/product/compare-provider";
+import { FavoritesProvider } from "@/components/product/favorites-provider";
 import { CompareTray } from "@/components/product/compare-tray";
 
 export const viewport: Viewport = {
@@ -54,7 +56,10 @@ export async function generateMetadata({
     formatDetection: { telephone: false },
     icons: {
       icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-      apple: [{ url: "/apple-icon.png" }],
+      apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+      // Safari and iOS request this path by convention, with or without a
+      // <link> tag, so it is served rather than 404ing on every page view.
+      other: [{ rel: "apple-touch-icon-precomposed", url: "/apple-icon.png" }],
     },
   };
 }
@@ -76,10 +81,21 @@ export default async function SiteLayout({
     getSessionUser(),
   ]);
 
+  // Fetched once here rather than once per product card on the client.
+  const favoriteIds = user ? await getFavoriteProductIds(user.id) : [];
+
   const { dir, htmlLang } = localeMeta[locale];
 
   return (
-    <html lang={htmlLang} dir={dir} className={fontVariables} suppressHydrationWarning>
+    <html
+      lang={htmlLang}
+      dir={dir}
+      className={fontVariables}
+      // Declares the `scroll-behavior: smooth` set in globals.css, so Next can
+      // suppress it during route transitions instead of warning about it.
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <head>
         <ThemeScript />
       </head>
@@ -87,6 +103,7 @@ export default async function SiteLayout({
         <LocaleProvider locale={locale} dictionary={d}>
           <ThemeProvider>
             <CompareProvider>
+              <FavoritesProvider initialIds={favoriteIds} signedIn={Boolean(user)}>
               {/* Keyboard users land here first; it is the only element before
                   the header in the tab order. */}
               <a
@@ -109,6 +126,7 @@ export default async function SiteLayout({
               <SiteFooter locale={locale} d={d} categories={categories.slice(0, 5)} />
               <WhatsAppFloat />
               <CompareTray />
+              </FavoritesProvider>
             </CompareProvider>
           </ThemeProvider>
         </LocaleProvider>

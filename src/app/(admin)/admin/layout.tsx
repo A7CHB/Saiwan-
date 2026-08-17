@@ -4,6 +4,7 @@ import { fontVariables } from "@/lib/fonts";
 import { ThemeScript } from "@/components/theme/theme-script";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { LocaleProvider } from "@/components/i18n/locale-provider";
+import { FavoritesProvider } from "@/components/product/favorites-provider";
 import en from "@/lib/i18n/dictionaries/en";
 
 export const metadata: Metadata = {
@@ -36,7 +37,7 @@ export const viewport: Viewport = {
  */
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" dir="ltr" className={fontVariables} suppressHydrationWarning>
+    <html lang="en" dir="ltr" className={fontVariables} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <ThemeScript />
       </head>
@@ -46,7 +47,13 @@ export default function AdminRootLayout({ children }: { children: React.ReactNod
             The provider is still present so shared components (theme toggle,
             media, dialogs) find the strings they expect. */}
         <LocaleProvider locale="en" dictionary={en}>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            {/* The admin never saves favourites, but it shares components that
+                read the context; an empty provider keeps them working. */}
+            <FavoritesProvider initialIds={[]} signedIn={false}>
+              {children}
+            </FavoritesProvider>
+          </ThemeProvider>
         </LocaleProvider>
       </body>
     </html>

@@ -1,15 +1,19 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useTransition } from "react";
 import { Heart } from "lucide-react";
 import { useLocale } from "@/components/i18n/locale-provider";
+import { useFavorites } from "@/components/product/favorites-provider";
 import { cn } from "@/lib/utils";
 
 /**
- * Saving is optimistic — the heart fills instantly and rolls back if the
- * request fails. A signed-out visitor is sent to the account page with a
- * redirect back, rather than being blocked by a modal mid-browse.
+ * Save / unsave a piece.
+ *
+ * Reads its state from `FavoritesProvider`, which the server seeded — this
+ * component makes no request until someone actually clicks it. A signed-out
+ * visitor is sent to the account page with a redirect back, rather than being
+ * blocked by a modal mid-browse.
  */
 export function FavoriteButton({
   productId,
@@ -23,49 +27,24 @@ export function FavoriteButton({
   className?: string;
 }) {
   const { d, href } = useLocale();
+  const { has, toggle, signedIn } = useFavorites();
   const router = useRouter();
-  const [saved, setSaved] = useState<boolean | null>(null);
   const [pending, startTransition] = useTransition();
 
-  useEffect(() => {
-    let cancelled = false;
-    fetch(`/api/favorites?productId=${productId}`)
-      .then((response) => (response.ok ? response.json() : { saved: false }))
-      .then((data: { saved: boolean }) => {
-        if (!cancelled) setSaved(Boolean(data.saved));
-      })
-      .catch(() => {
-        if (!cancelled) setSaved(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [productId]);
+  const active = has(productId);
 
   const onClick = async () => {
-    const next = !saved;
-    setSaved(next);
+    if (!signedIn) {
+      startTransition(() => router.push(href(`/account?redirect=/collection/`)));
+      return;
+    }
 
-    try {
-      const response = await fetch("/api/favorites", {
-        method: next ? "POST" : "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId }),
-      });
-
-      if (response.status === 401) {
-        setSaved(false);
-        startTransition(() => router.push(href(`/account?redirect=/collection`)));
-        return;
-      }
-      if (!response.ok) setSaved(!next);
-      else startTransition(() => router.refresh());
-    } catch {
-      setSaved(!next);
+    const result = await toggle(productId);
+    if (result === "unauthorized") {
+      // The session expired while the page was open.
+      startTransition(() => router.push(href("/account")));
     }
   };
-
-  const active = saved === true;
 
   return (
     <button
@@ -73,13 +52,13 @@ export function FavoriteButton({
       onClick={onClick}
       aria-pressed={active}
       aria-label={active ? d.product.removeFromFavorites : d.product.saveToFavorites}
-      title={active ? d.product.removeFromFavorites : d.product.saveToFavorites}
+      title={signedIn ? (active ? d.product.removeFromFavorites : d.product.saveToFavorites) : d.product.signInToSave}
       className={cn(
         "flex items-center justify-center gap-2 transition-colors duration-300 disabled:opacity-50",
-        withLabel ? "h-12 px-5 text-[0.75rem] uppercase tracking-[0.14em] rtl:normal-case rtl:tracking-normal" : "size-9",
-        tone === "overlay"
-          ? "glass-dark text-white"
-          : "border border-line-strong text-fg hover:border-fg",
+        withLabel
+          ? "h-12 px-5 text-[0.75rem] uppercase tracking-[0.14em] rtl:normal-case rtl:tracking-normal"
+          : "size-9",
+        tone === "overlay" ? "glass-dark text-white" : "border border-line-strong text-fg hover:border-fg",
         active && tone === "overlay" && "bg-accent/90 text-accent-fg",
         active && tone === "default" && "border-accent text-accent",
         pending && "opacity-60",
