@@ -240,27 +240,6 @@ export default async function ProductPage({
         </div>
       </div>
 
-      {/* Craftsmanship — a full-bleed band, the one moment of scale on the page */}
-      {product.craft ? (
-        <section className="section mt-20 bg-sunken sm:mt-28">
-          <div className="shell grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
-            <Reveal kind="image">
-              <Media
-                src={product.images[product.images.length - 1]?.url ?? product.image}
-                alt={product.name}
-                ratio="4 / 3"
-                sizes="(max-width: 1024px) 92vw, 46vw"
-                className="w-full"
-              />
-            </Reveal>
-            <Reveal delay={100}>
-              <p className="eyebrow mb-6">{d.product.craft}</p>
-              <p className="display text-heading leading-snug text-balance">{product.craft}</p>
-            </Reveal>
-          </div>
-        </section>
-      ) : null}
-
       {/* Related */}
       {related.length > 0 ? (
         <section className="section">
@@ -281,15 +260,6 @@ export default async function ProductPage({
           </div>
         </section>
       ) : null}
-
-      {/* Closing conversion band */}
-      <section className="border-t border-line py-16">
-        <div className="shell flex flex-col items-center gap-6 text-center">
-          <h2 className="display text-heading text-balance">{d.about.cta.title}</h2>
-          <p className="max-w-md leading-relaxed text-muted">{d.about.cta.body}</p>
-          <WhatsAppButton variant="ink" size="lg" label={d.whatsapp.speak} productId={product.id} />
-        </div>
-      </section>
 
       <JsonLd
         data={[

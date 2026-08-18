@@ -194,7 +194,6 @@ type ProductSeed = {
   name: Tri;
   tagline: Tri;
   description: Tri;
-  craft: Tri;
   features: { en: string[]; ar: string[]; ckb: string[] };
   specs: { en: [string, string][]; ar: [string, string][]; ckb: [string, string][] };
 };
@@ -230,11 +229,6 @@ const PRODUCTS: ProductSeed[] = [
       "Aria carries a four-metre canopy from a single side mast, leaving the floor beneath entirely free. The arm is drawn as one continuous curve, so from beneath there is nothing to read but the underside of the canopy.",
       "تحمل أريا مظلّةً بأربعة أمتار من عمودٍ جانبي واحد، تاركةً الأرض تحتها خالية تمامًا. رُسم الذراع كمنحنى متصل واحد، فلا يُرى من الأسفل سوى باطن المظلّة.",
       "ئاریا چەترێکی چوار مەتری لە یەک کۆڵەکەی لاتەنیشتەوە هەڵدەگرێت، و زەوی ژێرەوەی بە تەواوی ئازاد دەهێڵێتەوە. بازووەکە وەک یەک چەماوەی بەردەوام کێشراوە، بۆیە لە خوارەوە هیچ نییە بخوێنرێتەوە جگە لە ژێری چەترەکە.",
-    ),
-    craft: tri(
-      "The arm is a single extruded section rather than a welded assembly — there is no joint at the point of highest load. Rotation runs on a sealed bearing at the base, so the canopy can be turned to follow the sun with one hand.",
-      "الذراع مقطع مبثوق واحد لا تجميعة ملحومة — لا وصلة عند نقطة الحمل الأعلى. يدور على محملٍ مغلق عند القاعدة، فيمكن إدارة المظلّة لتتبع الشمس بيدٍ واحدة.",
-      "بازووەکە یەک بەشی دەرهێنراوە نەک کۆکراوەیەکی لەیەکدراو — لە خاڵی بەرزترین بار هیچ بەندێک نییە. سووڕانەوەکە لەسەر بەیرینگێکی داخراو لە بنکەکەدا کار دەکات، بۆیە دەتوانرێت چەترەکە بە یەک دەست بسووڕێنرێت بۆ شوێنکەوتنی خۆر.",
     ),
     features: {
       en: [
@@ -305,11 +299,6 @@ const PRODUCTS: ProductSeed[] = [
       "مظلّة بعمودٍ مركزي بمقاسٍ منزلي، بعمود ساج ومظلّة بثمانية أضلاع تُفتح بسحبةٍ واحدة. مخصّصة لطاولة الحديقة وللساعات من حولها.",
       "چەترێکی کۆڵەکەی ناوەڕاست بە قەبارەی ماڵەوە، بە کۆڵەکەیەکی دارتەک و چەترێکی هەشت پەراسوو کە بە یەک ڕاکێشان دەکرێتەوە. بۆ مێزی باخچە و ئەو کاتژمێرانەی دەوروبەری تەرخانکراوە.",
     ),
-    craft: tri(
-      "The teak is FSC-certified and left unsealed, so it silvers evenly instead of blotching. Ribs are pinned rather than riveted, which means a damaged rib is a ten-minute repair rather than a new umbrella.",
-      "الساج معتمد FSC ويُترك دون إغلاق، فيكتسي فضّةً متساوية بدل التبقّع. الأضلاع مثبّتة بمسامير لا ببرشام، ما يجعل إصلاح ضلعٍ تالف عشر دقائق لا مظلّة جديدة.",
-      "دارتەکەکە بڕوانامەی FSCی هەیە و بێ داخستن دەهێڵدرێتەوە، بۆیە بە یەکسانی زیوی دەبێت لە جیاتی لەکەبوون. پەراسووەکان بە دەرزی بەند کراون نەک بە ڕیڤێت، واتە چاککردنەوەی پەراسوویەکی زیانلێکەوتوو دە خولەکە نەک چەترێکی نوێ.",
-    ),
     features: {
       en: ["Pulley lift, no crank", "FSC teak mast, unsealed", "Eight pinned ribs, individually replaceable", "Fits a standard 48 mm table aperture"],
       ar: ["رفع ببكرة دون مرفاع", "عمود ساج معتمد FSC دون إغلاق", "ثمانية أضلاع مثبّتة قابلة للاستبدال منفردة", "يناسب فتحة طاولة قياسية ٤٨ ملم"],
@@ -362,11 +351,6 @@ const PRODUCTS: ProductSeed[] = [
       "A modular system for hotel terraces and restaurant floors. Units link along a shared beam so the shadow line runs unbroken across the whole space, with no gaps between canopies.",
       "نظام معياري لتراسات الفنادق وصالات المطاعم. تتصل الوحدات على عارضةٍ مشتركة فيمتدّ خط الظل دون انقطاع عبر المساحة كلها، بلا فجواتٍ بين المظلات.",
       "سیستەمێکی مۆدیوڵار بۆ تەراسی هۆتێل و زەوی چێشتخانە. یەکەکان لەسەر تیرێکی هاوبەش بەیەکەوە دەبەسترێن بۆ ئەوەی هێڵی سێبەر بێ پچڕان بەسەر هەموو بۆشاییەکەدا بڕوات، بەبێ بۆشایی لە نێوان چەترەکاندا.",
-    ),
-    craft: tri(
-      "Because the units share a beam, wind load is distributed across the whole run rather than concentrated in one mast. That is what allows an eight-metre span at a section this slender.",
-      "لأن الوحدات تتشارك عارضة، تتوزّع أحمال الرياح على الامتداد كله بدل تركّزها في عمودٍ واحد. هذا ما يسمح بامتدادٍ من ثمانية أمتار بمقطعٍ بهذه النحافة.",
-      "لەبەر ئەوەی یەکەکان تیرێکی هاوبەشیان هەیە، باری با بەسەر هەموو درێژاییەکەدا دابەش دەبێت لە جیاتی ئەوەی لە یەک کۆڵەکەدا کۆببێتەوە. ئەمە ئەوەیە کە ڕێگە بە ماوەی هەشت مەتری بەم باریکی بەشە دەدات.",
     ),
     features: {
       en: ["Units link along a shared structural beam", "Integrated gutter between bays", "Wind-release fixing on every canopy", "Specified per site after a wind assessment"],
@@ -422,11 +406,6 @@ const PRODUCTS: ProductSeed[] = [
       "قطعة لحافة المسبح بمظلّةٍ قابلة للإمالة، مُحدَّدة بالكامل بالستانلس. باطنها بتشطيبٍ عاجيّ ناعم يعيد الضوء المنعكس إلى الأسفل بدل الوهج.",
       "بەرهەمێکی کەناری مەلەوانگە بە چەترێکی لارکەرەوە، سەرتاسەری بە ستەینلێس دیاری کراوە. ژێرەوەی بە عاجییەکی نەرم تەواو کراوە کە ڕووناکی ڕەنگدراوە بەرەو خوارەوە دەگەڕێنێتەوە لە جیاتی بریسکەدانەوە.",
     ),
-    craft: tri(
-      "Every fixing is A4 stainless rather than A2 — the grade difference only shows after a few seasons in chlorinated air, which is exactly when it matters.",
-      "كل مثبّتٍ ستانلس A4 لا A2 — فرق الدرجة لا يظهر إلا بعد بضعة مواسم في هواءٍ مكلور، وهو بالضبط حين يهمّ.",
-      "هەموو بەندەرێک ستەینلێسی A4ـە نەک A2 — جیاوازی پلەکە تەنها دوای چەند وەرزێک لە هەوای کلۆردار دەردەکەوێت، کە بەڕاستی ئەو کاتەیە گرنگە.",
-    ),
     features: {
       en: ["Canopy tilts to 30° on a locking collar", "A4 stainless fixings throughout", "Ivory underside to soften reflected glare", "Base weighted for open, exposed decks"],
       ar: ["إمالة القماش حتى ٣٠° على طوقٍ قافل", "مثبّتات ستانلس A4 في كل موضع", "باطن عاجيّ لتخفيف الوهج المنعكس", "قاعدة موزونة للأسطح المكشوفة"],
@@ -479,11 +458,6 @@ const PRODUCTS: ProductSeed[] = [
       "Atrium is the most reduced piece in the collection: a square canopy, a straight mast, no valance and no visible hardware. It is intended for architecture that does not want to be interrupted.",
       "أتريوم أكثر القطع اختزالًا في المجموعة: مظلّة مربّعة، وعمود مستقيم، بلا حاشية ولا أجزاء ظاهرة. مخصّصة لعمارةٍ لا تريد أن تُقاطَع.",
       "ئەتریۆم کەمکراوەترین بەرهەمی کۆمەڵەکەیە: چەترێکی چوارگۆشە، کۆڵەکەیەکی ڕاست، بێ لێواری قوماش و بێ کەرەستەی دیار. بۆ تەلارسازییەک تەرخانکراوە کە نایەوێت بپچڕێت.",
-    ),
-    craft: tri(
-      "Removing the valance moves all the tension into the rib tips, so the ribs are drawn heavier than the silhouette suggests. Restraint on the outside is usually paid for on the inside.",
-      "إزالة الحاشية تنقل الشدّ كله إلى أطراف الأضلاع، فرُسمت الأضلاع أثقل مما يوحي به الظلّ الخارجي. الانضباط في الخارج يُدفع ثمنه في الداخل عادةً.",
-      "لابردنی لێواری قوماش هەموو ڕاکێشانەکە دەگوازێتەوە بۆ سەری پەراسووەکان، بۆیە پەراسووەکان قورستر کێشراون لەوەی سیلوێتەکە پێشنیاری دەکات. خۆڕاگری لە دەرەوە زۆرجار لە ناوەوە نرخی دەدرێت.",
     ),
     features: {
       en: ["No valance — a clean canopy edge", "Concealed crank behind a flush cover", "Square 400 mm footprint at the base", "Optional under-canopy LED ring"],
@@ -538,11 +512,6 @@ const PRODUCTS: ProductSeed[] = [
       "صُمّمت سوليس لشرفة أو طاولة حديقة بمقعدين — المواقف التي تُعامَل فيها معظم المظلات كأشياء تُرمى. تستخدم القماش نفسه المستخدم في قطعٍ بأربعة أضعاف حجمها.",
       "سۆلیس بۆ بەلکۆنێک یان مێزی باخچەی دوو کورسی قەبارە کراوە — ئەو دۆخانەی زۆربەی چەترەکان تێیدا وەک شتی فڕێدراو مامەڵەیان لەگەڵ دەکرێت. هەمان قوماشی چەتر بەکاردەهێنێت کە بەرهەمی چوار ئەوەندە گەورەتر بەکاری دەهێنن.",
     ),
-    craft: tri(
-      "Small umbrellas usually save money in the canopy, which is the one place a customer sees every day. Solis saves it in the mechanism instead: a simple push-up lift, and nothing else to go wrong.",
-      "المظلات الصغيرة توفّر المال في القماش عادةً، وهو المكان الوحيد الذي يراه العميل يوميًا. سوليس توفّره في الآلية بدلًا من ذلك: رفع بالدفع لا أكثر، ولا شيء آخر يتعطّل.",
-      "چەتری بچووک زۆرجار پارە لە قوماشەکەدا دەپارێزن، کە تاکە شوێنێکە کڕیار هەموو ڕۆژێک دەیبینێت. سۆلیس لە جیاتی ئەوە لە میکانیزمەکەدا دەیپارێزێت: بەرزکردنەوەیەکی سادەی پاڵدان، و هیچی تر نییە تێکبچێت.",
-    ),
     features: {
       en: ["Push-up lift, no moving parts to service", "Fits balcony rail and table clamps", "Full canopy fabric specification", "Four garden-tuned colourways"],
       ar: ["رفع بالدفع، بلا أجزاء متحرّكة تحتاج صيانة", "يناسب مشابك سياج الشرفة والطاولات", "مواصفة قماش كاملة", "أربع تدرّجات لونية مناسبة للحدائق"],
@@ -594,11 +563,6 @@ const PRODUCTS: ProductSeed[] = [
       "Vela is the piece specified where a canopy is part of the daily routine — opened at service, closed at night, for an entire season. The mechanism is rated for that cycle rather than for occasional use.",
       "فيلا هي القطعة التي تُحدَّد حيث تكون المظلّة جزءًا من الروتين اليومي — تُفتح مع الخدمة وتُغلق ليلًا، طوال موسمٍ كامل. الآلية مصنّفة لتلك الدورة لا للاستخدام العرضي.",
       "ڤێلا ئەو بەرهەمەیە کە لەو شوێنانەدا دیاری دەکرێت کە چەترەکە بەشێکە لە ڕووتینی ڕۆژانە — لە کاتی خزمەتدا دەکرێتەوە، شەوانە دادەخرێت، بۆ وەرزێکی تەواو. میکانیزمەکە بۆ ئەو سووڕە پلەبەندی کراوە نەک بۆ بەکارهێنانی کاتوکات.",
-    ),
-    craft: tri(
-      "The lift is geared rather than direct, so the effort at the handle is the same on the first day of the season and the last. Gears are the part that decides whether staff actually close it in wind.",
-      "الرفع مُسنّن لا مباشر، فيبقى الجهد عند المقبض نفسه في أول يوم من الموسم وآخره. المسنّنات هي الجزء الذي يقرّر إن كان الطاقم سيغلقها فعلًا عند الرياح.",
-      "بەرزکردنەوەکە دەندانەدارە نەک ڕاستەوخۆ، بۆیە هەوڵی دەستەکە لە یەکەم ڕۆژی وەرزەکە و کۆتا ڕۆژیدا وەک یەکە. دەندانەکان ئەو بەشەن کە بڕیار دەدەن ئایا ستافەکە بەڕاستی لە بادا دایدەخەن یان نا.",
     ),
     features: {
       en: ["Geared crank rated for daily cycling", "Canopy replaceable on site", "Wind-release at the rib tips", "Specified per venue"],
@@ -653,7 +617,6 @@ const PRODUCTS: ProductSeed[] = [
       "قاعدة غرانيت صلبة بطوقٍ ستانلس. حُدِّدت لأن ثبات المظلّة لا يتجاوز ثبات ما يمسكها، ومعظم القواعد فكرةٌ لاحقة.",
       "بنکەیەکی گرانیتی ڕەق بە ملوانکەیەکی ستەینلێس. دیاری کراوە چونکە چەترێک تەنها بەو ئەندازەیە جێگیرە کە ئەو شتەی دایدەگرێت، و زۆربەی بنکەکان بیرۆکەیەکی دواترن.",
     ),
-    craft: tri("", "", ""),
     features: {
       en: ["Solid granite, 60 kg", "Stainless collar and levelling screws", "Felt underside to protect stone and tile"],
       ar: ["غرانيت صلب، ٦٠ كغ", "طوق ستانلس وبراغي تسوية", "باطن لبّادي لحماية الحجر والبلاط"],
@@ -688,7 +651,6 @@ const PRODUCTS: ProductSeed[] = [
       "غطاء مفصّل من الأكريليك نفسه المستخدم في المظلات، بسحّابٍ ستانلس. معظم أضرار القماش تحدث خارج الموسم لا فيه.",
       "داپۆشەرێکی گونجاو لە هەمان ئەکریلیکی چەترەکان، بە زیپێکی ستەینلێس. زۆربەی زیانی قوماش لە دەرەوەی وەرزەکەدا ڕوودەدات، نەک تێیدا.",
     ),
-    craft: tri("", "", ""),
     features: {
       en: ["Same solution-dyed acrylic as the canopies", "Stainless zip and drawcord", "Sized to each piece"],
       ar: ["الأكريليك المصبوغ نفسه المستخدم في المظلات", "سحّاب ستانلس وحبل شدّ", "بمقاس كل قطعة"],
@@ -723,7 +685,6 @@ const PRODUCTS: ProductSeed[] = [
       "حلقة قابلة للتعتيم تُركّب داخل المحور وتلقي ضوءًا دافئًا على الطاولة لا في العين. ٢٧٠٠ كلفن، لأن المساحات الخارجية تبدو باردة عند أي درجةٍ أعلى.",
       "بازنەیەکی کەمکەرەوە کە لە ناو ناوەندەکەدا دادەنرێت و ڕووناکی گەرم دەخاتە سەر مێزەکە نەک بۆ ناو چاو. ٢٧٠٠ کێلڤن، چونکە بۆشایی دەرەوە لە هەر پلەیەکی بەرزتردا سارد دەردەکەوێت.",
     ),
-    craft: tri("", "", ""),
     features: {
       en: ["2700 K, dimmable", "IP65, rated for open weather", "Runs from the mast — no visible cable"],
       ar: ["٢٧٠٠ كلفن، قابلة للتعتيم", "IP65، مصنّفة للطقس المكشوف", "تعمل من داخل العمود — بلا كابل ظاهر"],
@@ -871,7 +832,6 @@ async function main() {
         name: product.name[locale],
         tagline: product.tagline[locale],
         description: product.description[locale],
-        craft: product.craft[locale] || null,
         features: JSON.stringify(product.features[locale]),
         specs: JSON.stringify(product.specs[locale].map(([label, value]) => ({ label, value }))),
         metaTitle: `${product.name[locale]} · Saiwan`,
@@ -962,10 +922,7 @@ async function main() {
   const homeMedia = {
     heroImage: "/media/hero-terrace.svg",
     heroImageMobile: "/media/portrait-terrace.svg",
-    manifestoImage: "/media/portrait-canopy.svg",
     quizImage: "/media/hero-dusk.svg",
-    craftImages: ["/media/detail-frame.svg", "/media/detail-fabric.svg", "/media/detail-hardware.svg"],
-    showcaseImages: ["/media/detail-frame.svg", "/media/detail-fabric.svg", "/media/detail-hardware.svg", "/media/portrait-mast.svg"],
   };
   for (const locale of LOCALES) {
     await prisma.contentBlock.upsert({

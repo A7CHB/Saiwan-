@@ -14,7 +14,6 @@ const EMPTY_TRANSLATION = {
   name: "",
   tagline: "",
   description: "",
-  craft: "",
   features: "",
   specs: "",
   metaTitle: "",
@@ -76,7 +75,6 @@ export async function loadProductForm(id: string): Promise<ProductFormData | nul
       name: translation.name,
       tagline: translation.tagline ?? "",
       description: translation.description ?? "",
-      craft: translation.craft ?? "",
       // JSON columns are edited as plain lines; converted back on save.
       features: parseJson<string[]>(translation.features, []).join("\n"),
       specs: parseJson<{ label: string; value: string }[]>(translation.specs, [])

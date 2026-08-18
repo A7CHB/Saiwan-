@@ -185,7 +185,6 @@ const ckb: Dictionary = {
     features: "خەسڵەتەکان",
     dimensions: "قەبارە",
     accessories: "پێداویستییەکان",
-    craft: "دەستڕەنگینی",
     gallery: "وێنەکان",
     configure: "ڕێکخستن",
     configureTitle: "بەرهەمەکەت دیاری بکە",

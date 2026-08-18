@@ -22,20 +22,12 @@ const BLOCKS = [
     key: "home.media",
     title: "Home page imagery",
     description:
-      "Which images the home page uses. heroImage and manifestoImage are single paths; craftImages and showcaseImages are ordered lists.",
+      "Which images the home page uses: the hero (with a portrait crop for phones) and the consultation panel behind \u201cFind your shade\u201d.",
     template: JSON.stringify(
       {
         heroImage: "/media/hero-terrace.svg",
         heroImageMobile: "/media/portrait-terrace.svg",
-        manifestoImage: "/media/portrait-canopy.svg",
         quizImage: "/media/hero-dusk.svg",
-        craftImages: ["/media/detail-frame.svg", "/media/detail-fabric.svg", "/media/detail-hardware.svg"],
-        showcaseImages: [
-          "/media/detail-frame.svg",
-          "/media/detail-fabric.svg",
-          "/media/detail-hardware.svg",
-          "/media/portrait-mast.svg",
-        ],
       },
       null,
       2,

@@ -178,7 +178,6 @@ export async function saveProductAction(_prev: ActionState, formData: FormData):
       name: name.slice(0, 160),
       tagline: str(formData, `tagline_${locale}`).slice(0, 300) || null,
       description: str(formData, `description_${locale}`).slice(0, 4000) || null,
-      craft: str(formData, `craft_${locale}`).slice(0, 4000) || null,
       features: linesToJson(str(formData, `features_${locale}`)),
       specs: specsToJson(str(formData, `specs_${locale}`)),
       metaTitle: str(formData, `metaTitle_${locale}`).slice(0, 160) || null,

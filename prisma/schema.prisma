@@ -162,7 +162,6 @@ model ProductTranslation {
   name        String
   tagline     String?
   description String?
-  craft       String? // materials & craftsmanship narrative
   /// JSON string[] — short benefit lines shown on the product page.
   features    String  @default("[]")
   /// JSON {label,value}[] — the technical specification table.

@@ -187,7 +187,6 @@ const en = {
     features: "Features",
     dimensions: "Dimensions",
     accessories: "Accessories",
-    craft: "Craftsmanship",
     gallery: "Gallery",
     configure: "Configure",
     configureTitle: "Specify your piece",

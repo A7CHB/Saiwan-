@@ -52,7 +52,6 @@ export type ProductFormData = {
       name: string;
       tagline: string;
       description: string;
-      craft: string;
       features: string;
       specs: string;
       metaTitle: string;
@@ -150,15 +149,6 @@ export function ProductForm({ data, options }: { data: ProductFormData; options:
                     defaultValue={t.description}
                     rows={5}
                     maxLength={4000}
-                    className={rtl ? "text-end" : undefined}
-                  />
-                  <AdminTextarea
-                    label="Craftsmanship"
-                    name={`craft_${locale}`}
-                    defaultValue={t.craft}
-                    rows={4}
-                    maxLength={4000}
-                    hint="The materials-and-engineering paragraph shown in its own band."
                     className={rtl ? "text-end" : undefined}
                   />
                   <AdminTextarea

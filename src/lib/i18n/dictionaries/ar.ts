@@ -183,7 +183,6 @@ const ar: Dictionary = {
     features: "المزايا",
     dimensions: "الأبعاد",
     accessories: "الملحقات",
-    craft: "الحِرفة",
     gallery: "الصور",
     configure: "التهيئة",
     configureTitle: "حدّد مواصفة قطعتك",

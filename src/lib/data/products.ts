@@ -58,7 +58,6 @@ export type ProductSizeOption = {
 export type ProductDetail = ProductCard & {
   sku: string | null;
   description: string | null;
-  craft: string | null;
   features: string[];
   specs: Spec[];
   metaTitle: string | null;
@@ -215,7 +214,6 @@ export const getProductBySlug = cache(
       ...card,
       sku: row.sku,
       description: (t?.description as string) ?? null,
-      craft: (t?.craft as string) ?? null,
       features: parseJson<string[]>((t?.features as string) ?? null, []),
       specs: parseJson<Spec[]>((t?.specs as string) ?? null, []),
       metaTitle: (t?.metaTitle as string) ?? null,
