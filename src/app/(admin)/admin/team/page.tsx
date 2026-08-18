@@ -7,15 +7,18 @@ import { Badge, EmptyState, PageHeader, Panel, Table, Td, Th } from "@/component
 import { UserForm } from "@/components/admin/entity-forms";
 import { formatDate } from "@/lib/i18n/format";
 
-export const metadata: Metadata = { title: "Customers" };
+export const metadata: Metadata = { title: "Team" };
 export const dynamic = "force-dynamic";
 
 /**
- * People, in two groups: customers with accounts, and the staff/administrator
- * accounts that can reach this panel. Creating and editing accounts is
- * administrator-only, which is enforced inside `saveUserAction` as well as here.
+ * The accounts that can reach this dashboard.
+ *
+ * These are the only accounts the system has: the storefront is anonymous, so
+ * a customer is a name on an inquiry rather than a login. Creating and editing
+ * accounts is administrator-only, enforced inside `saveUserAction` as well as
+ * here.
  */
-export default async function AdminCustomersPage({
+export default async function AdminTeamPage({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -40,9 +43,7 @@ export default async function AdminCustomersPage({
       role: true,
       locale: true,
       isActive: true,
-      createdAt: true,
       lastLoginAt: true,
-      _count: { select: { favorites: true, inquiries: true } },
     },
   });
 
@@ -51,8 +52,8 @@ export default async function AdminCustomersPage({
   return (
     <AdminFrame>
       <PageHeader
-        title="Customers & accounts"
-        description="Anyone with a Saiwan account. Guests who only messaged on WhatsApp appear under Inquiries."
+        title="Team & access"
+        description="Everyone who can sign in to this dashboard. Customers never have accounts — they appear under Inquiries."
       />
 
       <form method="get" className="mb-4 flex flex-wrap items-end gap-3 rounded-lg border border-line bg-elevated p-4">
@@ -83,9 +84,7 @@ export default async function AdminCustomersPage({
                 <Th>Name</Th>
                 <Th>Contact</Th>
                 <Th>Role</Th>
-                <Th align="end">Saved</Th>
-                <Th align="end">Inquiries</Th>
-                <Th align="end">Last seen</Th>
+                <Th align="end">Last signed in</Th>
                 {isAdmin ? <Th align="end">Actions</Th> : null}
               </tr>
             </thead>
@@ -112,19 +111,13 @@ export default async function AdminCustomersPage({
                       {user.role.toLowerCase()}
                     </Badge>
                   </Td>
-                  <Td align="end" className="tabular-nums text-muted">
-                    {user._count.favorites}
-                  </Td>
-                  <Td align="end" className="tabular-nums text-muted">
-                    {user._count.inquiries}
-                  </Td>
                   <Td align="end" className="whitespace-nowrap text-muted">
                     {user.lastLoginAt ? formatDate(user.lastLoginAt, "en") : "—"}
                   </Td>
                   {isAdmin ? (
                     <Td align="end">
                       <Link
-                        href={`/admin/customers?edit=${user.id}${search ? `&q=${encodeURIComponent(search)}` : ""}`}
+                        href={`/admin/team?edit=${user.id}${search ? `&q=${encodeURIComponent(search)}` : ""}`}
                         className="rounded border border-line px-2.5 py-1 text-xs transition-colors hover:border-line-strong"
                       >
                         Edit
@@ -144,11 +137,11 @@ export default async function AdminCustomersPage({
           description={
             editing
               ? "Changing the password or disabling the account signs it out of every device immediately."
-              : "Use this to add staff or administrator access. Customers create their own accounts on the site."
+              : "Add a colleague to the dashboard. Staff can manage the catalogue; administrators can also manage accounts and settings."
           }
           actions={
             editing ? (
-              <Link href="/admin/customers" className="text-sm text-accent hover:underline">
+              <Link href="/admin/team" className="text-sm text-accent hover:underline">
                 Cancel edit
               </Link>
             ) : null

@@ -7,8 +7,6 @@ import { getDictionary } from "@/lib/i18n";
 import { fontVariables } from "@/lib/fonts";
 import { buildMetadata, JsonLd, organizationSchema, websiteSchema } from "@/lib/seo";
 import { getCategories } from "@/lib/data/catalog";
-import { getSessionUser } from "@/lib/auth/session";
-import { getFavoriteProductIds } from "@/lib/data/favorites";
 
 import { ThemeScript } from "@/components/theme/theme-script";
 import { ThemeProvider } from "@/components/theme/theme-provider";
@@ -75,14 +73,9 @@ export default async function SiteLayout({
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
 
-  const [d, categories, user] = await Promise.all([
-    getDictionary(locale),
-    getCategories(locale),
-    getSessionUser(),
-  ]);
-
-  // Fetched once here rather than once per product card on the client.
-  const favoriteIds = user ? await getFavoriteProductIds(user.id) : [];
+  // The storefront asks nothing of its visitors: no session is read here
+  // because there is nothing to read one for.
+  const [d, categories] = await Promise.all([getDictionary(locale), getCategories(locale)]);
 
   const { dir, htmlLang } = localeMeta[locale];
 
@@ -103,29 +96,27 @@ export default async function SiteLayout({
         <LocaleProvider locale={locale} dictionary={d}>
           <ThemeProvider>
             <CompareProvider>
-              <FavoritesProvider initialIds={favoriteIds} signedIn={Boolean(user)}>
-              {/* Keyboard users land here first; it is the only element before
-                  the header in the tab order. */}
-              <a
-                href="#main"
-                className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[200] focus:bg-fg focus:px-5 focus:py-3 focus:text-bg focus:text-sm"
-              >
-                {d.nav.skipToContent}
-              </a>
+              <FavoritesProvider>
+                {/* Keyboard users land here first; it is the only element before
+                    the header in the tab order. */}
+                <a
+                  href="#main"
+                  className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[200] focus:bg-fg focus:px-5 focus:py-3 focus:text-bg focus:text-sm"
+                >
+                  {d.nav.skipToContent}
+                </a>
 
-              <SiteHeader
-                categories={categories.map((c) => ({ slug: c.slug, name: c.name, count: c.productCount }))}
-                signedIn={Boolean(user)}
-                userName={user?.name ?? null}
-              />
+                <SiteHeader
+                  categories={categories.map((c) => ({ slug: c.slug, name: c.name, count: c.productCount }))}
+                />
 
-              <main id="main" className="min-h-[60vh]">
-                {children}
-              </main>
+                <main id="main" className="min-h-[60vh]">
+                  {children}
+                </main>
 
-              <SiteFooter locale={locale} d={d} categories={categories.slice(0, 5)} />
-              <WhatsAppFloat />
-              <CompareTray />
+                <SiteFooter locale={locale} d={d} categories={categories.slice(0, 5)} />
+                <WhatsAppFloat />
+                <CompareTray />
               </FavoritesProvider>
             </CompareProvider>
           </ThemeProvider>

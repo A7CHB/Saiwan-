@@ -12,12 +12,12 @@ import { hasRole, type Role } from "@/lib/constants";
 export type AdminAuthState = { error?: string };
 
 /**
- * Administrator sign-in.
+ * Dashboard sign-in — the only sign-in the application has.
  *
- * Separate from the customer action for one reason: a CUSTOMER who signs in
- * here must be refused rather than silently landing on a page they cannot use.
- * Rate limits are tighter than the storefront's because this is the endpoint
- * worth attacking.
+ * The storefront is anonymous by design, so this endpoint is the entire attack
+ * surface for authentication: it answers with one message for every failure
+ * mode, computes a dummy hash for unknown addresses so timing cannot enumerate
+ * accounts, and is rate limited per IP.
  */
 export async function adminSignInAction(
   _prev: AdminAuthState,

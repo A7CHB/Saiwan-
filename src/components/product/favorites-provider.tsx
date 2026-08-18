@@ -1,78 +1,99 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { SAVED_LIMIT } from "@/lib/constants";
 
-export type ToggleResult = "saved" | "removed" | "unauthorized" | "failed";
+const STORAGE_KEY = "saiwan_saved";
 
 type FavoritesContextValue = {
-  signedIn: boolean;
+  /** Most recently saved first — the order the saved page renders in. */
+  ids: string[];
+  count: number;
+  /** False until localStorage has been read, so the UI can avoid a flash. */
+  ready: boolean;
   has: (productId: string) => boolean;
-  toggle: (productId: string) => Promise<ToggleResult>;
+  toggle: (productId: string) => void;
+  remove: (productId: string) => void;
+  clear: () => void;
 };
 
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
-/**
- * Saved-piece state for the whole page.
- *
- * Seeded from the server with the ids the signed-in customer has already saved,
- * so a collection page costs zero requests to render its hearts. Previously
- * every card asked the API about itself on mount — ten or more round-trips per
- * page for information the server already had in hand, doubled in development
- * by StrictMode.
- *
- * Writes still go to `/api/favorites`; only the reads moved.
- */
-export function FavoritesProvider({
-  initialIds,
-  signedIn,
-  children,
-}: {
-  initialIds: string[];
-  signedIn: boolean;
-  children: React.ReactNode;
-}) {
-  const [ids, setIds] = useState<ReadonlySet<string>>(() => new Set(initialIds));
+function read(): string[] {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((x): x is string => typeof x === "string").slice(0, SAVED_LIMIT);
+  } catch {
+    return [];
+  }
+}
 
-  const flip = useCallback((productId: string, saved: boolean) => {
+function write(ids: string[]) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+  } catch {
+    /* private mode or a full quota — the session still works, it just forgets */
+  }
+}
+
+/**
+ * Saved pieces, held on the device.
+ *
+ * Saving is a browsing gesture, not a membership: nobody should have to create
+ * an account to keep a shortlist of umbrellas. The list lives in localStorage
+ * exactly like the comparison tray, which means it survives a reload, costs no
+ * requests, and leaves no personal data on our servers.
+ *
+ * The trade-off is honest and stated on the saved page: the list belongs to
+ * this browser and does not follow the visitor to another device.
+ */
+export function FavoritesProvider({ children }: { children: React.ReactNode }) {
+  const [ids, setIds] = useState<string[]>([]);
+  const [ready, setReady] = useState(false);
+
+  // Read after mount: the server has no way to know what this device saved, so
+  // rendering from storage during the first paint would break hydration.
+  useEffect(() => {
+    setIds(read());
+    setReady(true);
+  }, []);
+
+  // Keep two tabs of the same site in agreement.
+  useEffect(() => {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === STORAGE_KEY) setIds(read());
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
+  const commit = useCallback((next: string[]) => {
+    setIds(next);
+    write(next);
+  }, []);
+
+  const toggle = useCallback((productId: string) => {
     setIds((current) => {
-      const next = new Set(current);
-      if (saved) next.add(productId);
-      else next.delete(productId);
+      const next = current.includes(productId)
+        ? current.filter((id) => id !== productId)
+        : [productId, ...current].slice(0, SAVED_LIMIT);
+      write(next);
       return next;
     });
   }, []);
 
-  const toggle = useCallback(
-    async (productId: string): Promise<ToggleResult> => {
-      const wasSaved = ids.has(productId);
-
-      // Optimistic: the heart fills before the request resolves and rolls back
-      // if it fails. A save is not worth a spinner.
-      flip(productId, !wasSaved);
-
-      try {
-        const response = await fetch("/api/favorites", {
-          method: wasSaved ? "DELETE" : "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ productId }),
-        });
-
-        if (response.ok) return wasSaved ? "removed" : "saved";
-
-        flip(productId, wasSaved);
-        return response.status === 401 ? "unauthorized" : "failed";
-      } catch {
-        flip(productId, wasSaved);
-        return "failed";
-      }
-    },
-    [ids, flip],
-  );
-
   const value = useMemo<FavoritesContextValue>(
-    () => ({ signedIn, has: (productId: string) => ids.has(productId), toggle }),
-    [ids, signedIn, toggle],
+    () => ({
+      ids,
+      count: ids.length,
+      ready,
+      has: (productId: string) => ids.includes(productId),
+      toggle,
+      remove: (productId: string) => commit(ids.filter((id) => id !== productId)),
+      clear: () => commit([]),
+    }),
+    [ids, ready, toggle, commit],
   );
 
   return <FavoritesContext.Provider value={value}>{children}</FavoritesContext.Provider>;

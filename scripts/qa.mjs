@@ -25,7 +25,7 @@ const CUSTOMER_ROUTES = [
   "/contact",
   "/search?q=cantilever",
   "/search?q=zzzzzz",
-  "/account",
+  "/saved",
   "/compare",
   "/this-route-does-not-exist",
 ];
@@ -36,7 +36,7 @@ const ADMIN_ROUTES = [
   "/admin/products/new",
   "/admin/categories",
   "/admin/inquiries",
-  "/admin/customers",
+  "/admin/team",
   "/admin/gallery",
   "/admin/content",
   "/admin/translations",

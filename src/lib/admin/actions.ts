@@ -584,6 +584,6 @@ export async function saveUserAction(_prev: ActionState, formData: FormData): Pr
 
   await audit(user.id, id ? "user.update" : "user.create", "User", id ?? email, { role, isActive });
 
-  revalidatePath("/admin/customers");
+  revalidatePath("/admin/team");
   return { ok: true, message: "Account saved." };
 }

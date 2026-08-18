@@ -48,11 +48,9 @@ export default function AdminRootLayout({ children }: { children: React.ReactNod
             media, dialogs) find the strings they expect. */}
         <LocaleProvider locale="en" dictionary={en}>
           <ThemeProvider>
-            {/* The admin never saves favourites, but it shares components that
-                read the context; an empty provider keeps them working. */}
-            <FavoritesProvider initialIds={[]} signedIn={false}>
-              {children}
-            </FavoritesProvider>
+            {/* The admin never saves pieces, but it shares components that read
+                the context; the provider keeps them working. */}
+            <FavoritesProvider>{children}</FavoritesProvider>
           </ThemeProvider>
         </LocaleProvider>
       </body>

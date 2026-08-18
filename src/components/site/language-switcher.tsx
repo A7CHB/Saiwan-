@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Check, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -12,12 +12,15 @@ import { LOCALE_COOKIE } from "@/lib/constants";
  * Swaps the locale segment in place, so a customer reading a product page in
  * English lands on the same product in Kurdish rather than back at the home
  * page. Query strings (filters, search terms) are preserved for the same reason.
+ *
+ * The query is read from `window.location` inside the click handler rather than
+ * with `useSearchParams()`: this component sits in the header and footer of
+ * every page, and that hook would opt all of them out of static rendering.
  */
 export function LanguageSwitcher({ compact = false, className }: { compact?: boolean; className?: string }) {
   const { locale, d } = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -46,11 +49,11 @@ export function LanguageSwitcher({ compact = false, className }: { compact?: boo
     if (isLocale(segments[1])) segments[1] = next;
     else segments.splice(1, 0, next);
 
-    const query = searchParams.toString();
+    const query = window.location.search;
     document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
 
     startTransition(() => {
-      router.push(`${segments.join("/")}${query ? `?${query}` : ""}`);
+      router.push(`${segments.join("/")}${query}`);
       router.refresh();
     });
   };

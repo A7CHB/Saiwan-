@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { getSessionUser } from "@/lib/auth/session";
 import { INQUIRY_SOURCES, VISITOR_COOKIE } from "@/lib/constants";
 import { locales } from "@/lib/i18n/config";
 import { inquiryReference, isValidPhone, normalisePhone } from "@/lib/utils";
@@ -40,7 +39,6 @@ export async function POST(request: NextRequest) {
   }
 
   const input = parsed.data;
-  const user = await getSessionUser();
 
   // Phone is required from the contact form, optional from WhatsApp flows where
   // the customer's number arrives with the message itself.
@@ -65,11 +63,10 @@ export async function POST(request: NextRequest) {
     const inquiry = await prisma.inquiry.create({
       data: {
         reference: existing ? inquiryReference() : reference,
-        userId: user?.id ?? null,
         productId: validProductId,
-        customerName: (input.customerName || user?.name || "—").slice(0, 80),
-        customerPhone: phone || user?.phone || "",
-        customerEmail: input.customerEmail || user?.email || null,
+        customerName: (input.customerName || "—").slice(0, 80),
+        customerPhone: phone,
+        customerEmail: input.customerEmail || null,
         locale: input.locale,
         source: input.source,
         message: input.message || null,

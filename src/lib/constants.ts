@@ -3,11 +3,15 @@
  * single source of truth shared by Prisma columns, Zod schemas and the UI.
  */
 
-export const ROLES = ["CUSTOMER", "STAFF", "ADMIN"] as const;
+/**
+ * Only the dashboard has accounts, so every role is a staff role. A visitor to
+ * the storefront has no role at all — the storefront asks for none.
+ */
+export const ROLES = ["STAFF", "ADMIN"] as const;
 export type Role = (typeof ROLES)[number];
 
 /** Rank used for authorisation comparisons — higher wins. */
-export const ROLE_RANK: Record<Role, number> = { CUSTOMER: 0, STAFF: 1, ADMIN: 2 };
+export const ROLE_RANK: Record<Role, number> = { STAFF: 1, ADMIN: 2 };
 
 export function hasRole(role: string | undefined | null, required: Role): boolean {
   if (!role || !(role in ROLE_RANK)) return false;
@@ -79,3 +83,5 @@ export const LOCALE_COOKIE = "saiwan_locale";
 export const VISITOR_COOKIE = "saiwan_visitor";
 export const SESSION_TTL_DAYS = 30;
 export const COMPARE_LIMIT = 3;
+/** Ceiling on the device-local shortlist — generous, but bounded storage. */
+export const SAVED_LIMIT = 60;

@@ -131,65 +131,100 @@ const successText = await page.locator("body").innerText();
 check("Contact form submits and returns a reference", /Received/.test(successText) && /SW-/.test(successText), successText.slice(0, 200));
 
 // ---------------------------------------------------------------------------
-// 6. Customer account: sign up, favourite, sign out
+// 6. Saving pieces without an account
 // ---------------------------------------------------------------------------
-const email = `qa+${Date.now()}@example.com`;
-await page.goto(`${BASE}/en/account`, { waitUntil: "networkidle" });
-await page.getByRole("button", { name: /^Create account$/i }).first().click();
-await page.waitForTimeout(300);
-await page.getByLabel(/^Name/i).fill("QA Customer");
-await page.getByLabel(/^Email/i).fill(email);
-await page.getByLabel(/^Password/i).fill("saiwan2024test");
-await page.getByRole("button", { name: /^Create account$/i }).last().click();
-await page.waitForURL("**/account", { timeout: 20000 }).catch(() => {});
-await page.waitForTimeout(1200);
-check("Account created and signed in", (await page.locator("body").innerText()).includes("Good to see you"), page.url());
-
 await page.goto(`${BASE}/en/collection/aria`, { waitUntil: "networkidle" });
-await page.waitForTimeout(600);
 await page.getByRole("button", { name: /^Save$/i }).first().click();
-await page.waitForTimeout(1500);
-await page.goto(`${BASE}/en/account`, { waitUntil: "networkidle" });
-check("Saved piece appears in the account", (await page.locator("body").innerText()).includes("Aria"), "favourites empty");
+await page.waitForTimeout(300);
+check(
+  "Save marks the piece without asking for an account",
+  (await page.getByRole("button", { name: /^Saved$/i }).count()) > 0 && page.url().includes("/collection/aria"),
+  page.url(),
+);
 
-await page.getByRole("button", { name: /^Sign out$/i }).click();
-await page.waitForTimeout(1200);
-check("Sign out returns to the auth panel", (await page.locator("body").innerText()).includes("Sign in"), page.url());
+await page.goto(`${BASE}/en/saved`, { waitUntil: "networkidle" });
+await page.waitForTimeout(800);
+const savedBody = await page.locator("body").innerText();
+check("Saved piece appears on the saved page", savedBody.includes("Aria"), savedBody.slice(0, 200));
+check("Saved page never asks anyone to sign in", !/Sign in|Create account/i.test(savedBody), savedBody.slice(0, 200));
+
+// The shortlist has to survive a reload — it is the whole point of saving it.
+await page.reload({ waitUntil: "networkidle" });
+await page.waitForTimeout(800);
+check("Saved list survives a reload", (await page.locator("body").innerText()).includes("Aria"), "list lost");
+
+const savedListWa = await page
+  .locator('a[href*="wa.me"]', { hasText: "Send this list" })
+  .first()
+  .getAttribute("href");
+check(
+  "Saved list can be sent on WhatsApp",
+  decodeURIComponent((savedListWa ?? "").split("text=")[1] ?? "").includes("Aria"),
+  savedListWa ?? "no link",
+);
+
+await page.getByRole("button", { name: /Clear the list/i }).click();
+await page.waitForTimeout(500);
+check(
+  "Clearing empties the list",
+  (await page.locator("body").innerText()).includes("Nothing saved yet"),
+  "list not cleared",
+);
+
+// A second browser must not see the first one's shortlist.
+const otherContext = await browser.newContext();
+const other = await otherContext.newPage();
+await other.goto(`${BASE}/en/saved`, { waitUntil: "networkidle" });
+await other.waitForTimeout(800);
+check(
+  "The shortlist is local to one browser",
+  (await other.locator("body").innerText()).includes("Nothing saved yet"),
+  "leaked between contexts",
+);
+await otherContext.close();
 
 // ---------------------------------------------------------------------------
-// 7. Security — admin must be unreachable for a customer / anonymous visitor
+// 7. Security — the storefront has no accounts; the admin is a separate door
 // ---------------------------------------------------------------------------
 const anon = await browser.newContext();
 const anonPage = await anon.newPage();
 await anonPage.goto(`${BASE}/admin`, { waitUntil: "networkidle" });
 check("Anonymous visitor is bounced from /admin", anonPage.url().includes("/admin/login"), anonPage.url());
 
-// A customer session must not reach the admin either.
-const custContext = await browser.newContext();
-const cust = await custContext.newPage();
-await cust.goto(`${BASE}/en/account`, { waitUntil: "networkidle" });
-await cust.getByLabel(/^Email/i).fill(email);
-await cust.getByLabel(/^Password/i).fill("saiwan2024test");
-await cust.getByRole("button", { name: /^Sign in$/i }).last().click();
-await cust.waitForTimeout(2000);
-await cust.goto(`${BASE}/admin`, { waitUntil: "networkidle" });
+const removed = await anonPage.evaluate(async (base) => {
+  const [account, favorites] = await Promise.all([
+    fetch(`${base}/en/account`).then((response) => response.status),
+    fetch(`${base}/api/favorites`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productId: "x" }),
+    }).then((response) => response.status),
+  ]);
+  return { account, favorites };
+}, BASE);
+check("The customer account page is gone", removed.account === 404, String(removed.account));
+check("The favourites endpoint is gone", removed.favorites === 404 || removed.favorites === 405, String(removed.favorites));
+
+const homeBody = await anonPage.evaluate(async (base) => {
+  const response = await fetch(`${base}/en`);
+  return response.text();
+}, BASE);
 check(
-  "Customer session cannot reach /admin",
-  cust.url().includes("/admin/login") || cust.url().includes("/admin/forbidden"),
-  cust.url(),
+  "The storefront offers no sign-in",
+  !/Create account|Sign in<|>Sign in/i.test(homeBody),
+  "sign-in affordance still rendered",
 );
 
-// A customer must not be able to drive an admin server action either. The
-// action endpoint answers 200 with a rejection rather than performing the write,
-// so the real check is that nothing changed — verified via the API below.
-const beforeCount = await anonPage.evaluate(async (base) => {
+// The admin lives behind its own door, reachable from the footer link.
+check("The footer links to the dashboard", homeBody.includes('href="/admin"'), "no admin link in the footer");
+
+const publicSearch = await anonPage.evaluate(async (base) => {
   const response = await fetch(`${base}/api/search?q=aria`);
   return (await response.json()).results.length;
 }, BASE);
-check("Public API still responds for anonymous users", beforeCount >= 0);
+check("Public API still responds for anonymous users", publicSearch >= 0);
 
 await anon.close();
-await custContext.close();
 
 // ---------------------------------------------------------------------------
 // 8. Admin: sign in, edit a product, confirm the change reaches the site

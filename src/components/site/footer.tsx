@@ -32,6 +32,7 @@ export function SiteFooter({
         { href: "/collection", label: d.nav.collection },
         { href: "/find-your-shade", label: d.nav.findYourShade },
         { href: "/inspiration", label: d.nav.inspiration },
+        { href: "/saved", label: d.nav.saved },
         { href: "/search", label: d.common.search },
       ],
     },
@@ -47,7 +48,6 @@ export function SiteFooter({
       links: [
         { href: "/about", label: d.nav.about },
         { href: "/contact", label: d.nav.contact },
-        { href: "/account", label: d.nav.account },
       ],
     },
   ];

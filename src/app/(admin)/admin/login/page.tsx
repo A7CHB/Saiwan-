@@ -37,7 +37,8 @@ export default async function AdminLoginPage({
         </div>
 
         <p className="mt-6 text-center text-xs text-subtle">
-          Customer accounts sign in at <span className="text-muted">/en/account</span>.
+          Looking for the storefront? It is at <span className="text-muted">saiwan.com</span> and needs no
+          account.
         </p>
       </div>
     </div>

@@ -57,12 +57,12 @@ export default async function AdminDashboard() {
       Promise.all([
         prisma.product.count({ where: { status: "PUBLISHED" } }),
         prisma.product.count({ where: { status: "DRAFT" } }),
-        prisma.user.count({ where: { role: "CUSTOMER" } }),
+        prisma.inquiry.count(),
         prisma.inquiry.count({ where: { status: "NEW" } }),
       ]),
     ]);
 
-  const [published, drafts, customers, newInquiries] = counts;
+  const [published, drafts, totalInquiries, newInquiries] = counts;
 
   return (
     <AdminFrame>
@@ -111,7 +111,7 @@ export default async function AdminDashboard() {
           />
           <StatCard label="New inquiries" value={newInquiries} href="/admin/inquiries?status=NEW" />
           <StatCard label="Published pieces" value={published} hint={`${drafts} draft`} href="/admin/products" />
-          <StatCard label="Customers" value={customers} href="/admin/customers" />
+          <StatCard label="All inquiries" value={totalInquiries} hint="since launch" href="/admin/inquiries" />
         </div>
       </div>
 

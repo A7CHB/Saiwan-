@@ -307,7 +307,7 @@ export function UserForm({
         <AdminInput label="Name" name="name" defaultValue={user?.name ?? ""} required />
         <AdminInput label="Email" name="email" type="email" dir="ltr" defaultValue={user?.email ?? ""} required />
         <AdminInput label="Phone" name="phone" type="tel" dir="ltr" defaultValue={user?.phone ?? ""} />
-        <AdminSelect label="Role" name="role" defaultValue={user?.role ?? "CUSTOMER"}>
+        <AdminSelect label="Role" name="role" defaultValue={user?.role ?? "STAFF"}>
           {ROLES.map((role) => (
             <option key={role} value={role}>
               {role.toLowerCase()}

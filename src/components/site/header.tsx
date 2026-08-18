@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, Search as SearchIcon, User } from "lucide-react";
+import { Heart, Menu, Search as SearchIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/locale-provider";
+import { useFavorites } from "@/components/product/favorites-provider";
 import { SaiwanLogo } from "@/components/icons/canopy";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
 import { ThemeToggle } from "@/components/site/theme-toggle";
@@ -20,16 +21,9 @@ export type HeaderCategory = { slug: string; name: string; count: number };
  * a hairline-bordered glass bar once the page has moved. It never hides on
  * scroll-down: a luxury site should keep the way out visible at all times.
  */
-export function SiteHeader({
-  categories,
-  signedIn,
-  userName,
-}: {
-  categories: HeaderCategory[];
-  signedIn: boolean;
-  userName: string | null;
-}) {
+export function SiteHeader({ categories }: { categories: HeaderCategory[] }) {
   const { d, href } = useLocale();
+  const { count } = useFavorites();
   const pathname = usePathname();
   const [settled, setSettled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -125,13 +119,18 @@ export function SiteHeader({
             <ThemeToggle />
 
             <Link
-              href={href("/account")}
-              aria-label={signedIn && userName ? userName : d.nav.account}
-              className="hidden size-10 items-center justify-center transition-opacity duration-300 hover:opacity-60 sm:flex"
+              href={href("/saved")}
+              aria-label={count > 0 ? d.saved.count.replace("{count}", String(count)) : d.nav.saved}
+              className="relative hidden size-10 items-center justify-center transition-opacity duration-300 hover:opacity-60 sm:flex"
             >
-              <User className="size-[18px]" strokeWidth={1.4} aria-hidden="true" />
-              {signedIn ? (
-                <span className="absolute mt-6 size-1 rounded-full bg-accent" aria-hidden="true" />
+              <Heart className="size-[18px]" strokeWidth={1.4} aria-hidden="true" />
+              {count > 0 ? (
+                <span
+                  aria-hidden="true"
+                  className="absolute end-1.5 top-1.5 flex min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[0.5625rem] font-medium leading-4 text-accent-fg tabular-nums"
+                >
+                  {count}
+                </span>
               ) : null}
             </Link>
 
@@ -161,8 +160,6 @@ export function SiteHeader({
         onClose={() => setMenuOpen(false)}
         links={links}
         categories={categories}
-        signedIn={signedIn}
-        userName={userName}
         onOpenSearch={() => {
           setMenuOpen(false);
           setSearchOpen(true);

@@ -22,7 +22,7 @@ const en = {
     about: "About",
     contact: "Contact",
     findYourShade: "Find Your Shade",
-    account: "Account",
+    saved: "Saved",
     menu: "Menu",
     close: "Close",
     openMenu: "Open menu",
@@ -208,7 +208,6 @@ const en = {
     speakWithSaiwan: "Speak with Saiwan",
     saveToFavorites: "Save",
     removeFromFavorites: "Saved",
-    signInToSave: "Sign in to save",
     availability: "Availability",
     availabilityStates: {
       IN_STOCK: "In stock",
@@ -442,6 +441,7 @@ const en = {
     messageProduct: "I would like to inquire about:",
     messageGeneral: "I would like to discuss shade for my space.",
     messageQuiz: "I completed the consultation on your website. My answers:",
+    messageShortlist: "These are the pieces I have shortlisted:",
     messageFields: {
       product: "Piece",
       category: "Category",
@@ -483,51 +483,21 @@ const en = {
     },
   },
 
-  auth: {
-    signIn: "Sign in",
-    signUp: "Create account",
-    signOut: "Sign out",
-    signInTitle: "Sign in",
-    signInBody: "Save pieces, follow your inquiries and keep your preferences.",
-    signUpTitle: "Create an account",
-    signUpBody: "It takes a moment and keeps your saved pieces across devices.",
-    noAccount: "No account yet?",
-    hasAccount: "Already have an account?",
-    invalidCredentials: "That email and password combination is not recognised.",
-    emailTaken: "An account already exists with this email.",
-    accountDisabled: "This account has been disabled. Please contact us.",
-    signedOut: "You have been signed out.",
-    continueAsGuest: "Continue without an account",
-    guestNote: "You never need an account to inquire — it only saves your work.",
-  },
 
-  account: {
-    title: "Account",
-    overview: "Overview",
-    greeting: "Good to see you, {name}",
-    favorites: "Saved pieces",
-    favoritesEmpty: {
+  saved: {
+    eyebrow: "Your shortlist",
+    title: "Saved pieces",
+    intro:
+      "Kept on this device — no account, no sign-in. Send the list to us on WhatsApp whenever you are ready.",
+    count: "{count} saved",
+    loading: "Bringing back your saved pieces…",
+    clear: "Clear the list",
+    sendList: "Send this list",
+    empty: {
       title: "Nothing saved yet",
-      body: "Save pieces from the collection to compare them later.",
+      body: "Tap the heart on any piece to keep it here while you decide.",
       cta: "Browse the collection",
     },
-    inquiries: "My inquiries",
-    inquiriesEmpty: {
-      title: "No inquiries yet",
-      body: "When you send a specification to Saiwan it will appear here.",
-      cta: "Find your shade",
-    },
-    profile: "Profile",
-    profileBody: "Your details are used only to reply to you.",
-    preferences: "Preferences",
-    preferencesBody: "Language and appearance are remembered on this device.",
-    updateProfile: "Update profile",
-    profileUpdated: "Profile updated",
-    inquiryStatus: "Status",
-    inquiryDate: "Sent",
-    inquiryProduct: "Piece",
-    viewInquiry: "View",
-    contactUs: "Contact Saiwan",
   },
 
   inquiryStatus: {

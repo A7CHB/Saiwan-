@@ -136,6 +136,23 @@ export function quizInquiryPayload(d: Dictionary, input: QuizInquiryInput): What
   };
 }
 
+/** The saved page: a shortlist of pieces sent as one message. */
+export function shortlistPayload(
+  d: Dictionary,
+  input: { productNames: string[]; customerName?: string; note?: string; url?: string },
+): WhatsAppPayload {
+  const f = d.whatsapp.messageFields;
+  return {
+    intro: d.whatsapp.messageShortlist,
+    lines: [
+      { label: f.product, value: input.productNames.join(" · ") },
+      { label: f.name, value: input.customerName ?? "" },
+    ],
+    note: input.note,
+    link: input.url,
+  };
+}
+
 export function generalInquiryPayload(
   d: Dictionary,
   input: { customerName?: string; note?: string; url?: string; reference?: string } = {},

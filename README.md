@@ -43,7 +43,7 @@ src/
   app/
     (site)/[locale]/…      root layout #1 — storefront, RTL-aware, three languages
     (admin)/admin/…        root layout #2 — English, LTR, its own palette
-    api/…                  search · analytics · favourites · inquiries
+    api/…                  search · analytics · product lookups · inquiries
     sitemap.ts robots.ts
   components/
     site/ product/ home/ quiz/   storefront
@@ -52,7 +52,7 @@ src/
   lib/
     i18n/        locales, dictionaries, formatting
     data/        read models (products, catalogue, search, analytics)
-    auth/        password hashing, sessions, server actions
+    auth/        password hashing and sessions — the dashboard only
     admin/       admin server actions + form shaping
     whatsapp.ts  every outbound message is composed here
   proxy.ts       locale routing, visitor id, admin gate
@@ -119,8 +119,10 @@ That is what turns WhatsApp from a black hole into a pipeline the admin can work
   re-reads the session row and the user's *live* role and active flag.
 - **Server actions are public endpoints.** Every one of them starts with an authorisation call and parses its
   input with Zod, so a hand-crafted POST cannot set a column the form never exposed (`role`, `status`, …).
-- Passwords use scrypt at OWASP parameters. Sign-in is rate limited per IP, answers with one message for every
-  failure mode, and computes a dummy hash for unknown accounts so response timing cannot enumerate users.
+- **The storefront has no accounts at all.** Nobody signs in to browse, save or inquire, so there is no customer
+  credential to leak, no password reset to abuse and no session to hijack. Accounts exist only for `/admin`.
+- Passwords use scrypt at OWASP parameters. Admin sign-in is rate limited per IP, answers with one message for
+  every failure mode, and computes a dummy hash for unknown accounts so response timing cannot enumerate users.
 - Deleting is `ADMIN`-only and separated from the editors; `STAFF` can archive but not destroy.
 - Changing a password or disabling an account signs that user out of every device immediately.
 - Every mutation is written to `AuditLog`, visible in **Admin → Settings**.
@@ -160,9 +162,9 @@ npm run qa:flows   # 30 end-to-end assertions
 ```
 
 `qa:flows` covers the configurator → WhatsApp message contents, RTL product pages, the consultation quiz,
-instant search, contact-form validation and submission, customer sign-up → favourite → sign-out, the admin
-sign-in → product edit → propagation to the site, the inquiry pipeline, **and** that anonymous visitors and
-signed-in customers cannot reach `/admin`.
+instant search, contact-form validation and submission, saving a piece with no account (including that the
+shortlist survives a reload and does not leak between browsers), the admin sign-in → product edit →
+propagation to the site, the inquiry pipeline, **and** that anonymous visitors cannot reach `/admin`.
 
 Both scripts need a running server (`npm run dev`) and exit non-zero on failure.
 
@@ -180,7 +182,13 @@ already carries the full configuration — but a cart would add friction to a bu
 **The admin is English-only.** It is an internal tool, and a mistranslated status label costs more than it
 saves. The storefront is fully trilingual.
 
-**Accounts are optional, everywhere.** A customer never needs one to inquire; it only saves their work.
+**No customer accounts, anywhere.** Buying here means sending a WhatsApp message, and a sign-up wall in front
+of that would only cost inquiries. Saved pieces and the comparison tray live in the browser's own storage: they
+survive a reload, cost no requests, and leave no personal data on the server. The trade-off — a shortlist
+belongs to one device — is stated on the page rather than hidden.
+
+**The dashboard is a separate door.** `/admin` is its own root layout, its own palette and its own sign-in,
+linked discreetly from the footer. The proxy bounces anonymous traffic and every page re-checks the live role.
 
 **Features and specs are JSON on the translation row**, not separate tables. They are translated text belonging
 to one product in one language, and modelling them as entities would buy nothing.

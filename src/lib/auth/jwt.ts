@@ -43,8 +43,16 @@ export async function verifySessionToken(token: string): Promise<SessionClaims |
       audience: AUDIENCE,
       algorithms: ["HS256"],
     });
-    if (typeof payload.sid !== "string" || typeof payload.uid !== "string") return null;
-    return { sid: payload.sid, uid: payload.uid, role: String(payload.role ?? "CUSTOMER") };
+    if (
+      typeof payload.sid !== "string" ||
+      typeof payload.uid !== "string" ||
+      // A token without a role claim is malformed, not a lesser user: refuse it
+      // rather than fall back to a default that might satisfy `hasRole`.
+      typeof payload.role !== "string"
+    ) {
+      return null;
+    }
+    return { sid: payload.sid, uid: payload.uid, role: payload.role };
   } catch {
     return null;
   }

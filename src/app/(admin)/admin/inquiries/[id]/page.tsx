@@ -24,7 +24,6 @@ export default async function InquiryDetailPage({ params }: { params: Promise<{ 
     include: {
       events: { orderBy: { createdAt: "desc" } },
       product: { select: { slug: true, translations: { where: { locale: "en" }, select: { name: true } } } },
-      user: { select: { id: true, name: true, email: true } },
     },
   });
 
@@ -89,16 +88,6 @@ export default async function InquiryDetailPage({ params }: { params: Promise<{ 
                 <dt className="text-xs font-medium text-muted">Language</dt>
                 <dd className="mt-1 text-sm uppercase">{inquiry.locale}</dd>
               </div>
-              {inquiry.user ? (
-                <div className="sm:col-span-2">
-                  <dt className="text-xs font-medium text-muted">Account</dt>
-                  <dd className="mt-1 text-sm">
-                    <Link href={`/admin/customers?q=${inquiry.user.email}`} className="hover:text-accent">
-                      {inquiry.user.name} ({inquiry.user.email})
-                    </Link>
-                  </dd>
-                </div>
-              ) : null}
             </dl>
           </Panel>
 
