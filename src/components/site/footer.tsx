@@ -77,8 +77,10 @@ export function SiteFooter({
       </div>
 
       {/* Link columns */}
-      <div className="shell relative grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(3,1fr)] lg:gap-14">
-        <div>
+      {/* Two columns on a phone rather than four stacked blocks — the footer is
+          a directory, and stacking it added a screen and a half of scroll. */}
+      <div className="shell relative grid grid-cols-2 gap-x-6 gap-y-10 py-14 lg:grid-cols-[1.4fr_repeat(3,1fr)] lg:gap-14">
+        <div className="col-span-2 lg:col-span-1">
           <p className="display text-[clamp(2rem,5vw,3rem)] leading-none tracking-[0.16em]">SAIWAN</p>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted">{d.footer.tagline}</p>
           <div className="mt-7">

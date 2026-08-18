@@ -23,24 +23,22 @@ export function Difference({ d }: { d: Dictionary }) {
         <SectionHeader
           eyebrow={d.home.difference.eyebrow}
           title={d.home.difference.title}
-          className="mb-16 lg:mb-24"
+          className="mb-10 lg:mb-14"
         />
 
-        <ol className="grid gap-x-14 gap-y-12 md:grid-cols-2">
+        {/* Four across on a wide screen rather than two rows of two: the same
+            four propositions in half the height, and they read as a set. */}
+        <ol className="grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((item, index) => (
-            <Reveal key={item.title} delay={index * 90} as="li" className="group border-t border-line pt-7">
-              <div className="flex items-baseline gap-5">
-                <span
-                  aria-hidden="true"
-                  className="display shrink-0 text-[2.25rem] leading-none text-line-strong transition-colors duration-700 group-hover:text-accent"
-                >
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <div>
-                  <h3 className="display text-heading leading-snug">{item.title}</h3>
-                  <p className="mt-3.5 max-w-md leading-relaxed text-muted">{item.body}</p>
-                </div>
-              </div>
+            <Reveal key={item.title} delay={index * 90} as="li" className="group border-t border-line pt-5">
+              <span
+                aria-hidden="true"
+                className="display mb-3 block text-[1.75rem] leading-none text-line-strong transition-colors duration-700 group-hover:text-accent"
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 className="display text-[1.375rem] leading-snug">{item.title}</h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted">{item.body}</p>
             </Reveal>
           ))}
         </ol>

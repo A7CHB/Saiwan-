@@ -8,17 +8,11 @@ import { CanopyRadial } from "@/components/icons/canopy";
  *
  * A landscape plate rather than the tall portrait it started as: a 3:4 image in
  * a half-width column is close to a full screen on its own, and this section is
- * a beat between the hero and the products, not a destination. The three
- * figures are qualitative on purpose — inventing numbers for a business we
- * cannot verify would be worse than saying nothing.
+ * a beat between the hero and the products, not a destination. A row of three
+ * qualitative "figures" used to sit under it; it said nothing the sentence
+ * above it did not, and cost a third of a screen.
  */
 export function Manifesto({ d, image, imageAlt }: { d: Dictionary; image: string | null; imageAlt: string }) {
-  const figures = [
-    { value: d.home.intro.stat1Value, label: d.home.intro.stat1Label },
-    { value: d.home.intro.stat2Value, label: d.home.intro.stat2Label },
-    { value: d.home.intro.stat3Value, label: d.home.intro.stat3Label },
-  ];
-
   return (
     <section className="section relative overflow-hidden">
       <CanopyRadial className="pointer-events-none absolute -start-40 top-1/4 size-[34rem] text-accent opacity-[0.05]" />
@@ -51,15 +45,6 @@ export function Manifesto({ d, image, imageAlt }: { d: Dictionary; image: string
             />
           </Reveal>
         </div>
-
-        <dl className="mt-12 grid gap-8 sm:grid-cols-3 lg:mt-16">
-          {figures.map((figure, index) => (
-            <Reveal key={figure.label} delay={index * 90} className="border-t border-line pt-5">
-              <dt className="display text-heading leading-tight">{figure.value}</dt>
-              <dd className="mt-2 text-sm leading-relaxed text-muted">{figure.label}</dd>
-            </Reveal>
-          ))}
-        </dl>
       </div>
     </section>
   );

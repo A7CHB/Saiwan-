@@ -93,12 +93,6 @@ const en = {
       eyebrow: "The house",
       title: "A canopy is not an accessory. It defines the room you build outside.",
       body: "Every Saiwan piece begins with the space it will stand in — the light it must soften, the wind it must hold, the architecture it must belong to. What follows is engineering in service of stillness.",
-      stat1Label: "Anodised marine-grade frames",
-      stat1Value: "Built to hold",
-      stat2Label: "Solution-dyed acrylic canopies",
-      stat2Value: "Colour that stays",
-      stat3Label: "Residential & commercial",
-      stat3Value: "Any scale",
     },
     featured: {
       eyebrow: "Featured",

@@ -105,7 +105,7 @@
   --radius-sm: 3px;
   --radius-md: 4px;
 
-  --spacing-section: clamp(3.5rem, 2.25rem + 4.5vw, 7rem);
+  --spacing-section: clamp(3rem, 2rem + 3.25vw, 5.5rem);
   --spacing-gutter: clamp(1.25rem, 0.5rem + 3vw, 4.5rem);
 }
 

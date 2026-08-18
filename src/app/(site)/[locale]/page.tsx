@@ -3,13 +3,12 @@ import { isLocale, localePath, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n";
 import { buildMetadata } from "@/lib/seo";
 import { getFeaturedProducts } from "@/lib/data/products";
-import { getContent, getGallery, getMaterials } from "@/lib/data/catalog";
+import { getContent, getGallery } from "@/lib/data/catalog";
 
 import { Hero } from "@/components/home/hero";
 import { Manifesto } from "@/components/home/manifesto";
 import { FeaturedCollection } from "@/components/home/featured";
 import { Difference } from "@/components/home/difference";
-import { Showcase } from "@/components/home/showcase";
 import { QuizTeaser } from "@/components/home/closing";
 import { SectionHeader } from "@/components/ui/section-header";
 import { GalleryMosaic } from "@/components/site/gallery-mosaic";
@@ -21,13 +20,6 @@ const MEDIA_FALLBACK = {
   heroImageMobile: "/media/portrait-terrace.svg",
   manifestoImage: "/media/portrait-canopy.svg",
   quizImage: "/media/hero-dusk.svg",
-  craftImages: ["/media/detail-frame.svg", "/media/detail-fabric.svg", "/media/detail-hardware.svg"],
-  showcaseImages: [
-    "/media/detail-frame.svg",
-    "/media/detail-fabric.svg",
-    "/media/detail-hardware.svg",
-    "/media/portrait-mast.svg",
-  ],
 };
 
 export async function generateMetadata({
@@ -52,21 +44,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
 
-  const [d, featured, materials, gallery, media] = await Promise.all([
+  const [d, featured, gallery, media] = await Promise.all([
     getDictionary(locale),
     getFeaturedProducts(locale, 3),
-    getMaterials(locale),
     getGallery(locale),
     getContent("home.media", locale, MEDIA_FALLBACK),
   ]);
-
-  // "Look closer" is driven by the material list so the admin controls it.
-  const showcaseItems = materials.slice(0, 4).map((material, index) => ({
-    id: material.id,
-    name: material.name,
-    description: material.description,
-    image: media.showcaseImages[index] ?? MEDIA_FALLBACK.showcaseImages[index] ?? null,
-  }));
 
   return (
     <>
@@ -86,8 +69,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       <Difference d={d} />
 
-      <Showcase items={showcaseItems} />
-
       {/* Inspiration — a first taste of the gallery, capped so the home page
           stays a trailer for /inspiration rather than a duplicate of it. */}
       {gallery.length > 0 ? (
@@ -106,7 +87,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       ) : null}
 
       <QuizTeaser d={d} locale={locale} image={media.quizImage} />
-
     </>
   );
 }
