@@ -1,48 +1,32 @@
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 import { Reveal } from "@/components/motion/reveal";
-import { Media } from "@/components/ui/media";
 import { CanopyRadial } from "@/components/icons/canopy";
 
 /**
- * The statement chapter, immediately after the hero.
+ * The statement band between the hero and the products.
  *
- * A landscape plate rather than the tall portrait it started as: a 3:4 image in
- * a half-width column is close to a full screen on its own, and this section is
- * a beat between the hero and the products, not a destination. A row of three
- * qualitative "figures" used to sit under it; it said nothing the sentence
- * above it did not, and cost a third of a screen.
+ * Reduced to type. It began as a full chapter — a half-width plate, a body
+ * paragraph and a row of three figures — which is a destination, and this is a
+ * beat: one line of brand thesis with its supporting sentence set beside it,
+ * read in the time it takes to scroll past. The hero above and the pieces below
+ * carry the imagery; a third photograph here only added height.
  */
-export function Manifesto({ d, image, imageAlt }: { d: Dictionary; image: string | null; imageAlt: string }) {
+export function Manifesto({ d }: { d: Dictionary }) {
   return (
-    <section className="section relative overflow-hidden">
-      <CanopyRadial className="pointer-events-none absolute -start-40 top-1/4 size-[34rem] text-accent opacity-[0.05]" />
+    <section className="relative overflow-hidden py-14 sm:py-16 lg:py-20">
+      <CanopyRadial className="pointer-events-none absolute -start-40 -top-40 size-[28rem] text-accent opacity-[0.05]" />
 
       <div className="shell relative">
-        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
-          <div>
-            <Reveal kind="scale-x" className="mb-7 h-px w-14 bg-line-strong" />
+        <Reveal kind="scale-x" className="mb-7 h-px w-14 bg-line-strong" />
 
-            <Reveal>
-              <p className="eyebrow mb-6">{d.home.intro.eyebrow}</p>
-            </Reveal>
+        <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:gap-16">
+          <Reveal>
+            <p className="eyebrow mb-5">{d.home.intro.eyebrow}</p>
+            <h2 className="display max-w-2xl text-title text-balance">{d.home.intro.title}</h2>
+          </Reveal>
 
-            <Reveal delay={80}>
-              <h2 className="display text-title text-balance">{d.home.intro.title}</h2>
-            </Reveal>
-
-            <Reveal delay={160}>
-              <p className="mt-6 max-w-lg leading-relaxed text-muted">{d.home.intro.body}</p>
-            </Reveal>
-          </div>
-
-          <Reveal kind="image">
-            <Media
-              src={image}
-              alt={imageAlt}
-              ratio="5 / 4"
-              sizes="(max-width: 1024px) 92vw, 46vw"
-              className="w-full"
-            />
+          <Reveal delay={120}>
+            <p className="max-w-lg leading-relaxed text-muted lg:pb-1.5">{d.home.intro.body}</p>
           </Reveal>
         </div>
       </div>

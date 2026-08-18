@@ -18,7 +18,6 @@ import { notFound } from "next/navigation";
 const MEDIA_FALLBACK = {
   heroImage: "/media/hero-terrace.svg",
   heroImageMobile: "/media/portrait-terrace.svg",
-  manifestoImage: "/media/portrait-canopy.svg",
   quizImage: "/media/hero-dusk.svg",
 };
 
@@ -63,7 +62,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         body={d.home.hero.body}
       />
 
-      <Manifesto d={d} image={media.manifestoImage} imageAlt={d.home.intro.title} />
+      <Manifesto d={d} />
 
       <FeaturedCollection d={d} locale={locale} products={featured} />
 
