@@ -35,10 +35,11 @@ export function GalleryMosaic({
 
   if (items.length === 0) return null;
 
+  // Matches the featured row exactly, so the two read as siblings.
+  const tileClass = "w-[74%] shrink-0 snap-start sm:w-[46%] lg:w-[31%]";
+
   const spanClass = (span: GalleryView["span"]) =>
-    scroller
-      ? "w-[72%] shrink-0 snap-start aspect-4/3 sm:w-[44%] lg:w-[30%]"
-      : span === "WIDE"
+    span === "WIDE"
       ? "sm:col-span-2 aspect-4/3"
       : span === "TALL"
         ? "row-span-2 aspect-3/4 sm:aspect-auto"
@@ -55,54 +56,85 @@ export function GalleryMosaic({
 
   return (
     <>
-      <ul
+      {/* The scrolling row reveals as one block. Revealing tile by tile looks
+          right in a grid, but in a horizontal row anything past the container's
+          edge never crosses the observer's threshold, so it stays at opacity 0
+          — you scroll sideways to a column of blank frames. */}
+      <Reveal
+        as="ul"
+        kind="fade"
         className={cn(
           scroller
-            ? "flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2 no-scrollbar sm:gap-3"
+            ? "flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 no-scrollbar sm:gap-8"
             : cn("grid auto-rows-auto grid-cols-2 gap-2 sm:gap-3", dense ? "lg:grid-cols-4" : "lg:grid-cols-3"),
           className,
         )}
       >
-        {items.map((item, index) => (
-          <Reveal
-            as="li"
-            key={item.id}
-            delay={(index % 4) * 80}
-            kind="image"
-            className={cn("group relative", spanClass(item.span))}
-          >
-            <button
-              type="button"
-              onClick={() => setOpenIndex(index)}
-              className="frame frame-zoom absolute inset-0 size-full text-start"
-              aria-label={item.caption ?? item.alt ?? d.inspiration.title}
-            >
-              <Media
-                src={item.url}
-                alt={item.alt || item.caption || ""}
-                sizes={scroller ? "(max-width: 640px) 72vw, (max-width: 1024px) 44vw, 30vw" : "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"}
-                className="absolute inset-0 size-full"
-              />
+        {items.map((item, index) => {
+          const frame = (
+            <>
+              <button
+                type="button"
+                onClick={() => setOpenIndex(index)}
+                className={cn(
+                  "frame frame-zoom text-start",
+                  scroller ? "relative block w-full" : "absolute inset-0 size-full",
+                )}
+                style={scroller ? { aspectRatio: "4 / 3" } : undefined}
+                aria-label={item.caption ?? item.alt ?? d.inspiration.title}
+              >
+                <Media
+                  src={item.url}
+                  alt={item.alt || item.caption || ""}
+                  sizes={
+                    scroller
+                      ? "(max-width: 640px) 74vw, (max-width: 1024px) 46vw, 31vw"
+                      : "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  }
+                  className="absolute inset-0 size-full"
+                />
 
-              <span className="pointer-events-none absolute inset-0 scrim opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                <span className="pointer-events-none absolute inset-0 scrim opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-              <span className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <span className="min-w-0">
-                  {item.caption ? (
-                    <span className="block truncate text-sm text-white">{item.caption}</span>
-                  ) : null}
-                  {item.location ? (
-                    <span className="mt-0.5 block truncate text-[0.6875rem] uppercase tracking-[0.16em] text-white/60 rtl:normal-case rtl:tracking-normal">
-                      {item.location}
-                    </span>
-                  ) : null}
+                <span className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                  {/* In the row the caption is set under the frame instead, so
+                      only the expand affordance is drawn over the image. */}
+                  <span className="min-w-0">
+                    {!scroller && item.caption ? (
+                      <span className="block truncate text-sm text-white">{item.caption}</span>
+                    ) : null}
+                    {!scroller && item.location ? (
+                      <span className="mt-0.5 block truncate text-[0.6875rem] uppercase tracking-[0.16em] text-white/60 rtl:normal-case rtl:tracking-normal">
+                        {item.location}
+                      </span>
+                    ) : null}
+                  </span>
+                  <Expand className="size-4 shrink-0 text-white/80" strokeWidth={1.5} aria-hidden="true" />
                 </span>
-                <Expand className="size-4 shrink-0 text-white/80" strokeWidth={1.5} aria-hidden="true" />
-              </span>
-            </button>
-          </Reveal>
-        ))}
-      </ul>
+              </button>
+
+              {/* Caption under the frame, always visible — the same shape as the
+                  product cards in the row above it, and the only version a touch
+                  device ever sees. */}
+              {scroller && (item.caption || item.location) ? (
+                <div className="mt-4">
+                  {item.location ? <p className="eyebrow mb-1.5 text-[0.5625rem]">{item.location}</p> : null}
+                  {item.caption ? <p className="display text-[1.375rem] leading-tight">{item.caption}</p> : null}
+                </div>
+              ) : null}
+            </>
+          );
+
+          return (
+            <li
+              key={item.id}
+              className={cn("group relative", scroller ? tileClass : spanClass(item.span))}
+            >
+              {frame}
+            </li>
+          );
+        })}
+      </Reveal>
 
       <Dialog
         open={current !== null}

@@ -38,20 +38,23 @@ export function FeaturedCollection({
 
         {/* One row on every screen. Below `lg` it scrolls sideways with snap
             points instead of stacking: three plates down a phone is two extra
-            screens of scroll, and a peeking fourth edge says "there is more"
-            better than a stack does. */}
-        <ul className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 no-scrollbar sm:gap-8 lg:grid lg:grid-cols-3 lg:overflow-visible lg:pb-0">
+            screens of scroll, and a peeking edge says "there is more" better
+            than a stack does.
+
+            The row reveals as one block rather than card by card — a card past
+            the container's edge never crosses the observer's threshold, so it
+            would stay invisible until you scrolled to a blank space. */}
+        <Reveal
+          as="ul"
+          kind="fade"
+          className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 no-scrollbar sm:gap-8 lg:grid lg:grid-cols-3 lg:overflow-visible lg:pb-0"
+        >
           {products.slice(0, 3).map((product, index) => (
-            <Reveal
-              as="li"
-              key={product.id}
-              delay={index * 90}
-              className="w-[74%] shrink-0 snap-start sm:w-[46%] lg:w-auto"
-            >
+            <li key={product.id} className="w-[74%] shrink-0 snap-start sm:w-[46%] lg:w-auto">
               <ProductCard product={product} index={index} priority={index === 0} showTagline={false} />
-            </Reveal>
+            </li>
           ))}
-        </ul>
+        </Reveal>
       </div>
     </section>
   );
