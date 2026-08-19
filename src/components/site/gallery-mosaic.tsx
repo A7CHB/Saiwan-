@@ -19,14 +19,15 @@ import { cn } from "@/lib/utils";
 export function GalleryMosaic({
   items,
   dense = false,
-  uniform = false,
+  scroller = false,
   className,
 }: {
   items: GalleryView[];
   dense?: boolean;
-  /** Equal square tiles in a single row — the home page's taster, where the
-   *  full mosaic's tall spans would cost most of a screen for four images. */
-  uniform?: boolean;
+  /** One horizontal row that scrolls, with the next frame peeking at the edge.
+   *  Used on the home page: a wall of installed work belongs on /inspiration,
+   *  and a row shows more of it than a grid does for a fraction of the height. */
+  scroller?: boolean;
   className?: string;
 }) {
   const { d, t } = useLocale();
@@ -35,8 +36,8 @@ export function GalleryMosaic({
   if (items.length === 0) return null;
 
   const spanClass = (span: GalleryView["span"]) =>
-    uniform
-      ? "aspect-square"
+    scroller
+      ? "w-[72%] shrink-0 snap-start aspect-4/3 sm:w-[44%] lg:w-[30%]"
       : span === "WIDE"
       ? "sm:col-span-2 aspect-4/3"
       : span === "TALL"
@@ -56,9 +57,9 @@ export function GalleryMosaic({
     <>
       <ul
         className={cn(
-          "grid grid-cols-2 gap-2 sm:gap-3",
-          uniform ? "sm:grid-cols-4" : dense ? "lg:grid-cols-4" : "lg:grid-cols-3",
-          "auto-rows-auto",
+          scroller
+            ? "flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2 no-scrollbar sm:gap-3"
+            : cn("grid auto-rows-auto grid-cols-2 gap-2 sm:gap-3", dense ? "lg:grid-cols-4" : "lg:grid-cols-3"),
           className,
         )}
       >
@@ -79,7 +80,7 @@ export function GalleryMosaic({
               <Media
                 src={item.url}
                 alt={item.alt || item.caption || ""}
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                sizes={scroller ? "(max-width: 640px) 72vw, (max-width: 1024px) 44vw, 30vw" : "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"}
                 className="absolute inset-0 size-full"
               />
 

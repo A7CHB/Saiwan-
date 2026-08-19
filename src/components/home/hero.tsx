@@ -69,7 +69,10 @@ export function Hero({
         <div className="absolute inset-0 scrim-full" aria-hidden="true" />
       </div>
 
-      <div className="shell relative pb-20 pt-32 sm:pb-24 lg:pb-28">
+      {/* The block sits well clear of the bottom edge: the buttons were landing
+          on the border, which reads as a cropped screen rather than a composed
+          one. The space below them is part of the frame. */}
+      <div className="shell relative pb-28 pt-32 sm:pb-32 lg:pb-40">
         <div className="max-w-3xl">
           {/* The same hairline that opens every other chapter, so the hero
               belongs to the page rather than sitting on top of it. */}

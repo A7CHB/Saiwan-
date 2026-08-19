@@ -13,20 +13,20 @@ import { CanopyRadial } from "@/components/icons/canopy";
  */
 export function Manifesto({ d }: { d: Dictionary }) {
   return (
-    <section className="relative overflow-hidden py-14 sm:py-16 lg:py-20">
-      <CanopyRadial className="pointer-events-none absolute -start-40 -top-40 size-[28rem] text-accent opacity-[0.05]" />
+    <section className="relative overflow-hidden py-20 sm:py-24 lg:py-28">
+      <CanopyRadial className="pointer-events-none absolute -start-40 -top-40 size-[32rem] text-accent opacity-[0.05]" />
 
       <div className="shell relative">
-        <Reveal kind="scale-x" className="mb-7 h-px w-14 bg-line-strong" />
+        <Reveal kind="scale-x" className="mb-8 h-px w-14 bg-line-strong" />
 
-        <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:gap-16">
+        <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:gap-16">
           <Reveal>
-            <p className="eyebrow mb-5">{d.home.intro.eyebrow}</p>
-            <h2 className="display max-w-2xl text-title text-balance">{d.home.intro.title}</h2>
+            <p className="eyebrow mb-6">{d.home.intro.eyebrow}</p>
+            <h2 className="display max-w-3xl text-title text-balance">{d.home.intro.title}</h2>
           </Reveal>
 
           <Reveal delay={120}>
-            <p className="max-w-lg leading-relaxed text-muted lg:pb-1.5">{d.home.intro.body}</p>
+            <p className="max-w-lg text-lead leading-relaxed text-muted lg:pb-2">{d.home.intro.body}</p>
           </Reveal>
         </div>
       </div>

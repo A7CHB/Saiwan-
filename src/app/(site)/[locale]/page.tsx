@@ -68,8 +68,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       <Difference d={d} />
 
-      {/* Inspiration — a first taste of the gallery, capped so the home page
-          stays a trailer for /inspiration rather than a duplicate of it. */}
+      {/* Inspiration — a scrolling row of installed work: a trailer for
+          /inspiration rather than a duplicate of it. */}
       {gallery.length > 0 ? (
         <section className="section">
           <div className="shell">
@@ -80,7 +80,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               cta={{ href: localePath(locale, "/inspiration"), label: d.home.inspiration.cta }}
               className="mb-10"
             />
-            <GalleryMosaic items={gallery.slice(0, 4)} uniform />
+            <GalleryMosaic items={gallery.slice(0, 8)} scroller />
           </div>
         </section>
       ) : null}
