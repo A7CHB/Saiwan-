@@ -3,23 +3,20 @@
  *
  * The hero is a diorama: a backdrop that never moves, and two cut-out planes
  * standing in front of it at different distances. The sources are photographic
- * renders — a terrace, an umbrella on a flat studio grey, planting on the same
- * grey — so two of them need their background removed before they can stand in
- * front of anything.
+ * renders — a terrace, and an umbrella on a flat studio grey — so the umbrella
+ * needs its background removed before it can stand in front of anything.
  *
  * Keying is done here rather than by hand because it is repeatable: the studio
- * background is neutral (saturation ≈ 0) and the subjects are not, which is a
- * far more reliable signal than luminance alone. The umbrella is keyed on
- * distance from its flat grey; the planting on saturation, because its foliage
- * is *darker* than the wall behind it and a luminance key would cut the subject
- * out instead of the background.
+ * background is flat and perfectly neutral, so distance from that one colour
+ * separates it from a subject whose brightest fabric and whitest mast are both
+ * far away from it.
  *
- * Sources are not committed — they are 18 MB of PNG for 400 kB of output. Point
- * the script at wherever they are:
+ * Sources are not committed — they are megabytes of PNG for a few hundred kB of
+ * output. Point the script at wherever they are:
  *
  *   node scripts/hero-photos.mjs ~/Downloads/hero-src
  *
- * expecting terrace.png, umbrella.png and planting.png inside it.
+ * expecting terrace.png and umbrella.png inside it.
  */
 import { readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -32,13 +29,15 @@ const OUT = join(dirname(fileURLToPath(import.meta.url)), "..", "public", "media
 /** Output edge, in pixels. Square: the crop differs from a phone to a desktop. */
 const SIZE = 1800;
 /**
- * The cut-out plates are smaller, because they are shipped as-is.
+ * The umbrella is shipped as authored — it bypasses Next's image optimiser,
+ * because Safari mishandles alpha in AVIF and an opaque plate would cover the
+ * scene it is standing in. So its file size is whatever is written here.
  *
- * They bypass Next's image optimiser (see the hero), so their file size is
- * whatever is written here — and a foreground element does not need the
- * backdrop's resolution to hold up.
+ * It is generous because the showroom scales it well past 1:1 at the peak of
+ * each transition, when the canopy fills the frame and becomes the surface the
+ * environments change behind. At 1400px that moment was visibly soft.
  */
-const CUTOUT_SIZE = 1400;
+const CUTOUT_SIZE = 2000;
 
 const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
 /** 0 below `from`, 1 above `to`, linear between — the feathered edge. */
@@ -83,8 +82,6 @@ async function key(file, decide, { feather = 1.2 } = {}) {
   return sharp(out, { raw: { width: info.width, height: info.height, channels: 4 } });
 }
 
-const saturation = (r, g, b) => Math.max(r, g, b) - Math.min(r, g, b);
-
 // ---------------------------------------------------------------------------
 
 const files = readdirSync(SRC);
@@ -110,15 +107,4 @@ const umbrella = await key(find("umbrella"), (r, g, b) => {
 });
 await umbrella.webp({ quality: 80, alphaQuality: 90, effort: 6 }).toFile(join(OUT, "hero-umbrella.webp"));
 
-// 3. The planting. Its foliage is darker than the wall behind it, so this keys
-//    on colour rather than brightness: the wall is neutral, everything growing
-//    on it is not. The luminance term only catches the deepest shadow inside
-//    the olive, which carries no colour to key on either.
-const planting = await key(find("planting"), (r, g, b) => {
-  const colour = ramp(saturation(r, g, b), 9, 20);
-  const shadow = ramp(70 - (0.2126 * r + 0.7152 * g + 0.0722 * b), 0, 14);
-  return Math.max(colour, shadow);
-});
-await planting.webp({ quality: 74, alphaQuality: 90, effort: 6 }).toFile(join(OUT, "hero-planting.webp"));
-
-console.log(`Wrote hero-terrace.webp, hero-umbrella.webp and hero-planting.webp to ${OUT}`);
+console.log(`Wrote hero-terrace.webp and hero-umbrella.webp to ${OUT}`);

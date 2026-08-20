@@ -131,7 +131,57 @@ const successText = await page.locator("body").innerText();
 check("Contact form submits and returns a reference", /Received/.test(successText) && /SW-/.test(successText), successText.slice(0, 200));
 
 // ---------------------------------------------------------------------------
-// 6. Security — the storefront has no accounts; the admin is a separate door
+// 6. The home showroom: one object, five spaces
+// ---------------------------------------------------------------------------
+await page.goto(`${BASE}/en`, { waitUntil: "networkidle" });
+await page.waitForTimeout(1200);
+
+const openingText = await page.locator("h1").first().innerText();
+check("Home opens on the showroom", /One object/i.test(openingText), openingText);
+
+const heroWa = await page
+  .locator('a[href*="wa.me"]', { hasText: "Speak with Saiwan" })
+  .first()
+  .getAttribute("href");
+check("Home hero uses the existing WhatsApp flow", /wa\.me\/\d{8,}/.test(heroWa ?? ""), heroWa ?? "none");
+
+// The umbrella is one element that never re-mounts: it is the constant.
+const umbrellaCount = await page.locator('img[src*="hero-umbrella"]').count();
+check("One umbrella stands in every scene", umbrellaCount === 1, `${umbrellaCount} umbrella elements`);
+
+await page.getByRole("button", { name: /04\s*Rooftop/i }).click();
+await page.waitForTimeout(2200);
+const jumped = await page.evaluate(() => ({
+  screens: Math.round(window.scrollY / window.innerHeight),
+  current: document.querySelector("[aria-current=true]")?.textContent?.trim() ?? "",
+}));
+check("Scene navigation animates to the chosen scene", jumped.screens === 3, JSON.stringify(jumped));
+check("The chosen scene is marked current", /Rooftop/i.test(jumped.current), jumped.current);
+
+// The space explorer reads the catalogue, not a second list.
+const explorer = page.locator("section", { has: page.locator("#explorer-heading") });
+await explorer.scrollIntoViewIfNeeded();
+await page.waitForTimeout(800);
+const villaProducts = await explorer.locator('a[href*="/collection/"]').count();
+check("Space explorer lists real products", villaProducts > 0, `${villaProducts} links`);
+
+await explorer.getByRole("tab", { name: /Dining/i }).click();
+await page.waitForTimeout(600);
+const diningSelected = await explorer.getByRole("tab", { name: /Dining/i }).getAttribute("aria-selected");
+check("Space explorer switches space", diningSelected === "true", String(diningSelected));
+
+const firstProductHref = await explorer.locator('a[href*="/collection/"]').first().getAttribute("href");
+await page.goto(`${BASE}${firstProductHref}`, { waitUntil: "networkidle" });
+// The configurator is a client component; wait for it rather than for a paint.
+await page.locator('a[href*="wa.me"]').first().waitFor({ timeout: 15000 }).catch(() => {});
+check(
+  "Home product links reach the existing product page",
+  (await page.locator('a[href*="wa.me"]').count()) > 0 && page.url().includes("/collection/"),
+  page.url(),
+);
+
+// ---------------------------------------------------------------------------
+// 7. Security — the storefront has no accounts; the admin is a separate door
 // ---------------------------------------------------------------------------
 const anon = await browser.newContext();
 const anonPage = await anon.newPage();
@@ -170,7 +220,7 @@ check("Public API still responds for anonymous users", publicSearch >= 0);
 await anon.close();
 
 // ---------------------------------------------------------------------------
-// 7. Admin: sign in, edit a product, confirm the change reaches the site
+// 8. Admin: sign in, edit a product, confirm the change reaches the site
 // ---------------------------------------------------------------------------
 const adminContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 const admin = await adminContext.newPage();

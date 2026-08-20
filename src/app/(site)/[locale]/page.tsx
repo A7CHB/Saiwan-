@@ -1,27 +1,19 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { isLocale, localePath, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n";
 import { buildMetadata } from "@/lib/seo";
-import { getFeaturedProducts } from "@/lib/data/products";
-import { getContent, getGallery } from "@/lib/data/catalog";
+import { getFeaturedProducts, getProducts, type ProductCard } from "@/lib/data/products";
+import { getContent } from "@/lib/data/catalog";
+import { SCENES } from "@/lib/home-scenes";
 
-import { Hero } from "@/components/home/hero";
-import { Manifesto } from "@/components/home/manifesto";
-import { FeaturedCollection } from "@/components/home/featured";
-import { Difference } from "@/components/home/difference";
+import { Showroom } from "@/components/home/showroom";
+import { CollectionEditorial } from "@/components/home/collection-editorial";
+import { SpaceExplorer } from "@/components/home/space-explorer";
 import { QuizTeaser } from "@/components/home/closing";
-import { SectionHeader } from "@/components/ui/section-header";
-import { GalleryMosaic } from "@/components/site/gallery-mosaic";
-import { notFound } from "next/navigation";
 
 /** Media defaults — overridden by the `home.media` content block. */
 const MEDIA_FALLBACK = {
-  // The hero is a 3D scene, so its art arrives as three planes, back to front.
-  heroPlanes: {
-    backdrop: "/media/hero-terrace.webp",
-    mid: "/media/hero-umbrella.webp",
-    near: "/media/hero-planting.webp",
-  },
   quizImage: "/media/hero-dusk.svg",
 };
 
@@ -42,51 +34,78 @@ export async function generateMetadata({
   });
 }
 
+/**
+ * One object. Infinite spaces.
+ *
+ * The home page is a showroom rather than a catalogue page: a single umbrella
+ * standing in five environments, then the collection, then a way to choose by
+ * the space a piece is for. Everything it shows comes from systems that already
+ * exist — products from the catalogue, copy from the dictionaries, the spaces
+ * from `Product.useCases` — so nothing here is a second source of truth.
+ */
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: raw } = await params;
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
 
-  const [d, featured, gallery, media] = await Promise.all([
+  const [d, featured, media, spaceProducts] = await Promise.all([
     getDictionary(locale),
     getFeaturedProducts(locale, 3),
-    getGallery(locale),
     getContent("home.media", locale, MEDIA_FALLBACK),
+    // One query per use-case, against the same filter the collection page uses.
+    // `getProducts` is request-cached, so a use-case shared by two scenes costs
+    // one query rather than two.
+    Promise.all(
+      SCENES.map(async (scene) => {
+        const lists = await Promise.all(
+          scene.useCases.map((useCase) => getProducts(locale, { useCase })),
+        );
+        const seen = new Set<string>();
+        const merged: ProductCard[] = [];
+        for (const product of lists.flat()) {
+          if (seen.has(product.id)) continue;
+          seen.add(product.id);
+          merged.push(product);
+        }
+        return merged;
+      }),
+    ),
   ]);
+
+  const scenes = SCENES.map((scene) => ({
+    key: scene.key,
+    image: scene.image,
+    position: scene.position,
+    name: d.home.scenes[scene.key].name,
+    body: d.home.scenes[scene.key].body,
+  }));
+
+  const spaces = SCENES.map((scene, index) => ({
+    key: scene.key,
+    name: d.home.scenes[scene.key].name,
+    image: scene.image,
+    position: scene.position,
+    useCase: scene.useCases[0],
+    products: spaceProducts[index],
+  }));
 
   return (
     <>
-      <Hero
-        planes={media.heroPlanes ?? MEDIA_FALLBACK.heroPlanes}
-        imageAlt={d.meta.tagline}
+      <Showroom
+        scenes={scenes}
         eyebrow={d.home.hero.eyebrow}
-        title={d.home.hero.title}
-        titleAccent={d.home.hero.titleAccent}
-        body={d.home.hero.body}
+        titleTop={d.home.hero.title}
+        titleBottom={d.home.hero.titleAccent}
+        intro={d.home.hero.body}
+        primaryCta={d.home.hero.primaryCta}
+        secondaryCta={d.home.hero.secondaryCta}
+        collectionHref={localePath(locale, "/collection")}
+        navLabel={d.home.scenesNav}
       />
 
-      <Manifesto d={d} />
+      <CollectionEditorial d={d} locale={locale} products={featured} />
 
-      <FeaturedCollection d={d} locale={locale} products={featured} />
-
-      <Difference d={d} />
-
-      {/* Inspiration — a scrolling row of installed work: a trailer for
-          /inspiration rather than a duplicate of it. */}
-      {gallery.length > 0 ? (
-        <section className="section">
-          <div className="shell">
-            <SectionHeader
-              eyebrow={d.home.inspiration.eyebrow}
-              title={d.home.inspiration.title}
-              body={d.home.inspiration.body}
-              cta={{ href: localePath(locale, "/inspiration"), label: d.home.inspiration.cta }}
-              className="mb-10"
-            />
-            <GalleryMosaic items={gallery.slice(0, 8)} scroller />
-          </div>
-        </section>
-      ) : null}
+      <SpaceExplorer spaces={spaces} />
 
       <QuizTeaser d={d} locale={locale} image={media.quizImage} />
     </>

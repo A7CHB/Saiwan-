@@ -80,57 +80,47 @@ const en = {
 
   home: {
     hero: {
-      eyebrow: "Outdoor shade, engineered",
-      title: "Shade with the",
-      titleAccent: "presence of architecture",
-      body: "Engineered like architecture, and made to be lived beneath for decades.",
+      eyebrow: "The Saiwan showroom",
+      title: "One object.",
+      titleAccent: "Infinite spaces.",
+      body: "One canopy, and the room it makes wherever it stands.",
       primaryCta: "Explore the collection",
       secondaryCta: "Speak with Saiwan",
     },
-    intro: {
-      eyebrow: "The house",
-      title: "A canopy is not an accessory. It defines the room you build outside.",
-      body: "Every Saiwan piece begins with the space it will stand in — the light it must soften, the wind it must hold, the architecture it must belong to. What follows is engineering in service of stillness.",
-    },
-    featured: {
-      eyebrow: "Featured",
-      title: "The signature pieces",
-      body: "A short list of the canopies we are asked for most — and the ones we are proudest of.",
-      cta: "View all pieces",
-    },
-    difference: {
-      eyebrow: "The Saiwan difference",
-      title: "Four decisions that separate a Saiwan canopy from an umbrella",
-      items: {
-        engineering: {
-          title: "Engineered, not assembled",
-          body: "Load paths are calculated before a single profile is cut. Ribs, hub and mast are sized to work as one structure, not as parts that happen to fit.",
-        },
-        materials: {
-          title: "Materials chosen for the tenth year",
-          body: "Marine-grade anodised aluminium, stainless fixings and solution-dyed acrylic. Specified for what the sun, salt and wind will do long after delivery.",
-        },
-        proportion: {
-          title: "Proportion held to the millimetre",
-          body: "Mast diameter, canopy pitch and valance depth are drawn to a single set of ratios, so a Saiwan piece reads as considered from every distance.",
-        },
-        service: {
-          title: "Specified with you, not sold to you",
-          body: "Site, orientation, prevailing wind and finish are discussed before a recommendation. Most projects begin with a conversation, not a catalogue.",
-        },
+    scenesNav: "Scenes",
+    scenes: {
+      villa: {
+        name: "Villa",
+        body: "A private terrace, held in shade from midday until the light goes.",
+      },
+      resort: {
+        name: "Resort",
+        body: "Open water, open sky, and one line of shade along the deck.",
+      },
+      dining: {
+        name: "Dining",
+        body: "A dining room without walls, warm enough to keep a table late.",
+      },
+      rooftop: {
+        name: "Rooftop",
+        body: "Above the city, engineered for the wind that arrives with the view.",
+      },
+      garden: {
+        name: "Garden",
+        body: "Under the trees, where the only structure allowed is a quiet one.",
       },
     },
-    showcase: {
-      eyebrow: "In detail",
-      title: "Look closer",
-      body: "The parts most people never see are the ones that decide how long a canopy lasts.",
-      hint: "Select a detail",
+    collection: {
+      eyebrow: "The collection",
+      title: "Pieces made to be lived beneath",
+      cta: "View all pieces",
     },
-    inspiration: {
-      eyebrow: "In place",
-      title: "Where Saiwan stands",
-      body: "Villas, poolsides, rooftop terraces and dining rooms without walls.",
-      cta: "See the gallery",
+    explorer: {
+      eyebrow: "Find your space",
+      title: "Where will yours live?",
+      body: "Choose the space and we will show the pieces specified for it — the same shortlist we would arrive with.",
+      cta: "See everything for this space",
+      empty: "Nothing is listed for this space yet. Speak with us and we will specify one.",
     },
     craft: {
       eyebrow: "Materials & craftsmanship",

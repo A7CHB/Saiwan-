@@ -135,7 +135,11 @@ That is what turns WhatsApp from a black hole into a pipeline the admin can work
   never run on the main thread. `prefers-reduced-motion` disables all of it — and the reduced-motion block
   forces revealed content **visible**, so nothing can be hidden by an observer that never fires.
 - Images are AVIF/WebP through `next/image`, sized to the layout's real breakpoints, with explicit loading,
-  loaded and **broken** states. The hero is art-directed: a portrait crop on phones, landscape above it.
+  loaded and **broken** states. The two exceptions are the home showroom's cut-out plates, which are served as
+  authored WebP: Safari mishandles alpha in AVIF, and an opaque umbrella would cover the scene it stands in.
+- The home showroom scrubs on scroll but renders once per *scene*, not per frame — every value the scroll
+  drives is written straight to the node as opacity or transform. Its first frame is composed in the markup,
+  so the opening shot is correct before any script runs.
 - Keyboard support throughout: focus is trapped and restored in dialogs, the search and detail explorers are
   full arrow-key widgets, and visually-hidden checkboxes render their focus ring on the box beside them.
 - Charts in the admin are hand-drawn SVG with a screen-reader table of the same numbers.
@@ -166,6 +170,24 @@ instant search, contact-form validation and submission, the admin sign-in → pr
 the site, the inquiry pipeline, **and** that anonymous visitors cannot reach `/admin`.
 
 Both scripts need a running server (`npm run dev`) and exit non-zero on failure.
+
+---
+
+## The home page
+
+**One object. Infinite spaces.** A single umbrella stands still while five environments — villa, resort,
+dining, rooftop, garden — pass behind it. Scroll is the camera: it moves *into* the canopy at each boundary
+until the fabric fills the frame, changes the world behind it, and pulls back out. That is why the umbrella is
+a cut-out plate rather than part of each picture, and why the environments are generated umbrella-free.
+
+`src/lib/home-scenes.ts` is the whole asset configuration: five entries, each an image, a crop and the
+`Product.useCases` it stands for. Swapping a placeholder plate for a photograph is one line there and nothing
+else — no component knows a path. The same `useCases` drive **Where will yours live?**, so the story ends in
+the real catalogue rather than in a second, hand-kept list.
+
+Four of the five environments are the brand's own vector plates, standing in until photography exists. They
+are drawn to one geometry — horizon two fifths down, centre foreground clear — which is what a replacement
+photograph has to match for the umbrella to keep standing on the floor.
 
 ---
 
