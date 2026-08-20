@@ -16,12 +16,11 @@ import { notFound } from "next/navigation";
 
 /** Media defaults — overridden by the `home.media` content block. */
 const MEDIA_FALLBACK = {
-  // The hero is a 3D scene, so its art arrives as four planes, back to front.
+  // The hero is a 3D scene, so its art arrives as three planes, back to front.
   heroPlanes: {
-    sky: "/media/hero-plane-sky.svg",
-    far: "/media/hero-plane-far.svg",
-    mid: "/media/hero-plane-mid.svg",
-    near: "/media/hero-plane-near.svg",
+    backdrop: "/media/hero-terrace.webp",
+    mid: "/media/hero-umbrella.webp",
+    near: "/media/hero-planting.webp",
   },
   quizImage: "/media/hero-dusk.svg",
 };

@@ -12,11 +12,12 @@ import { Stage, Plane } from "@/components/motion/stage";
 /**
  * The first frame — a 3D diorama, not a photograph with a parallax speed.
  *
- * The scene is cut into four planes standing at real distances inside a
- * perspective volume: sky at the back, a blurred skyline behind that plane,
- * the subject canopies in the middle, and the ground the viewer stands on
- * closest to the camera. The headline sits on its own plane in front of all of
- * them.
+ * Three photographs standing at real distances inside a perspective volume: a
+ * terrace at golden hour as the backdrop, the canopy itself in the middle, and
+ * the planting along the terrace wall closest to the camera. The last two were
+ * shot against a studio background and cut out (see `scripts/hero-photos.mjs`),
+ * which is what lets them stand in front of the terrace instead of being part
+ * of the same flat picture.
  *
  * Because the depth is real, scrolling and moving the pointer do what a camera
  * does — near planes overtake far ones, and the whole volume shears when it
@@ -37,8 +38,8 @@ export function Hero({
   titleAccent,
   body,
 }: {
-  /** Four image paths, back to front. Editable in Admin → Content. */
-  planes: { sky: string; far: string; mid: string; near: string };
+  /** Three image paths, back to front. Editable in Admin → Content. */
+  planes: { backdrop: string; mid: string; near: string };
   imageAlt: string;
   eyebrow: string;
   title: string;
@@ -56,7 +57,7 @@ export function Hero({
           hero is still a photograph rather than a black rectangle. */}
       <div className="absolute inset-0">
         <Media
-          src={planes.sky}
+          src={planes.backdrop}
           alt={imageAlt}
           priority
           quality={88}
@@ -76,22 +77,10 @@ export function Hero({
               under your feet. `lift` is the composed movement on top of that.
 
               Every plane shares one object-position with the backdrop. They
-              have to: the planes are registered to each other, and cropping
-              them differently would shear the scene apart on a narrow screen.
-              The art is square and composed from the centre so the same crop
-              works on a phone and on a wide desktop. */}
-          <Plane z={-260} lift={130} className="opacity-90">
-            <Media
-              src={planes.far}
-              alt=""
-              priority
-              sizes="100vw"
-              className="absolute inset-0 size-full"
-              objectPosition="center 56%"
-            />
-          </Plane>
-
-          <Plane z={-90} lift={210}>
+              have to: the three were composed as one frame, and cropping them
+              differently would pull the umbrella off its mast. The plates are
+              square so the same crop works on a phone and on a wide desktop. */}
+          <Plane z={-70} lift={150}>
             <Media
               src={planes.mid}
               alt=""
@@ -102,7 +91,7 @@ export function Hero({
             />
           </Plane>
 
-          <Plane z={60} lift={-90}>
+          <Plane z={80} lift={-110}>
             <Media
               src={planes.near}
               alt=""
@@ -115,6 +104,7 @@ export function Hero({
       </Stage>
 
       <div className="absolute inset-0 scrim-full" aria-hidden="true" />
+      <div className="absolute inset-0 scrim-side" aria-hidden="true" />
 
       {/* The block sits well clear of the bottom edge: the buttons were landing
           on the border, which reads as a cropped screen rather than a composed

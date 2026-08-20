@@ -391,6 +391,27 @@
     transform: scale(1.045);
   }
 
+  /* A scrim along the reading edge, for a headline set over a busy photograph.
+     The bottom scrim alone cannot do this: the type sits against foliage in the
+     upper half, and darkening the whole frame to fix that would flatten the
+     picture. Mirrored for RTL, where the headline sits on the other side. */
+  .scrim-side {
+    background: linear-gradient(
+      to right,
+      rgb(var(--c-overlay) / 0.6) 0%,
+      rgb(var(--c-overlay) / 0.34) 34%,
+      rgb(var(--c-overlay) / 0) 66%
+    );
+  }
+  [dir="rtl"] .scrim-side {
+    background: linear-gradient(
+      to left,
+      rgb(var(--c-overlay) / 0.6) 0%,
+      rgb(var(--c-overlay) / 0.34) 34%,
+      rgb(var(--c-overlay) / 0) 66%
+    );
+  }
+
   /* Gradient scrim for text over photography. Two stops, tuned so the middle
      of the image is untouched. */
   .scrim {

@@ -921,10 +921,9 @@ async function main() {
   // Home page media — editable from the admin (Content) without a deploy.
   const homeMedia = {
     heroPlanes: {
-      sky: "/media/hero-plane-sky.svg",
-      far: "/media/hero-plane-far.svg",
-      mid: "/media/hero-plane-mid.svg",
-      near: "/media/hero-plane-near.svg",
+      backdrop: "/media/hero-terrace.webp",
+      mid: "/media/hero-umbrella.webp",
+      near: "/media/hero-planting.webp",
     },
     quizImage: "/media/hero-dusk.svg",
   };
