@@ -5,6 +5,7 @@ import type { Locale } from "@/lib/i18n/config";
 import { localePath } from "@/lib/i18n/config";
 import { Reveal } from "@/components/motion/reveal";
 import { Media } from "@/components/ui/media";
+import { Stage, Plane } from "@/components/motion/stage";
 import { CanopyRadial } from "@/components/icons/canopy";
 
 /**
@@ -14,13 +15,19 @@ import { CanopyRadial } from "@/components/icons/canopy";
  */
 export function QuizTeaser({ d, locale, image }: { d: Dictionary; locale: Locale; image: string | null }) {
   return (
-    <section className="relative isolate overflow-hidden">
-      <div className="absolute inset-0 -z-10">
-        <Media src={image} alt="" sizes="100vw" className="absolute inset-0 size-full" />
+    <Stage as="section" perspective={1400} swing={1.6} className="relative isolate overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="stage-camera">
+          {/* The picture stands a long way back, so it drifts under the type as
+              the page moves rather than travelling with it. */}
+          <Plane z={-260} lift={140}>
+            <Media src={image} alt="" sizes="100vw" className="absolute inset-0 size-full" />
+          </Plane>
+        </div>
         <div className="absolute inset-0 bg-[rgb(var(--c-overlay)/0.72)]" aria-hidden="true" />
       </div>
 
-      <div className="shell section relative text-center">
+      <div className="shell section relative z-10 text-center">
         <Reveal>
           <p className="eyebrow mb-6 text-white/60">{d.home.quiz.eyebrow}</p>
         </Reveal>
@@ -53,6 +60,6 @@ export function QuizTeaser({ d, locale, image }: { d: Dictionary; locale: Locale
           </p>
         </Reveal>
       </div>
-    </section>
+    </Stage>
   );
 }

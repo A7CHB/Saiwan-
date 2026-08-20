@@ -6,7 +6,6 @@ import type { ProductCard as ProductCardModel } from "@/lib/data/products";
 import { useLocale } from "@/components/i18n/locale-provider";
 import { useCompare } from "@/components/product/compare-provider";
 import { Media } from "@/components/ui/media";
-import { FavoriteButton } from "@/components/product/favorite-button";
 import { formatPrice } from "@/lib/i18n/format";
 import { cn } from "@/lib/utils";
 
@@ -82,9 +81,9 @@ export function ProductCard({
         </div>
       </Link>
 
-      {/* Utilities sit outside the link so they are independently focusable. */}
-      <div className="absolute end-3 top-3 flex flex-col gap-1.5 opacity-0 transition-opacity duration-500 focus-within:opacity-100 group-hover:opacity-100 max-md:opacity-100">
-        <FavoriteButton productId={product.id} tone="overlay" />
+      {/* The compare control sits outside the link so it is independently
+          focusable. */}
+      <div className="absolute end-3 top-3 opacity-0 transition-opacity duration-500 focus-within:opacity-100 group-hover:opacity-100 max-md:opacity-100">
         <button
           type="button"
           onClick={() => toggle(product.id)}

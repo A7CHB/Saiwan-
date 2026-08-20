@@ -15,7 +15,6 @@ import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { WhatsAppFloat } from "@/components/site/whatsapp-float";
 import { CompareProvider } from "@/components/product/compare-provider";
-import { FavoritesProvider } from "@/components/product/favorites-provider";
 import { CompareTray } from "@/components/product/compare-tray";
 
 export const viewport: Viewport = {
@@ -96,28 +95,26 @@ export default async function SiteLayout({
         <LocaleProvider locale={locale} dictionary={d}>
           <ThemeProvider>
             <CompareProvider>
-              <FavoritesProvider>
-                {/* Keyboard users land here first; it is the only element before
-                    the header in the tab order. */}
-                <a
-                  href="#main"
-                  className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[200] focus:bg-fg focus:px-5 focus:py-3 focus:text-bg focus:text-sm"
-                >
-                  {d.nav.skipToContent}
-                </a>
+              {/* Keyboard users land here first; it is the only element before
+                  the header in the tab order. */}
+              <a
+                href="#main"
+                className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[200] focus:bg-fg focus:px-5 focus:py-3 focus:text-bg focus:text-sm"
+              >
+                {d.nav.skipToContent}
+              </a>
 
-                <SiteHeader
-                  categories={categories.map((c) => ({ slug: c.slug, name: c.name, count: c.productCount }))}
-                />
+              <SiteHeader
+                categories={categories.map((c) => ({ slug: c.slug, name: c.name, count: c.productCount }))}
+              />
 
-                <main id="main" className="min-h-[60vh]">
-                  {children}
-                </main>
+              <main id="main" className="min-h-[60vh]">
+                {children}
+              </main>
 
-                <SiteFooter locale={locale} d={d} categories={categories.slice(0, 5)} />
-                <WhatsAppFloat />
-                <CompareTray />
-              </FavoritesProvider>
+              <SiteFooter locale={locale} d={d} categories={categories.slice(0, 5)} />
+              <WhatsAppFloat />
+              <CompareTray />
             </CompareProvider>
           </ThemeProvider>
         </LocaleProvider>

@@ -83,5 +83,3 @@ export const LOCALE_COOKIE = "saiwan_locale";
 export const VISITOR_COOKIE = "saiwan_visitor";
 export const SESSION_TTL_DAYS = 30;
 export const COMPARE_LIMIT = 3;
-/** Ceiling on the device-local shortlist — generous, but bounded storage. */
-export const SAVED_LIMIT = 60;

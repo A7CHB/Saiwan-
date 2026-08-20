@@ -25,7 +25,6 @@ const CUSTOMER_ROUTES = [
   "/contact",
   "/search?q=cantilever",
   "/search?q=zzzzzz",
-  "/saved",
   "/compare",
   "/this-route-does-not-exist",
 ];

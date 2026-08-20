@@ -22,7 +22,6 @@ const en = {
     about: "About",
     contact: "Contact",
     findYourShade: "Find Your Shade",
-    saved: "Saved",
     menu: "Menu",
     close: "Close",
     openMenu: "Open menu",
@@ -47,7 +46,6 @@ const en = {
     submit: "Submit",
     cancel: "Cancel",
     save: "Save",
-    saved: "Saved",
     loading: "Loading",
     from: "From",
     priceOnRequest: "Price on request",
@@ -199,8 +197,6 @@ const en = {
     requestQuote: "Request a quote",
     orderViaWhatsApp: "Order via WhatsApp",
     speakWithSaiwan: "Speak with Saiwan",
-    saveToFavorites: "Save",
-    removeFromFavorites: "Saved",
     availability: "Availability",
     availabilityStates: {
       IN_STOCK: "In stock",
@@ -476,22 +472,6 @@ const en = {
     },
   },
 
-
-  saved: {
-    eyebrow: "Your shortlist",
-    title: "Saved pieces",
-    intro:
-      "Kept on this device — no account, no sign-in. Send the list to us on WhatsApp whenever you are ready.",
-    count: "{count} saved",
-    loading: "Bringing back your saved pieces…",
-    clear: "Clear the list",
-    sendList: "Send this list",
-    empty: {
-      title: "Nothing saved yet",
-      body: "Tap the heart on any piece to keep it here while you decide.",
-      cta: "Browse the collection",
-    },
-  },
 
   inquiryStatus: {
     NEW: "New",

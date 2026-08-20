@@ -20,7 +20,6 @@ const ckb: Dictionary = {
     about: "دەربارەی سایوان",
     contact: "پەیوەندی",
     findYourShade: "سێبەری خۆت بدۆزەرەوە",
-    saved: "پاشەکەوتکراوەکان",
     menu: "لیستە",
     close: "داخستن",
     openMenu: "کردنەوەی لیستە",
@@ -45,7 +44,6 @@ const ckb: Dictionary = {
     submit: "ناردن",
     cancel: "هەڵوەشاندنەوە",
     save: "پاشەکەوت",
-    saved: "پاشەکەوتکراوە",
     loading: "بارکردن",
     from: "لە",
     priceOnRequest: "نرخ لەسەر داواکاری",
@@ -197,8 +195,6 @@ const ckb: Dictionary = {
     requestQuote: "داوای نرخ بکە",
     orderViaWhatsApp: "داواکردن لە ڕێی واتسئاپ",
     speakWithSaiwan: "قسە لەگەڵ سایوان بکە",
-    saveToFavorites: "پاشەکەوت",
-    removeFromFavorites: "پاشەکەوتکراوە",
     availability: "بەردەستی",
     availabilityStates: {
       IN_STOCK: "بەردەستە",
@@ -473,21 +469,6 @@ const ckb: Dictionary = {
     },
   },
 
-
-  saved: {
-    eyebrow: "لیستی هەڵبژاردەت",
-    title: "پارچە پاشەکەوتکراوەکان",
-    intro: "لەم ئامێرەدا پاشەکەوت دەکرێن — بێ هەژمار و بێ چوونەژوورەوە. هەر کاتێک ئامادە بوویت لیستەکە بە واتساپ بۆمان بنێرە.",
-    count: "{count} پاشەکەوتکراو",
-    loading: "گەڕاندنەوەی پارچە پاشەکەوتکراوەکانت…",
-    clear: "سڕینەوەی لیستەکە",
-    sendList: "ناردنی ئەم لیستە",
-    empty: {
-      title: "هێشتا هیچ پاشەکەوت نەکراوە",
-      body: "دڵەکە لەسەر هەر پارچەیەک دابگرە تا لێرە بمێنێتەوە هەتا بڕیار دەدەیت.",
-      cta: "گەڕان بەناو کۆکراوەکەدا",
-    },
-  },
 
   inquiryStatus: {
     NEW: "نوێ",

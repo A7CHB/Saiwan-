@@ -5,6 +5,7 @@ import type { ProductCard as ProductCardModel } from "@/lib/data/products";
 import { ProductCard } from "@/components/product/product-card";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Reveal } from "@/components/motion/reveal";
+import { Tilt } from "@/components/motion/stage";
 
 /**
  * Three featured pieces, one row.
@@ -51,7 +52,11 @@ export function FeaturedCollection({
         >
           {products.slice(0, 3).map((product, index) => (
             <li key={product.id} className="w-[74%] shrink-0 snap-start sm:w-[46%] lg:w-auto">
-              <ProductCard product={product} index={index} priority={index === 0} showTagline={false} />
+              {/* Each plate is an object standing in space rather than a flat
+                  card: it turns to face the pointer. */}
+              <Tilt max={5}>
+                <ProductCard product={product} index={index} priority={index === 0} showTagline={false} />
+              </Tilt>
             </li>
           ))}
         </Reveal>

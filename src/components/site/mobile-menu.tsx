@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, Search as SearchIcon, X } from "lucide-react";
+import { Search as SearchIcon, X } from "lucide-react";
 import { Dialog } from "@/components/ui/dialog";
 import { useLocale } from "@/components/i18n/locale-provider";
-import { useFavorites } from "@/components/product/favorites-provider";
 import { SaiwanLogo, CanopyRadial } from "@/components/icons/canopy";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
 import { ThemeToggle } from "@/components/site/theme-toggle";
@@ -30,7 +29,6 @@ export function MobileMenu({
   onOpenSearch: () => void;
 }) {
   const { d, href } = useLocale();
-  const { count } = useFavorites();
 
   return (
     <Dialog
@@ -110,19 +108,6 @@ export function MobileMenu({
                 <SearchIcon className="size-[18px]" strokeWidth={1.4} aria-hidden="true" />
               </button>
               <ThemeToggle />
-              <Link
-                href={href("/saved")}
-                onClick={onClose}
-                className="flex h-10 items-center gap-2 px-2 text-sm transition-opacity hover:opacity-60"
-              >
-                <Heart className="size-[18px]" strokeWidth={1.4} aria-hidden="true" />
-                <span className="max-w-28 truncate">{d.nav.saved}</span>
-                {count > 0 ? (
-                  <span className="text-xs text-accent tabular-nums" aria-hidden="true">
-                    {count}
-                  </span>
-                ) : null}
-              </Link>
             </div>
             <LanguageSwitcher />
           </div>

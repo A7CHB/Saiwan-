@@ -22,11 +22,15 @@ const BLOCKS = [
     key: "home.media",
     title: "Home page imagery",
     description:
-      "Which images the home page uses: the hero (with a portrait crop for phones) and the consultation panel behind \u201cFind your shade\u201d.",
+      "Which images the home page uses. The hero is a 3D scene: four planes standing at different distances, listed back to front (sky, far, mid, near). Replacing one swaps that depth only \u2014 the far and mid planes must be transparent PNGs or SVGs.",
     template: JSON.stringify(
       {
-        heroImage: "/media/hero-terrace.svg",
-        heroImageMobile: "/media/portrait-terrace.svg",
+        heroPlanes: {
+          sky: "/media/hero-plane-sky.svg",
+          far: "/media/hero-plane-far.svg",
+          mid: "/media/hero-plane-mid.svg",
+          near: "/media/hero-plane-near.svg",
+        },
         quizImage: "/media/hero-dusk.svg",
       },
       null,

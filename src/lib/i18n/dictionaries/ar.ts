@@ -19,7 +19,6 @@ const ar: Dictionary = {
     about: "عن سايوان",
     contact: "تواصل",
     findYourShade: "اعثر على ظلّك",
-    saved: "المحفوظات",
     menu: "القائمة",
     close: "إغلاق",
     openMenu: "فتح القائمة",
@@ -44,7 +43,6 @@ const ar: Dictionary = {
     submit: "إرسال",
     cancel: "إلغاء",
     save: "حفظ",
-    saved: "محفوظ",
     loading: "جارٍ التحميل",
     from: "ابتداءً من",
     priceOnRequest: "السعر عند الطلب",
@@ -195,8 +193,6 @@ const ar: Dictionary = {
     requestQuote: "اطلب عرض سعر",
     orderViaWhatsApp: "اطلب عبر واتساب",
     speakWithSaiwan: "تحدّث مع سايوان",
-    saveToFavorites: "حفظ",
-    removeFromFavorites: "محفوظة",
     availability: "التوفّر",
     availabilityStates: {
       IN_STOCK: "متوفّرة",
@@ -471,21 +467,6 @@ const ar: Dictionary = {
     },
   },
 
-
-  saved: {
-    eyebrow: "قائمتك المختارة",
-    title: "القطع المحفوظة",
-    intro: "محفوظة على هذا الجهاز — بلا حساب وبلا تسجيل دخول. أرسل القائمة إلينا عبر واتساب متى شئت.",
-    count: "{count} قطعة محفوظة",
-    loading: "جارٍ استعادة قطعك المحفوظة…",
-    clear: "مسح القائمة",
-    sendList: "أرسل هذه القائمة",
-    empty: {
-      title: "لا شيء محفوظ بعد",
-      body: "اضغط القلب على أي قطعة لتبقى هنا ريثما تقرّر.",
-      cta: "تصفّح المجموعة",
-    },
-  },
 
   inquiryStatus: {
     NEW: "جديد",

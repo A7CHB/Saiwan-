@@ -920,8 +920,12 @@ async function main() {
 
   // Home page media — editable from the admin (Content) without a deploy.
   const homeMedia = {
-    heroImage: "/media/hero-terrace.svg",
-    heroImageMobile: "/media/portrait-terrace.svg",
+    heroPlanes: {
+      sky: "/media/hero-plane-sky.svg",
+      far: "/media/hero-plane-far.svg",
+      mid: "/media/hero-plane-mid.svg",
+      near: "/media/hero-plane-near.svg",
+    },
     quizImage: "/media/hero-dusk.svg",
   };
   for (const locale of LOCALES) {

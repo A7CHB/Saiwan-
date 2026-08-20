@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Expand, X } from "lucide-react";
 import type { GalleryView } from "@/lib/data/catalog";
 import { Media } from "@/components/ui/media";
@@ -45,6 +45,41 @@ export function GalleryMosaic({
         ? "row-span-2 aspect-3/4 sm:aspect-auto"
         : "aspect-square";
 
+  // Each tile's rotation comes from where it sits in the row, so scrolling the
+  // row swings the frames past the camera instead of sliding a flat strip. One
+  // rAF-throttled listener writes one custom property per tile.
+  const rowRef = useRef<HTMLUListElement>(null);
+  useEffect(() => {
+    const row = rowRef.current;
+    if (!row || !scroller) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frame = 0;
+    const write = () => {
+      frame = 0;
+      const box = row.getBoundingClientRect();
+      const centre = box.left + box.width / 2;
+      for (const tile of Array.from(row.children) as HTMLElement[]) {
+        const rect = tile.getBoundingClientRect();
+        // -1 at the left edge of the row, +1 at the right.
+        const offset = (rect.left + rect.width / 2 - centre) / (box.width / 2 || 1);
+        tile.style.setProperty("--swing", Math.max(-1, Math.min(1, offset)).toFixed(3));
+      }
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(write);
+    };
+
+    row.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    write();
+    return () => {
+      row.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [scroller, items.length]);
+
   const step = (delta: number) => {
     setOpenIndex((current) => {
       if (current === null) return null;
@@ -62,10 +97,11 @@ export function GalleryMosaic({
           — you scroll sideways to a column of blank frames. */}
       <Reveal
         as="ul"
+        ref={rowRef}
         kind="fade"
         className={cn(
           scroller
-            ? "flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 no-scrollbar sm:gap-8"
+            ? "row-3d flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 no-scrollbar sm:gap-8"
             : cn("grid auto-rows-auto grid-cols-2 gap-2 sm:gap-3", dense ? "lg:grid-cols-4" : "lg:grid-cols-3"),
           className,
         )}
@@ -128,7 +164,7 @@ export function GalleryMosaic({
           return (
             <li
               key={item.id}
-              className={cn("group relative", scroller ? tileClass : spanClass(item.span))}
+              className={cn("group relative", scroller ? cn("tile-3d", tileClass) : spanClass(item.span))}
             >
               {frame}
             </li>

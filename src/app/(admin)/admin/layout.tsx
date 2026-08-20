@@ -4,7 +4,6 @@ import { fontVariables } from "@/lib/fonts";
 import { ThemeScript } from "@/components/theme/theme-script";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { LocaleProvider } from "@/components/i18n/locale-provider";
-import { FavoritesProvider } from "@/components/product/favorites-provider";
 import en from "@/lib/i18n/dictionaries/en";
 
 export const metadata: Metadata = {
@@ -48,9 +47,7 @@ export default function AdminRootLayout({ children }: { children: React.ReactNod
             media, dialogs) find the strings they expect. */}
         <LocaleProvider locale="en" dictionary={en}>
           <ThemeProvider>
-            {/* The admin never saves pieces, but it shares components that read
-                the context; the provider keeps them working. */}
-            <FavoritesProvider>{children}</FavoritesProvider>
+            {children}
           </ThemeProvider>
         </LocaleProvider>
       </body>

@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Check, Minus, Plus } from "lucide-react";
 import type { ProductDetail } from "@/lib/data/products";
 import { useLocale } from "@/components/i18n/locale-provider";
-import { FavoriteButton } from "@/components/product/favorite-button";
 import { WhatsAppIcon } from "@/components/icons/whatsapp";
 import { formatPrice } from "@/lib/i18n/format";
 import { track } from "@/lib/analytics-client";
@@ -348,7 +347,6 @@ export function ProductConfigurator({
         </a>
 
         <div className="flex gap-3">
-          <FavoriteButton productId={product.id} withLabel className="flex-1" />
           <a
             href={whatsappHref}
             target="_blank"

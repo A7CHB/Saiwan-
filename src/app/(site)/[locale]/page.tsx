@@ -16,8 +16,13 @@ import { notFound } from "next/navigation";
 
 /** Media defaults — overridden by the `home.media` content block. */
 const MEDIA_FALLBACK = {
-  heroImage: "/media/hero-terrace.svg",
-  heroImageMobile: "/media/portrait-terrace.svg",
+  // The hero is a 3D scene, so its art arrives as four planes, back to front.
+  heroPlanes: {
+    sky: "/media/hero-plane-sky.svg",
+    far: "/media/hero-plane-far.svg",
+    mid: "/media/hero-plane-mid.svg",
+    near: "/media/hero-plane-near.svg",
+  },
   quizImage: "/media/hero-dusk.svg",
 };
 
@@ -53,8 +58,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <Hero
-        image={media.heroImage}
-        imageMobile={media.heroImageMobile}
+        planes={media.heroPlanes ?? MEDIA_FALLBACK.heroPlanes}
         imageAlt={d.meta.tagline}
         eyebrow={d.home.hero.eyebrow}
         title={d.home.hero.title}

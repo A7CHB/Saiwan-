@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000" width="2000" height="2000" role="img">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F3D9AE"/>
+      <stop offset="55%" stop-color="#E0AC71"/>
+      <stop offset="100%" stop-color="#B87642"/>
+    </linearGradient>
+    <linearGradient id="fore" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6E4E33" stop-opacity="0"/>
+      <stop offset="55%" stop-color="#6E4E33" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#6E4E33" stop-opacity="0.92"/>
+    </linearGradient>
+    <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E0AC71" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#E0AC71" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#E0AC71" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="90.0"/></filter>
+    <filter id="far"><feGaussianBlur stdDeviation="7"/></filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3"/></filter></defs>
+  <g filter="url(#far)"><rect x="-100.0" y="774.0" width="403.9" height="390.0" fill="#6E4E33" opacity="0.16"/><rect x="366.0" y="799.8" width="336.3" height="364.2" fill="#6E4E33" opacity="0.21"/><rect x="753.3" y="1046.6" width="251.5" height="117.4" fill="#6E4E33" opacity="0.26"/><rect x="1081.4" y="1045.8" width="206.3" height="118.2" fill="#6E4E33" opacity="0.16"/><rect x="1253.2" y="896.9" width="284.7" height="267.1" fill="#6E4E33" opacity="0.21"/><rect x="1535.1" y="989.6" width="207.4" height="174.4" fill="#6E4E33" opacity="0.26"/><rect x="1785.6" y="915.5" width="343.9" height="248.5" fill="#6E4E33" opacity="0.16"/>
+  
+    <g opacity="0.4">
+      <ellipse cx="240.0" cy="1227.8" rx="248.0" ry="9.1" fill="#6E4E33" opacity="0.28"/>
+      <path fill="#6E4E33" d="
+        M -160.0 1069.2
+        C -8.0 975.3 152.0 960.0 240.0 960.0
+        C 328.0 960.0 488.0 975.3 640.0 1069.2
+        C 504.0 1095.2 376.0 1095.2 240.0 1073.1
+        C 104.0 1095.2 -24.0 1095.2 -160.0 1069.2
+        Z" />
+      <line x1="240.0" y1="966.6" x2="-48.0" y2="1017.7" stroke="#FFF0CE" stroke-width="2.80" opacity="0.16"/><line x1="240.0" y1="966.6" x2="96.0" y2="976.1" stroke="#FFF0CE" stroke-width="2.80" opacity="0.16"/><line x1="240.0" y1="966.6" x2="240.0" y2="962.2" stroke="#FFF0CE" stroke-width="2.80" opacity="0.16"/><line x1="240.0" y1="966.6" x2="384.0" y2="976.1" stroke="#FFF0CE" stroke-width="2.80" opacity="0.16"/><line x1="240.0" y1="966.6" x2="528.0" y2="1017.7" stroke="#FFF0CE" stroke-width="2.80" opacity="0.16"/>
+      <rect x="233.6" y="931.4" width="12.8" height="31.2" fill="#6E4E33"/>
+      <rect x="231.2" y="960.0" width="17.6" height="260.0" fill="#6E4E33"/>
+      <rect x="180.0" y="1220.0" width="120.0" height="7.8" fill="#6E4E33"/>
+    </g>
+  
+    <g opacity="0.34">
+      <ellipse cx="1720.0" cy="1207.2" rx="223.2" ry="8.4" fill="#6E4E33" opacity="0.28"/>
+      <path fill="#6E4E33" d="
+        M 1360.0 1060.8
+        C 1496.8 974.1 1640.8 960.0 1720.0 960.0
+        C 1799.2 960.0 1943.2 974.1 2080.0 1060.8
+        C 1957.6 1084.8 1842.4 1084.8 1720.0 1064.4
+        C 1597.6 1084.8 1482.4 1084.8 1360.0 1060.8
+        Z" />
+      <line x1="1720.0" y1="966.0" x2="1460.8" y2="1013.2" stroke="#FFF0CE" stroke-width="2.52" opacity="0.16"/><line x1="1720.0" y1="966.0" x2="1590.4" y2="974.8" stroke="#FFF0CE" stroke-width="2.52" opacity="0.16"/><line x1="1720.0" y1="966.0" x2="1720.0" y2="962.0" stroke="#FFF0CE" stroke-width="2.52" opacity="0.16"/><line x1="1720.0" y1="966.0" x2="1849.6" y2="974.8" stroke="#FFF0CE" stroke-width="2.52" opacity="0.16"/><line x1="1720.0" y1="966.0" x2="1979.2" y2="1013.2" stroke="#FFF0CE" stroke-width="2.52" opacity="0.16"/>
+      <rect x="1714.2" y="933.6" width="11.5" height="28.8" fill="#6E4E33"/>
+      <rect x="1712.1" y="960.0" width="15.8" height="240.0" fill="#6E4E33"/>
+      <rect x="1666.0" y="1200.0" width="108.0" height="7.2" fill="#6E4E33"/>
+    </g></g>
+</svg>

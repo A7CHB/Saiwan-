@@ -162,9 +162,8 @@ npm run qa:flows   # 30 end-to-end assertions
 ```
 
 `qa:flows` covers the configurator → WhatsApp message contents, RTL product pages, the consultation quiz,
-instant search, contact-form validation and submission, saving a piece with no account (including that the
-shortlist survives a reload and does not leak between browsers), the admin sign-in → product edit →
-propagation to the site, the inquiry pipeline, **and** that anonymous visitors cannot reach `/admin`.
+instant search, contact-form validation and submission, the admin sign-in → product edit → propagation to
+the site, the inquiry pipeline, **and** that anonymous visitors cannot reach `/admin`.
 
 Both scripts need a running server (`npm run dev`) and exit non-zero on failure.
 
@@ -183,9 +182,8 @@ already carries the full configuration — but a cart would add friction to a bu
 saves. The storefront is fully trilingual.
 
 **No customer accounts, anywhere.** Buying here means sending a WhatsApp message, and a sign-up wall in front
-of that would only cost inquiries. Saved pieces and the comparison tray live in the browser's own storage: they
-survive a reload, cost no requests, and leave no personal data on the server. The trade-off — a shortlist
-belongs to one device — is stated on the page rather than hidden.
+of that would only cost inquiries. The only piece of visitor state the site keeps is the comparison tray, in
+the browser's own storage: no requests, no personal data on the server.
 
 **The dashboard is a separate door.** `/admin` is its own root layout, its own palette and its own sign-in,
 linked discreetly from the footer. The proxy bounces anonymous traffic and every page re-checks the live role.

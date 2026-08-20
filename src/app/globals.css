@@ -456,6 +456,88 @@
 }
 
 /* ---------------------------------------------------------------------------
+   3D stage
+   A perspective volume whose children stand at real distances. The camera is
+   two numbers written by `Stage` on every frame — `--t` (scroll travel) and
+   `--yaw`/`--pitch` (pointer) — and every plane derives its transform from
+   them, so one style write moves the whole scene consistently.
+--------------------------------------------------------------------------- */
+@layer components {
+  .stage {
+    --t: 0;
+    --yaw: 0;
+    --pitch: 0;
+    --swing: 3deg;
+    transform-style: preserve-3d;
+  }
+
+  .stage-camera {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    /* The camera turns; it does not slide. Rotating the volume is what makes
+       the planes shear against each other instead of moving in lockstep. */
+    transform: rotateY(calc(var(--yaw) * var(--swing))) rotateX(calc(var(--pitch) * var(--swing) * -1));
+    transition: transform 0.9s var(--ease-out-expo);
+    will-change: transform;
+  }
+  .stage[data-settled="true"] .stage-camera {
+    transition: none;
+  }
+
+  /* Planes composite onto one another, so their frames must not paint a
+     background: `.frame` fills with `--color-sunken` while an image loads, and
+     on a transparent plate that arrives as an opaque rectangle over the scene
+     standing behind it. */
+  .plane .frame {
+    background-color: transparent;
+  }
+
+  .plane {
+    --z: 0px;
+    --lift: 0px;
+    --fill: 1;
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: translate3d(0, calc(var(--t) * var(--lift)), var(--z)) scale(var(--fill));
+    will-change: transform;
+  }
+
+  /* An object that turns toward the pointer. The shadow deepens with the tilt
+     so the lift reads as distance rather than as a skew. */
+  /* The scrolling gallery row as a shallow carousel: frames turn away from the
+     centre as they pass it. `--swing` is written per tile by the row. */
+  .row-3d {
+    perspective: 1600px;
+    perspective-origin: 50% 50%;
+  }
+  .tile-3d {
+    --swing: 0;
+    transform: rotateY(calc(var(--swing) * -7deg)) scale(calc(1 - abs(var(--swing)) * 0.03));
+    transform-origin: 50% 50%;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  /* Establishes the volume a `depth` reveal swings inside. */
+  .depth-group {
+    perspective: 1400px;
+    perspective-origin: 50% 40%;
+  }
+
+  .tilt {
+    --rx: 0deg;
+    --ry: 0deg;
+    transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0);
+    transition: transform 0.7s var(--ease-out-expo);
+    transform-style: preserve-3d;
+  }
+  .tilt[data-tilting="true"] {
+    transition: transform 0.18s linear;
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Motion
    Every animation below is opt-in via a class and every one of them is
    disabled wholesale by the reduced-motion block at the end of this file.
@@ -554,6 +636,12 @@
   }
   [data-reveal="image"] {
     transform: scale(1.08);
+  }
+  /* Arrives from depth: laid back and pushed away, then swinging up to face
+     the reader. Needs a perspective on the parent (`.depth-group`). */
+  [data-reveal="depth"] {
+    transform: translate3d(0, 18px, -180px) rotateX(14deg);
+    transform-origin: 50% 100%;
   }
 
   [data-reveal][data-visible="true"] {
@@ -659,6 +747,16 @@
   }
   .frame-zoom img {
     transform: none !important;
+  }
+
+  /* The stage collapses to a flat picture: planes stack with no depth, the
+     camera never turns. */
+  .stage-camera,
+  .plane,
+  .tilt,
+  .tile-3d {
+    transform: none !important;
+    transition: none !important;
   }
 }
 

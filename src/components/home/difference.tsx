@@ -28,9 +28,9 @@ export function Difference({ d }: { d: Dictionary }) {
 
         {/* Four across on a wide screen rather than two rows of two: the same
             four propositions in half the height, and they read as a set. */}
-        <ol className="grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="depth-group grid gap-x-10 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((item, index) => (
-            <Reveal key={item.title} delay={index * 90} as="li" className="group border-t border-line pt-5">
+            <Reveal key={item.title} delay={index * 90} kind="depth" as="li" className="group border-t border-line pt-5">
               <span
                 aria-hidden="true"
                 className="display mb-3 block text-[1.75rem] leading-none text-line-strong transition-colors duration-700 group-hover:text-accent"

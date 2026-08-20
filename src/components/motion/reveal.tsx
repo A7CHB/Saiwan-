@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export type RevealKind = "rise" | "fade" | "mask" | "scale-x" | "image";
+export type RevealKind = "rise" | "fade" | "mask" | "scale-x" | "image" | "depth";
 
 /**
  * Scroll-triggered reveal.
@@ -19,6 +19,7 @@ export type RevealKind = "rise" | "fade" | "mask" | "scale-x" | "image";
 export function Reveal({
   children,
   as: Tag = "div",
+  ref: forwarded,
   kind = "rise",
   delay = 0,
   threshold = 0.18,
@@ -34,8 +35,11 @@ export function Reveal({
   threshold?: number;
   rootMargin?: string;
   className?: string;
+  /** Forwarded so a caller can measure the element it just animated. */
+  ref?: React.RefObject<HTMLElement | null>;
 } & Record<string, unknown>) {
-  const ref = useRef<HTMLElement>(null);
+  const own = useRef<HTMLElement>(null);
+  const ref = forwarded ?? own;
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
