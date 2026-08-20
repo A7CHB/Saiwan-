@@ -231,8 +231,7 @@ export function Showroom({
             className="relative isolate flex min-h-svh flex-col justify-end overflow-hidden bg-black"
           >
             <SceneArt scene={scene} priority={index === 0} />
-            <div className="absolute inset-0 scrim-full" aria-hidden="true" />
-            <div className="absolute inset-0 scrim-side" aria-hidden="true" />
+            <div className="absolute inset-0 scrim-scene" aria-hidden="true" />
             <div className="shell relative z-10 pb-24 pt-32">
               {index === 0 ? (
                 <Opening
@@ -299,8 +298,7 @@ export function Showroom({
           aria-hidden="true"
         />
 
-        <div className="absolute inset-0 scrim-full" aria-hidden="true" />
-        <div className="absolute inset-0 scrim-side" aria-hidden="true" />
+        <div className="absolute inset-0 scrim-scene" aria-hidden="true" />
 
         {/* Every scene's copy is in the document at once; only its opacity
             moves. Screen readers and search engines read all five. */}

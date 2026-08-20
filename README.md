@@ -185,9 +185,16 @@ a cut-out plate rather than part of each picture, and why the environments are g
 else — no component knows a path. The same `useCases` drive **Where will yours live?**, so the story ends in
 the real catalogue rather than in a second, hand-kept list.
 
-Four of the five environments are the brand's own vector plates, standing in until photography exists. They
-are drawn to one geometry — horizon two fifths down, centre foreground clear — which is what a replacement
-photograph has to match for the umbrella to keep standing on the floor.
+Four of the five environments are drawn, not photographed — `scripts/generate-environments.mjs`. They are
+placeholders for photography of installed work, but they are not sketches: the vocabulary is perspective, so
+paving converges on a vanishing point, walls recede as trapezoids toward it, and everything standing on the
+floor is scaled by its depth. That is what makes a plate read as a place rather than as an abstract warm
+rectangle, and a place is the minimum the concept needs.
+
+Every plate follows three rules, because the showroom depends on them: square (the crop differs from a phone
+to a desktop), horizon at 0.58 with the vanishing point centred (a replacement photograph must match this or
+the umbrella will float), and nothing overhead in the middle (the umbrella is composited there — anything
+drawn gives the scene two).
 
 ---
 

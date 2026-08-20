@@ -391,6 +391,41 @@
     transform: scale(1.045);
   }
 
+  /* The showroom's scrim. One layer, not two: `scrim-full` and `scrim-side`
+     stacked crushed the scenes into murk, and a cinematic frame can only afford
+     darkening where the type actually sits — bottom and lead edge. The sky, the
+     skyline and the water stay untouched. */
+  .scrim-scene {
+    background:
+      linear-gradient(
+        to top,
+        rgb(var(--c-overlay) / 0.74) 0%,
+        rgb(var(--c-overlay) / 0.36) 26%,
+        rgb(var(--c-overlay) / 0) 58%
+      ),
+      linear-gradient(
+        to right,
+        rgb(var(--c-overlay) / 0.52) 0%,
+        rgb(var(--c-overlay) / 0.2) 34%,
+        rgb(var(--c-overlay) / 0) 66%
+      );
+  }
+  [dir="rtl"] .scrim-scene {
+    background:
+      linear-gradient(
+        to top,
+        rgb(var(--c-overlay) / 0.74) 0%,
+        rgb(var(--c-overlay) / 0.36) 26%,
+        rgb(var(--c-overlay) / 0) 58%
+      ),
+      linear-gradient(
+        to left,
+        rgb(var(--c-overlay) / 0.52) 0%,
+        rgb(var(--c-overlay) / 0.2) 34%,
+        rgb(var(--c-overlay) / 0) 66%
+      );
+  }
+
   /* A scrim along the reading edge, for a headline set over a busy photograph.
      The bottom scrim alone cannot do this: the type sits against foliage in the
      upper half, and darkening the whole frame to fix that would flatten the
