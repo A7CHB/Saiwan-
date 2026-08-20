@@ -284,8 +284,9 @@ export function Showroom({
             alt=""
             priority
             unoptimized
+            transparent
             sizes="(max-width: 1024px) 88vw, 64rem"
-            className="absolute inset-0 size-full bg-transparent"
+            className="absolute inset-0 size-full"
             imgClassName="object-contain"
             objectPosition="center bottom"
           />

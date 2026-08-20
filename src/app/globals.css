@@ -737,6 +737,25 @@
   .animate-fade {
     animation: saiwan-fade 1.2s var(--ease-out-expo) both;
   }
+  /* How an image arrives. A CSS animation rather than a transition driven by
+     React state, so it cannot leave an image transparent when the script never
+     runs — see `Media`. `backwards` and not `both`: after it finishes the
+     element goes back to its own transform, which is what `frame-zoom` needs
+     for its hover. */
+  @keyframes saiwan-media-in {
+    from {
+      opacity: 0;
+      transform: scale(1.04);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .media-in {
+    animation: saiwan-media-in 1.1s var(--ease-out-expo) backwards;
+  }
+
   .animate-image-in {
     animation: saiwan-image-in 1.6s var(--ease-out-expo) both;
   }
@@ -779,6 +798,21 @@
 /* ---------------------------------------------------------------------------
    Reduced motion — a hard stop, not a softening.
 --------------------------------------------------------------------------- */
+/* With no scripting there is no IntersectionObserver, so nothing ever sets
+   `data-visible` and every revealed block stays at `opacity: 0` — the page
+   arrives complete and paints itself blank. Motion is an enhancement; being
+   visible is not. */
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .text-reveal > span {
+    transform: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

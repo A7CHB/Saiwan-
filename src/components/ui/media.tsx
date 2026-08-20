@@ -13,6 +13,17 @@ import { CanopyMark } from "@/components/icons/canopy";
  * loading (a warm shimmer in the frame's own colour), loaded (a soft scale-in
  * so images arrive rather than pop) and broken (the canopy motif with a
  * translated label, so a dead URL reads as a placeholder rather than a bug).
+ *
+ * The arrival is a CSS animation, deliberately, and this matters more than it
+ * looks. It used to be a React state: the image rendered at `opacity: 0` and
+ * became visible when `onLoad` set state to "ready". That makes every image on
+ * the site invisible until the client bundle hydrates — and if hydration never
+ * happens, which is a blocked chunk, a slow connection, an extension, a browser
+ * that chokes on the bundle, or JavaScript simply being off, *nothing on the
+ * site is ever visible*. The markup was always correct; it was painted
+ * transparent. An animation runs without JavaScript, so the image is visible
+ * whatever the script does, and `onLoad` is left to do the one thing only
+ * JavaScript can: notice that a URL is dead.
  */
 export function Media({
   src,
@@ -26,6 +37,7 @@ export function Media({
   ratio,
   objectPosition,
   unoptimized,
+  transparent = false,
   ...rest
 }: Omit<ImageProps, "src" | "alt" | "fill" | "className"> & {
   src?: string | null;
@@ -37,17 +49,27 @@ export function Media({
   objectPosition?: string;
   /** Skip the image optimiser. See the hero for the one reason to. */
   unoptimized?: boolean;
+  /**
+   * The image is a cut-out with real transparency.
+   *
+   * Suppresses the frame's fill and its loading shimmer, both of which would
+   * otherwise paint a grey rectangle in the shape of the frame — behind the
+   * subject, but in front of whatever the cut-out is standing in.
+   */
+  transparent?: boolean;
 }) {
   const { d } = useLocale();
   const [state, setState] = useState<"loading" | "ready" | "error">(src ? "loading" : "error");
 
   return (
     <div
-      className={cn("frame", className)}
+      className={cn("frame", transparent && "bg-transparent", className)}
       style={ratio ? { aspectRatio: ratio } : undefined}
       data-state={state}
     >
-      {state === "loading" ? (
+      {/* Behind the image, not in place of it: an image that has not painted
+          yet shows the shimmer through, and one that has covers it. */}
+      {state === "loading" && !transparent ? (
         <div className="absolute inset-0 skeleton" aria-hidden="true" />
       ) : null}
 
@@ -74,11 +96,7 @@ export function Media({
           unoptimized={unoptimized ?? src.endsWith(".svg")}
           onLoad={() => setState("ready")}
           onError={() => setState("error")}
-          className={cn(
-            "object-cover transition-[opacity,transform] duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-            state === "ready" ? "opacity-100 scale-100" : "opacity-0 scale-[1.04]",
-            imgClassName,
-          )}
+          className={cn("object-cover media-in", imgClassName)}
           style={objectPosition ? { objectPosition } : undefined}
           {...rest}
         />
