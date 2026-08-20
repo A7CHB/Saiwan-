@@ -63,7 +63,11 @@ export function GalleryMosaic({
         const rect = tile.getBoundingClientRect();
         // -1 at the left edge of the row, +1 at the right.
         const offset = (rect.left + rect.width / 2 - centre) / (box.width / 2 || 1);
-        tile.style.setProperty("--swing", Math.max(-1, Math.min(1, offset)).toFixed(3));
+        const swing = Math.max(-1, Math.min(1, offset));
+        tile.style.setProperty("--swing", swing.toFixed(3));
+        // CSS `abs()` is still missing from most engines, and an unsupported
+        // function invalidates the whole declaration.
+        tile.style.setProperty("--swing-abs", Math.abs(swing).toFixed(3));
       }
     };
     const schedule = () => {

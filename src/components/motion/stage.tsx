@@ -28,6 +28,11 @@ const fine = () => typeof window !== "undefined" && window.matchMedia("(pointer:
  * Reduced motion disables all of it, and coarse pointers keep the scroll axis
  * but drop the pointer axis — a thumb has no hover, and a phone gyro effect
  * costs battery for nothing.
+ *
+ * The stage must never be the element that clips. `overflow: hidden` forces
+ * `transform-style` to compute to `flat`, and Safari does not merely flatten
+ * the volume — it drops the transformed descendants. Clip on a parent, put the
+ * stage inside it.
  */
 export function Stage({
   children,

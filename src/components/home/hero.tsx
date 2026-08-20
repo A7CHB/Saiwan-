@@ -24,10 +24,10 @@ import { Stage, Plane } from "@/components/motion/stage";
  * here is a pre-rendered frame, and the scene responds to a pointer that never
  * scrolls at all.
  *
- * The sky plane is `priority`; everything over it is text or SVG, so the
- * largest contentful paint is the picture rather than a hero waiting on
- * JavaScript. With JavaScript off, or under reduced motion, the planes stack
- * into exactly the composition you see at rest.
+ * The backdrop is deliberately outside the volume and carries no transform, so
+ * the hero degrades to a still photograph rather than to nothing when a
+ * browser refuses the 3D. It is also the largest contentful paint: everything
+ * over it is text or SVG, so nothing here waits on JavaScript.
  */
 export function Hero({
   planes,
@@ -48,40 +48,38 @@ export function Hero({
   const { d, href } = useLocale();
 
   return (
-    <Stage
-      as="section"
-      perspective={1200}
-      swing={3.2}
-      className="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-black"
-    >
-      {/* No negative z-index here: `perspective` on the section makes it a 3D
-          rendering context, and a negative index inside one paints behind the
-          section's own background rather than behind its content. The content
-          is lifted above the scene instead. */}
+    <section className="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-black">
+      {/* The backdrop carries no transform and lives outside the 3D volume, so
+          it renders whatever happens to the stage above it. If a browser
+          refuses the perspective — Safari drops 3D descendants of a clipping
+          element, extensions disable transforms, JavaScript never runs — the
+          hero is still a photograph rather than a black rectangle. */}
       <div className="absolute inset-0">
+        <Media
+          src={planes.sky}
+          alt={imageAlt}
+          priority
+          quality={88}
+          sizes="100vw"
+          className="absolute inset-0 size-full"
+          imgClassName="animate-image-in [animation-duration:2.4s]"
+          objectPosition="center 56%"
+        />
+      </div>
+
+      {/* The stage is never the element that clips: `overflow: hidden` forces
+          `transform-style` to `flat`, and the section above has to clip. */}
+      <Stage perspective={1200} swing={3.2} className="absolute inset-0">
         <div className="stage-camera">
           {/* Distances are in the same units as the perspective, so these read
-              as metres would on a set: the sky is far away, the ground is under
-              your feet. `lift` is the composed movement on top of that.
+              as metres would on a set: the skyline is far away, the ground is
+              under your feet. `lift` is the composed movement on top of that.
 
-              Every plane shares one object-position. They have to: the planes
-              are registered to each other, and cropping them differently would
-              shear the scene apart on a narrow screen. The art is square and
-              composed from the centre so the same crop works on a phone and on
-              a wide desktop. */}
-          <Plane z={-420} lift={70}>
-            <Media
-              src={planes.sky}
-              alt={imageAlt}
-              priority
-              quality={88}
-              sizes="100vw"
-              className="absolute inset-0 size-full"
-              imgClassName="animate-image-in [animation-duration:2.4s]"
-              objectPosition="center 56%"
-            />
-          </Plane>
-
+              Every plane shares one object-position with the backdrop. They
+              have to: the planes are registered to each other, and cropping
+              them differently would shear the scene apart on a narrow screen.
+              The art is square and composed from the centre so the same crop
+              works on a phone and on a wide desktop. */}
           <Plane z={-260} lift={130} className="opacity-90">
             <Media
               src={planes.far}
@@ -114,9 +112,9 @@ export function Hero({
             />
           </Plane>
         </div>
+      </Stage>
 
-        <div className="absolute inset-0 scrim-full" aria-hidden="true" />
-      </div>
+      <div className="absolute inset-0 scrim-full" aria-hidden="true" />
 
       {/* The block sits well clear of the bottom edge: the buttons were landing
           on the border, which reads as a cropped screen rather than a composed
@@ -177,6 +175,6 @@ export function Hero({
           </div>
         </div>
       </div>
-    </Stage>
+    </section>
   );
 }
