@@ -25,6 +25,7 @@ export function Media({
   quality = 82,
   ratio,
   objectPosition,
+  unoptimized,
   ...rest
 }: Omit<ImageProps, "src" | "alt" | "fill" | "className"> & {
   src?: string | null;
@@ -34,6 +35,8 @@ export function Media({
   fill?: boolean;
   ratio?: string;
   objectPosition?: string;
+  /** Skip the image optimiser. See the hero for the one reason to. */
+  unoptimized?: boolean;
 }) {
   const { d } = useLocale();
   const [state, setState] = useState<"loading" | "ready" | "error">(src ? "loading" : "error");
@@ -68,7 +71,7 @@ export function Media({
           // The generated brand plates are SVG: they are already tiny and
           // resolution-independent, so routing them through the optimiser
           // would cost a request and gain nothing.
-          unoptimized={src.endsWith(".svg")}
+          unoptimized={unoptimized ?? src.endsWith(".svg")}
           onLoad={() => setState("ready")}
           onError={() => setState("error")}
           className={cn(

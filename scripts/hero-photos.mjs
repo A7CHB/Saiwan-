@@ -31,6 +31,14 @@ const OUT = join(dirname(fileURLToPath(import.meta.url)), "..", "public", "media
 
 /** Output edge, in pixels. Square: the crop differs from a phone to a desktop. */
 const SIZE = 1800;
+/**
+ * The cut-out plates are smaller, because they are shipped as-is.
+ *
+ * They bypass Next's image optimiser (see the hero), so their file size is
+ * whatever is written here — and a foreground element does not need the
+ * backdrop's resolution to hold up.
+ */
+const CUTOUT_SIZE = 1400;
 
 const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
 /** 0 below `from`, 1 above `to`, linear between — the feathered edge. */
@@ -44,7 +52,7 @@ const ramp = (value, from, to) => clamp01((value - from) / (to - from));
  * the plate sit in the scene.
  */
 async function key(file, decide, { feather = 1.2 } = {}) {
-  const image = sharp(file).resize(SIZE, SIZE, { fit: "cover" });
+  const image = sharp(file).resize(CUTOUT_SIZE, CUTOUT_SIZE, { fit: "cover" });
   const { data, info } = await image.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 
   const alpha = Buffer.alloc(info.width * info.height);
@@ -100,7 +108,7 @@ const umbrella = await key(find("umbrella"), (r, g, b) => {
   const distance = Math.max(Math.abs(r - GREY), Math.abs(g - GREY), Math.abs(b - GREY));
   return ramp(distance, 10, 26);
 });
-await umbrella.webp({ quality: 88, alphaQuality: 100 }).toFile(join(OUT, "hero-umbrella.webp"));
+await umbrella.webp({ quality: 80, alphaQuality: 90, effort: 6 }).toFile(join(OUT, "hero-umbrella.webp"));
 
 // 3. The planting. Its foliage is darker than the wall behind it, so this keys
 //    on colour rather than brightness: the wall is neutral, everything growing
@@ -111,6 +119,6 @@ const planting = await key(find("planting"), (r, g, b) => {
   const shadow = ramp(70 - (0.2126 * r + 0.7152 * g + 0.0722 * b), 0, 14);
   return Math.max(colour, shadow);
 });
-await planting.webp({ quality: 88, alphaQuality: 100 }).toFile(join(OUT, "hero-planting.webp"));
+await planting.webp({ quality: 74, alphaQuality: 90, effort: 6 }).toFile(join(OUT, "hero-planting.webp"));
 
 console.log(`Wrote hero-terrace.webp, hero-umbrella.webp and hero-planting.webp to ${OUT}`);

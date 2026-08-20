@@ -80,11 +80,21 @@ export function Hero({
               have to: the three were composed as one frame, and cropping them
               differently would pull the umbrella off its mast. The plates are
               square so the same crop works on a phone and on a wide desktop. */}
+          {/* `unoptimized` on both cut-outs, deliberately.
+              Next negotiates AVIF where the browser advertises it, and Safari
+              mishandles alpha in AVIF: the transparent studio background comes
+              back opaque, and this plane — the one nearest the camera — covers
+              the entire hero with a grey rectangle. Serving the WebP as
+              authored sidesteps the format negotiation altogether. The backdrop
+              has no alpha, so it still goes through the optimiser and still
+              gets AVIF. The plates are 1400px and encoded for size to pay for
+              the bytes the optimiser is no longer saving here. */}
           <Plane z={-70} lift={150}>
             <Media
               src={planes.mid}
               alt=""
               priority
+              unoptimized
               sizes="100vw"
               className="absolute inset-0 size-full"
               objectPosition="center 56%"
@@ -95,6 +105,7 @@ export function Hero({
             <Media
               src={planes.near}
               alt=""
+              unoptimized
               sizes="100vw"
               className="absolute inset-0 size-full"
               objectPosition="center 56%"
