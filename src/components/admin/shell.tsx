@@ -17,7 +17,7 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { CanopyMark } from "@/components/icons/canopy";
+import { SaiwanMark } from "@/components/icons/logo";
 import { ThemeToggle } from "@/components/site/theme-toggle";
 import { cn } from "@/lib/utils";
 
@@ -87,7 +87,7 @@ export function AdminShell({
       {/* Desktop rail */}
       <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-e border-line bg-elevated lg:flex">
         <Link href="/admin" className="flex items-center gap-2.5 border-b border-line px-5 py-4">
-          <CanopyMark className="size-5 text-accent" aria-hidden="true" />
+          <SaiwanMark className="h-5 w-auto text-accent" />
           <span className="text-sm font-semibold tracking-tight">Saiwan</span>
           <span className="ms-auto rounded bg-sunken px-1.5 py-0.5 text-[0.625rem] font-medium uppercase tracking-wide text-subtle">
             Admin
@@ -119,7 +119,7 @@ export function AdminShell({
           <aside className="relative flex h-dvh w-72 max-w-[85vw] flex-col border-e border-line bg-elevated animate-rise">
             <div className="flex items-center justify-between border-b border-line px-5 py-4">
               <span className="flex items-center gap-2.5">
-                <CanopyMark className="size-5 text-accent" aria-hidden="true" />
+                <SaiwanMark className="h-5 w-auto text-accent" />
                 <span className="text-sm font-semibold">Saiwan Admin</span>
               </span>
               <button

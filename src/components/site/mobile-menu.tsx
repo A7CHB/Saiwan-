@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Search as SearchIcon, X } from "lucide-react";
 import { Dialog } from "@/components/ui/dialog";
 import { useLocale } from "@/components/i18n/locale-provider";
-import { SaiwanLogo, CanopyRadial } from "@/components/icons/canopy";
+import { CanopyRadial } from "@/components/icons/canopy";
+import { SaiwanWordmark } from "@/components/icons/logo";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
 import { ThemeToggle } from "@/components/site/theme-toggle";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
@@ -43,7 +44,7 @@ export function MobileMenu({
         <CanopyRadial className="pointer-events-none absolute -end-24 -top-24 size-[28rem] text-accent opacity-[0.07]" />
 
         <div className="shell flex h-16 shrink-0 items-center justify-between">
-          <SaiwanLogo />
+          <SaiwanWordmark className="h-10 w-auto" />
           <button
             type="button"
             onClick={onClose}

@@ -39,29 +39,6 @@ export function CanopyGlyph({ className, ...props }: React.SVGProps<SVGSVGElemen
 }
 
 /**
- * The lockup. The wordmark is set in the display serif with heavy tracking —
- * the tracking is the identity as much as the letterforms are.
- */
-export function SaiwanLogo({
-  className,
-  markClassName,
-  showMark = true,
-}: {
-  className?: string;
-  markClassName?: string;
-  showMark?: boolean;
-}) {
-  return (
-    <span className={cn("inline-flex items-center gap-2.5", className)}>
-      {showMark ? <CanopyMark className={cn("size-6 shrink-0", markClassName)} aria-hidden="true" /> : null}
-      <span className="display text-[1.375rem] leading-none tracking-[0.3em] ltr:pl-[0.3em] rtl:pr-[0.3em] ltr:-mr-[0.3em] rtl:-ml-[0.3em]">
-        SAIWAN
-      </span>
-    </span>
-  );
-}
-
-/**
  * Large decorative canopy used as a section watermark — radial ribs seen from
  * directly below. Purely ornamental, so it is always aria-hidden.
  */

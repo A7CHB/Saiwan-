@@ -5,6 +5,7 @@ import type { Locale } from "@/lib/i18n/config";
 import { localePath } from "@/lib/i18n/config";
 import type { CategoryView } from "@/lib/data/catalog";
 import { CanopyRadial } from "@/components/icons/canopy";
+import { SaiwanLockup } from "@/components/icons/logo";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
 
@@ -80,7 +81,8 @@ export function SiteFooter({
           a directory, and stacking it added a screen and a half of scroll. */}
       <div className="shell relative grid grid-cols-2 gap-x-6 gap-y-10 py-14 lg:grid-cols-[1.4fr_repeat(3,1fr)] lg:gap-14">
         <div className="col-span-2 lg:col-span-1">
-          <p className="display text-[clamp(2rem,5vw,3rem)] leading-none tracking-[0.16em]">SAIWAN</p>
+          {/* The one place the tagline is set, at the size it was drawn for. */}
+          <SaiwanLockup className="text-[clamp(3.5rem,9vw,5rem)]" />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted">{d.footer.tagline}</p>
           <div className="mt-7">
             <p className="eyebrow mb-2 text-[0.5625rem]">{d.contact.hours}</p>

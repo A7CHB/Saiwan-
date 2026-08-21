@@ -8,6 +8,7 @@ import { fontVariables } from "@/lib/fonts";
 import { buildMetadata, JsonLd, organizationSchema, websiteSchema } from "@/lib/seo";
 import { getCategories } from "@/lib/data/catalog";
 
+import { Hydrated } from "@/components/motion/hydrated";
 import { ThemeScript } from "@/components/theme/theme-script";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { LocaleProvider } from "@/components/i18n/locale-provider";
@@ -92,6 +93,7 @@ export default async function SiteLayout({
         <ThemeScript />
       </head>
       <body className="grain min-h-dvh bg-bg text-fg antialiased">
+        <Hydrated />
         <LocaleProvider locale={locale} dictionary={d}>
           <ThemeProvider>
             <CompareProvider>

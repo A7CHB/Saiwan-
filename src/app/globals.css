@@ -709,28 +709,34 @@
   }
 
   /* Scroll reveal. Elements start hidden and are switched on when the
-     IntersectionObserver in `useReveal` adds [data-visible]. */
-  [data-reveal] {
+     IntersectionObserver in `useReveal` adds [data-visible].
+
+     Every hidden starting state is gated on [data-js], which the head script
+     puts on <html> and takes back off if the app never signals that it
+     hydrated. Hiding content is only safe while something is guaranteed to be
+     around to unhide it; without that gate a bundle that fails to load leaves
+     the whole page painted blank, markup and all. */
+  [data-js] [data-reveal] {
     opacity: 0;
     will-change: opacity, transform;
   }
-  [data-reveal="rise"] {
+  [data-js] [data-reveal="rise"] {
     transform: translate3d(0, 26px, 0);
   }
-  [data-reveal="mask"] {
+  [data-js] [data-reveal="mask"] {
     clip-path: inset(0 0 100% 0);
     opacity: 1;
   }
-  [data-reveal="scale-x"] {
+  [data-js] [data-reveal="scale-x"] {
     transform: scaleX(0);
     opacity: 1;
   }
-  [data-reveal="image"] {
+  [data-js] [data-reveal="image"] {
     transform: scale(1.08);
   }
   /* Arrives from depth: laid back and pushed away, then swinging up to face
      the reader. Needs a perspective on the parent (`.depth-group`). */
-  [data-reveal="depth"] {
+  [data-js] [data-reveal="depth"] {
     transform: translate3d(0, 18px, -180px) rotateX(14deg);
     transform-origin: 50% 100%;
   }
@@ -756,9 +762,13 @@
   }
   .text-reveal > span {
     display: inline-block;
-    transform: translate3d(0, 105%, 0);
     transition: transform 1.05s var(--ease-out-expo);
     transition-delay: var(--word-delay, 0ms);
+  }
+  /* Gated for the same reason as [data-reveal]: the parent clips, so a word
+     parked below the line is a word nobody ever reads. */
+  [data-js] .text-reveal > span {
+    transform: translate3d(0, 105%, 0);
   }
   [data-visible="true"] .text-reveal > span,
   .text-reveal[data-visible="true"] > span {

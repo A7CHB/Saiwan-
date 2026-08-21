@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Menu, Search as SearchIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/components/i18n/locale-provider";
-import { SaiwanLogo } from "@/components/icons/canopy";
+import { SaiwanWordmark } from "@/components/icons/logo";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
 import { ThemeToggle } from "@/components/site/theme-toggle";
 import { SearchDialog } from "@/components/site/search-dialog";
@@ -80,7 +80,7 @@ export function SiteHeader({ categories }: { categories: HeaderCategory[] }) {
             className="shrink-0 transition-opacity duration-300 hover:opacity-70"
             aria-label={d.meta.siteName}
           >
-            <SaiwanLogo />
+            <SaiwanWordmark className="h-10 w-auto lg:h-12" />
           </Link>
 
           <nav aria-label={d.nav.primary} className="hidden items-center gap-8 lg:flex xl:gap-10">

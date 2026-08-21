@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth/session";
 import { hasRole } from "@/lib/constants";
-import { CanopyMark } from "@/components/icons/canopy";
+import { SaiwanMark } from "@/components/icons/logo";
 import { AdminLoginForm } from "@/components/admin/login-form";
 
 export const metadata: Metadata = { title: "Sign in" };
@@ -23,7 +23,7 @@ export default async function AdminLoginPage({
     <div className="flex min-h-dvh items-center justify-center bg-sunken px-6 py-16">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex items-center gap-2.5">
-          <CanopyMark className="size-6 text-accent" aria-hidden="true" />
+          <SaiwanMark className="h-6 w-auto text-accent" />
           <span className="text-base font-semibold tracking-tight">Saiwan</span>
           <span className="ms-auto rounded bg-elevated px-2 py-0.5 text-[0.625rem] font-medium uppercase tracking-wide text-subtle">
             Admin

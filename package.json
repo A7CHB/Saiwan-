@@ -13,6 +13,7 @@
     "db:reset": "rm -f prisma/dev.db && prisma db push && tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "media": "node scripts/generate-plates.mjs",
+    "brand": "node scripts/generate-brand.mjs",
     "qa": "node scripts/qa.mjs",
     "qa:flows": "node scripts/flows.mjs",
     "postinstall": "prisma generate"

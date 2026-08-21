@@ -25,6 +25,23 @@ import { CanopyMark } from "@/components/icons/canopy";
  * whatever the script does, and `onLoad` is left to do the one thing only
  * JavaScript can: notice that a URL is dead.
  */
+/**
+ * A packshot is the product photographed against nothing — a cut-out with real
+ * transparency, generated from the brand master by `npm run brand`.
+ *
+ * It has to be told apart from a scene, because the two want opposite
+ * treatment: a photograph of a terrace is composed to be cropped, while
+ * cropping a packshot takes the edges off a canopy that is wider than it is
+ * tall. Frames on this site run from 4:5 to 21:9, so under `cover` the same
+ * umbrella would lose its sides on a card and its whole canopy on a wide plate.
+ *
+ * The naming convention is the signal, which is worth being honest about: it is
+ * a convention, not a fact about the file. It holds because these files have a
+ * single generator, and the alternative — a column on the products table — is a
+ * schema change for something the asset pipeline already knows.
+ */
+export const isPackshot = (src?: string | null) => !!src && /\/product-[^/]*\.webp$/.test(src);
+
 export function Media({
   src,
   alt,
@@ -38,6 +55,7 @@ export function Media({
   objectPosition,
   unoptimized,
   transparent = false,
+  fit,
   ...rest
 }: Omit<ImageProps, "src" | "alt" | "fill" | "className"> & {
   src?: string | null;
@@ -57,6 +75,11 @@ export function Media({
    * subject, but in front of whatever the cut-out is standing in.
    */
   transparent?: boolean;
+  /**
+   * How the image fills its frame. Defaults by what the image *is* — see
+   * `isPackshot` — and is only worth passing to overrule that.
+   */
+  fit?: "cover" | "contain";
 }) {
   const { d } = useLocale();
   const [state, setState] = useState<"loading" | "ready" | "error">(src ? "loading" : "error");
@@ -96,7 +119,11 @@ export function Media({
           unoptimized={unoptimized ?? src.endsWith(".svg")}
           onLoad={() => setState("ready")}
           onError={() => setState("error")}
-          className={cn("object-cover media-in", imgClassName)}
+          className={cn(
+            (fit ?? (isPackshot(src) ? "contain" : "cover")) === "contain" ? "object-contain" : "object-cover",
+            "media-in",
+            imgClassName,
+          )}
           style={objectPosition ? { objectPosition } : undefined}
           {...rest}
         />
