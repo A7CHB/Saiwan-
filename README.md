@@ -16,19 +16,24 @@ Two products in one codebase:
 ```bash
 npm install
 cp .env.example .env          # then edit — see "Environment" below
-npm run db:push               # create the SQLite schema
-npm run db:seed               # sample catalogue + the first administrator
+npm run db:push               # apply the schema
+npm run db:bootstrap          # sample catalogue + the first administrator
 npm run dev
 ```
 
 - Storefront: <http://localhost:3000> (redirects to your best-matching language)
 - Admin: <http://localhost:3000/admin> — signs in with `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `.env`
 
+Needs a Postgres to point `DATABASE_URL` at. The least work is a free
+[Neon](https://neon.tech) database — nothing to install, and the same URL works
+locally and deployed. **[DEPLOY.md](DEPLOY.md)** covers creating one and putting
+the site on Vercel.
+
 ### Environment
 
 | Variable | Purpose |
 | --- | --- |
-| `DATABASE_URL` | `file:./dev.db` for SQLite. Point at Postgres and switch the `provider` in `prisma/schema.prisma` for production. |
+| `DATABASE_URL` | Postgres connection string. Use the **pooled** one on serverless hosting. |
 | `AUTH_SECRET` | Session signing key. **Must be 32+ characters** — the app refuses to sign tokens otherwise. `openssl rand -base64 48`. |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Used once by the seed to create the first administrator. Change the password immediately after first sign-in. |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | International format, digits only (`9647500000000`). **Every WhatsApp button on the site reads this.** |
@@ -67,7 +72,7 @@ fallback.
 
 ### Stack
 
-Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Prisma + SQLite · `jose` for session tokens ·
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Prisma + Postgres · `jose` for session tokens ·
 `zod` for input validation. No UI kit, no animation library, no charting library — see "Deliberate decisions".
 
 ---
@@ -134,6 +139,11 @@ That is what turns WhatsApp from a black hole into a pipeline the admin can work
 - Animation is CSS; JavaScript only flips a `data-visible` attribute from an `IntersectionObserver`, so reveals
   never run on the main thread. `prefers-reduced-motion` disables all of it — and the reduced-motion block
   forces revealed content **visible**, so nothing can be hidden by an observer that never fires.
+- **Nothing on the site needs JavaScript to be visible.** Hiding content is only safe while something is
+  guaranteed to be around to unhide it, so every hidden reveal state is gated on a flag the head script sets and
+  then withdraws if the app never signals that it hydrated. A bundle blocked by an extension, a stale cache or a
+  chunk that 404s costs the animation, not the page. Images arrive the same way — a CSS animation, not a state
+  update — so they paint before hydration and with it disabled.
 - Images are AVIF/WebP through `next/image`, sized to the layout's real breakpoints, with explicit loading,
   loaded and **broken** states. The two exceptions are the home showroom's cut-out plates, which are served as
   authored WebP: Safari mishandles alpha in AVIF, and an opaque umbrella would cover the scene it stands in.
@@ -231,8 +241,8 @@ to one product in one language, and modelling them as entities would buy nothing
   to Redis or the platform's limiter. The interface is deliberately narrow so that is a one-file change.
 - **Image uploads.** The admin takes image **URLs** (local paths or an allowed remote host). There is no upload
   widget yet; `public/uploads/` and the `remotePatterns` allowlist in `next.config.ts` are ready for one.
-- **SQLite** is the default for zero-config development. Switch the provider to `postgresql` for production —
-  no model in the schema uses a SQLite-specific type.
+- **Postgres** everywhere, because the site deploys to serverless hosting where the filesystem is read-only
+  and per-invocation. No model uses a provider-specific type, so the database is interchangeable.
 
 ---
 

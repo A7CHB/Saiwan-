@@ -1,17 +1,21 @@
 // Saiwan — data model
 //
-// Provider is SQLite for zero-config development. To move to Postgres change
-// `provider` to "postgresql" and point DATABASE_URL at the cluster; every model
-// below is portable (no SQLite-specific types are used). Enum-like columns are
-// plain strings validated by Zod at the edge of the app (src/lib/constants.ts)
-// because SQLite has no native enum support.
+// Postgres, because the site is deployed to serverless hosting where the
+// filesystem is read-only and per-invocation: a SQLite file has nowhere to live
+// and nothing to share it with. Any Postgres will do — Neon, Vercel Postgres,
+// or one on your own machine; see DEPLOY.md.
+//
+// Nothing here is provider-specific. Every column is String, Boolean, Int or
+// DateTime, and the enum-like columns are plain strings validated by Zod at the
+// edge of the app (src/lib/constants.ts) rather than by the database, which is
+// what kept the move from SQLite to a one-line change.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

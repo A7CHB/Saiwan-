@@ -31,7 +31,15 @@ export default async function AdminTeamPage({
 
   const users = await prisma.user.findMany({
     where: search
-      ? { OR: [{ name: { contains: search } }, { email: { contains: search } }, { phone: { contains: search } }] }
+      ? {
+          // `insensitive` because Postgres LIKE is case-sensitive: without it
+          // searching "sara" never finds "Sara".
+          OR: [
+            { name: { contains: search, mode: "insensitive" } },
+            { email: { contains: search, mode: "insensitive" } },
+            { phone: { contains: search, mode: "insensitive" } },
+          ],
+        }
       : {},
     orderBy: [{ role: "desc" }, { createdAt: "desc" }],
     take: 200,

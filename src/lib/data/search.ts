@@ -10,11 +10,17 @@ export type SearchResult = ProductCard & { matchedOn: "name" | "category" | "mat
 /**
  * Catalogue search.
  *
- * SQLite's LIKE is case-insensitive for ASCII and case is meaningless in Arabic
- * and Kurdish, so a `contains` scan covers all three languages without an
- * extension. Matching runs against *every* locale's translations, so a customer
- * browsing in Kurdish still finds a piece by typing its English name.
+ * A `contains` scan covers all three languages without a search extension: case
+ * is meaningless in Arabic and Kurdish, and `insensitive` handles the Latin
+ * script. That mode is not decoration — Postgres LIKE is case-sensitive, so
+ * without it "Aria" matches and "aria" does not, and a customer typing a name
+ * in lower case gets an empty result.
+ *
+ * Matching runs against *every* locale's translations, so a customer browsing
+ * in Kurdish still finds a piece by typing its English name.
  */
+const like = (value: string) => ({ contains: value, mode: "insensitive" as const });
+
 export async function searchProducts(query: string, locale: Locale, limit = 12): Promise<SearchResult[]> {
   const q = query.trim();
   if (q.length < 2) return [];
@@ -23,12 +29,12 @@ export async function searchProducts(query: string, locale: Locale, limit = 12):
     where: {
       status: "PUBLISHED",
       OR: [
-        { slug: { contains: q } },
-        { sku: { contains: q } },
-        { translations: { some: { OR: [{ name: { contains: q } }, { tagline: { contains: q } }, { description: { contains: q } }] } } },
-        { category: { translations: { some: { name: { contains: q } } } } },
-        { materials: { some: { material: { translations: { some: { name: { contains: q } } } } } } },
-        { useCases: { contains: q.toLowerCase() } },
+        { slug: like(q) },
+        { sku: like(q) },
+        { translations: { some: { OR: [{ name: like(q) }, { tagline: like(q) }, { description: like(q) }] } } },
+        { category: { translations: { some: { name: like(q) } } } },
+        { materials: { some: { material: { translations: { some: { name: like(q) } } } } } },
+        { useCases: like(q.toLowerCase()) },
       ],
     },
     include: {

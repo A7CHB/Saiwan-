@@ -32,10 +32,12 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
         ...(categoryId ? { categoryId } : {}),
         ...(search
           ? {
+              // `insensitive` because Postgres LIKE is case-sensitive: without
+              // it searching "aria" never finds "Aria".
               OR: [
-                { slug: { contains: search } },
-                { sku: { contains: search } },
-                { translations: { some: { name: { contains: search } } } },
+                { slug: { contains: search, mode: "insensitive" } },
+                { sku: { contains: search, mode: "insensitive" } },
+                { translations: { some: { name: { contains: search, mode: "insensitive" } } } },
               ],
             }
           : {}),
