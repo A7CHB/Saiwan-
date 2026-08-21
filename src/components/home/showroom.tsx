@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowRight } from "lucide-react";
 import { Media } from "@/components/ui/media";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
@@ -228,7 +228,7 @@ export function Showroom({
           <section
             key={scene.key}
             id={`scene-${scene.key}`}
-            className="relative isolate flex min-h-svh flex-col justify-end overflow-hidden bg-black"
+            className="showroom-scene relative isolate flex flex-col justify-end overflow-hidden bg-black"
           >
             <SceneArt scene={scene} priority={index === 0} />
             <div className="absolute inset-0 scrim-scene" aria-hidden="true" />
@@ -255,8 +255,13 @@ export function Showroom({
 
   // ---------------------------------------------------------------- cinematic
   return (
-    <div ref={frameRef} style={{ height: `${scenes.length * 100}svh` }} className="relative">
-      <div className="sticky top-0 h-svh overflow-hidden bg-black">
+    <div
+      ref={frameRef}
+      // The count drives the height in CSS, where the unit fallback lives.
+      style={{ "--scenes": scenes.length } as CSSProperties}
+      className="showroom-frame relative"
+    >
+      <div className="showroom-stage sticky top-0 overflow-hidden bg-black">
         {scenes.map((scene, index) => (
           <div
             key={scene.key}

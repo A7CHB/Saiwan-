@@ -391,6 +391,40 @@
     transform: scale(1.045);
   }
 
+  /* The showroom's own heights.
+   *
+   * `svh` is the right unit — it is the viewport without the mobile browser's
+   * collapsing chrome — but everything inside the stage is absolutely
+   * positioned, so if a browser does not understand the unit the declaration is
+   * dropped, the stage computes to `height: auto` with no in-flow children, and
+   * the entire hero is zero pixels tall. Not a missing image: nothing at all.
+   *
+   * So `vh` is the floor, `svh` is the upgrade, and a pixel minimum sits under
+   * both in case a browser surprises us with a third way to fail.
+   */
+  .showroom-frame {
+    height: calc(var(--scenes, 5) * 100vh);
+    min-height: calc(var(--scenes, 5) * 32rem);
+  }
+  .showroom-stage {
+    height: 100vh;
+    min-height: 32rem;
+  }
+  .showroom-scene {
+    min-height: 100vh;
+  }
+  @supports (height: 100svh) {
+    .showroom-frame {
+      height: calc(var(--scenes, 5) * 100svh);
+    }
+    .showroom-stage {
+      height: 100svh;
+    }
+    .showroom-scene {
+      min-height: 100svh;
+    }
+  }
+
   /* The showroom's scrim. One layer, not two: `scrim-full` and `scrim-side`
      stacked crushed the scenes into murk, and a cinematic frame can only afford
      darkening where the type actually sits — bottom and lead edge. The sky, the
