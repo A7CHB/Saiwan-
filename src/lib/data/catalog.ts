@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { prisma } from "@/lib/db";
 import { defaultLocale, type Locale } from "@/lib/i18n/config";
+import { ADD_ON_CATEGORIES } from "@/lib/constants";
 import type { GalleryTag } from "@/lib/constants";
 
 function pick<T extends { locale: string }>(rows: T[], locale: Locale): T | undefined {
@@ -18,9 +19,16 @@ export type CategoryView = {
   productCount: number;
 };
 
+/**
+ * The categories a customer browses.
+ *
+ * Add-on categories are left out (see ADD_ON_CATEGORIES): they feed the
+ * accessory picker on a product page, and offering "Accessories" as a way to
+ * browse a collection of umbrellas only ever leads somewhere disappointing.
+ */
 export const getCategories = cache(async (locale: Locale): Promise<CategoryView[]> => {
   const rows = await prisma.category.findMany({
-    where: { isActive: true },
+    where: { isActive: true, slug: { notIn: [...ADD_ON_CATEGORIES] } },
     include: {
       translations: true,
       _count: { select: { products: { where: { status: "PUBLISHED" } } } },

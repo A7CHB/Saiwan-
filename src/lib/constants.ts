@@ -77,6 +77,18 @@ export const IMAGE_SPANS = ["NORMAL", "WIDE", "TALL"] as const;
 /** Statuses a customer-facing surface is allowed to see. */
 export const PUBLIC_PRODUCT_WHERE = { status: "PUBLISHED" as const };
 
+/**
+ * Categories that exist to be *added to an order*, not browsed.
+ *
+ * A granite base and a canopy cover are real products with real prices, and
+ * they still appear on every umbrella's page as add-ons that carry through into
+ * the WhatsApp message. What they are not is pieces: standing a base next to a
+ * six-metre cantilever in the collection makes the collection look like a parts
+ * list. So they are kept out of the browse surfaces — the listing and the
+ * category filter — and left everywhere they actually sell.
+ */
+export const ADD_ON_CATEGORIES = ["accessories"] as const;
+
 export const SESSION_COOKIE = "saiwan_session";
 export const THEME_COOKIE = "saiwan_theme";
 export const LOCALE_COOKIE = "saiwan_locale";

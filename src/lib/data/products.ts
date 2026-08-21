@@ -3,6 +3,7 @@ import { cache } from "react";
 import { prisma } from "@/lib/db";
 import { parseJson } from "@/lib/utils";
 import { defaultLocale, type Locale } from "@/lib/i18n/config";
+import { ADD_ON_CATEGORIES } from "@/lib/constants";
 import type { Availability, ProductStatus, Segment, Style, UseCase } from "@/lib/constants";
 
 /**
@@ -160,7 +161,12 @@ export const getProducts = cache(
     const rows = await prisma.product.findMany({
       where: {
         status: "PUBLISHED",
-        ...(filters.category ? { category: { slug: filters.category } } : {}),
+        // Add-ons are sold from the product page, not browsed as pieces — see
+        // ADD_ON_CATEGORIES. An explicit category filter still reaches them, so
+        // a direct link to accessories keeps working.
+        category: filters.category
+          ? { slug: filters.category }
+          : { slug: { notIn: [...ADD_ON_CATEGORIES] } },
         ...(filters.style ? { style: filters.style } : {}),
         ...(filters.segment ? { OR: [{ segment: filters.segment }, { segment: "BOTH" }] } : {}),
         ...(filters.tier ? { priceTier: filters.tier } : {}),
