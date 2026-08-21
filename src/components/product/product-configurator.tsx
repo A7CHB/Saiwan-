@@ -34,8 +34,6 @@ export function ProductConfigurator({
   const [sizeId, setSizeId] = useState(product.sizes[0]?.id ?? "");
   const [quantity, setQuantity] = useState(1);
   const [accessoryIds, setAccessoryIds] = useState<string[]>([]);
-  const [name, setName] = useState("");
-  const [note, setNote] = useState("");
 
   // One reference per page view, shared by the WhatsApp message and the stored
   // inquiry so the business can match the two. Generated after mount rather
@@ -65,14 +63,12 @@ export function ProductConfigurator({
             colorName: color?.name,
             quantity,
             accessories: accessories.map((item) => item.name),
-            customerName: name.trim() || undefined,
-            note: note.trim() || undefined,
             url,
             reference: reference ?? undefined,
           }),
         ),
       ),
-    [d, product, size, color, quantity, accessories, name, note, url, reference],
+    [d, product, size, color, quantity, accessories, url, reference],
   );
 
   /**
@@ -86,10 +82,8 @@ export function ProductConfigurator({
     const body = JSON.stringify({
       reference: reference ?? undefined,
       productId: product.id,
-      customerName: name.trim() || null,
       locale,
       source: "PRODUCT",
-      message: note.trim() || null,
       configuration: {
         productName: product.name,
         sizeLabel: size?.label ?? null,
@@ -275,40 +269,6 @@ export function ProductConfigurator({
           </ul>
         </fieldset>
       ) : null}
-
-      {/* Contact details — optional by design. Requiring a name before letting
-          someone message on WhatsApp costs conversions and gains nothing: their
-          number arrives with the message either way. */}
-      <div className="grid gap-5 sm:grid-cols-2">
-        <label className="flex flex-col gap-1.5">
-          <span className="eyebrow text-[0.625rem] rtl:text-xs">
-            {d.form.name}{" "}
-            <span className="normal-case tracking-normal text-subtle">({d.common.optional})</span>
-          </span>
-          <input
-            type="text"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            maxLength={80}
-            autoComplete="name"
-            placeholder={d.contact.fields.namePlaceholder}
-            className="w-full border-b border-line bg-transparent py-2.5 text-sm outline-none transition-colors placeholder:text-subtle/60 focus:border-accent"
-          />
-        </label>
-        <label className="flex flex-col gap-1.5">
-          <span className="eyebrow text-[0.625rem] rtl:text-xs">
-            {d.form.notes}{" "}
-            <span className="normal-case tracking-normal text-subtle">({d.common.optional})</span>
-          </span>
-          <input
-            type="text"
-            value={note}
-            onChange={(event) => setNote(event.target.value)}
-            maxLength={300}
-            className="w-full border-b border-line bg-transparent py-2.5 text-sm outline-none transition-colors placeholder:text-subtle/60 focus:border-accent"
-          />
-        </label>
-      </div>
 
       {/* Summary — a receipt of the decisions, so the customer can check the
           brief before it is sent rather than after. */}

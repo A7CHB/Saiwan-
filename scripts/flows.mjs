@@ -42,7 +42,6 @@ await page.getByRole("button", { name: /Select size 4.0 × 4.0 m/i }).click();
 await page.getByRole("button", { name: /Increase quantity/i }).click();
 await page.getByRole("button", { name: /Increase quantity/i }).click();
 await page.locator("label", { hasText: "Granite Base" }).click();
-await page.locator('input[placeholder="Full name"]').fill("Dara Ahmed");
 await page.waitForTimeout(400);
 
 const waHref = await page
@@ -56,7 +55,10 @@ check("Message carries the product", message.includes("Aria"), message);
 check("Message carries the chosen size", message.includes("4.0 × 4.0 m"), message);
 check("Message carries the quantity", /Quantity:\*? ?3/.test(message), message);
 check("Message carries the accessory", message.includes("Granite Base"), message);
-check("Message carries the customer name", message.includes("Dara Ahmed"), message);
+check(
+  "The configurator asks for nothing the customer already carries",
+  (await page.locator("input[type=text]").count()) === 0,
+);
 check("Message carries a reference", /SW-[A-Z2-9]{6}/.test(message), message);
 check("Message carries the product link", message.includes("/collection/aria"), message);
 
@@ -107,7 +109,6 @@ await page.getByRole("button", { name: /Select colour Ivory/i }).click();
 await page.waitForTimeout(700);
 check("Choosing a colour swaps the photograph", (await shownPlate()) === "product-orbis.webp", await shownPlate());
 
-await page.locator('input[placeholder="Full name"]').fill("Dara Ahmed");
 await page.waitForTimeout(400);
 const solisHref = await page
   .locator('a[href*="wa.me"]', { hasText: "Order via WhatsApp" })
