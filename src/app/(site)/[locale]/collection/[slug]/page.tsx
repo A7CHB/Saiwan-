@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cookies } from "next/headers";
-import { after } from "next/server";
 import { ChevronRight } from "lucide-react";
 
 import { isLocale, localePath, locales, type Locale } from "@/lib/i18n/config";
@@ -14,15 +12,10 @@ import {
   JsonLd,
   productSchema,
 } from "@/lib/seo";
-import {
-  getProductBySlug,
-  getProductSlugs,
-  getRelatedProducts,
-  recordProductView,
-} from "@/lib/data/products";
-import { VISITOR_COOKIE } from "@/lib/constants";
+import { getProductBySlug, getProductSlugs, getRelatedProducts } from "@/lib/data/products";
 
 import { ProductExperience } from "@/components/product/product-experience";
+import { ProductViewTracker } from "@/components/product/product-view-tracker";
 import { ProductCard } from "@/components/product/product-card";
 import { Reveal } from "@/components/motion/reveal";
 import { SectionHeader } from "@/components/ui/section-header";
@@ -104,14 +97,7 @@ export default async function ProductPage({
     );
   }
 
-  const [related, cookieStore] = await Promise.all([
-    getRelatedProducts(product.id, product.categorySlug, locale, 3),
-    cookies(),
-  ]);
-
-  // Counted after the response is streamed — a page view must never wait on an
-  // analytics write.
-  after(() => recordProductView(product.id, locale, cookieStore.get(VISITOR_COOKIE)?.value));
+  const related = await getRelatedProducts(product.id, product.categorySlug, locale, 3);
 
   const crumbs = [
     { name: d.nav.home, href: localePath(locale, "/") },
@@ -121,6 +107,8 @@ export default async function ProductPage({
 
   return (
     <>
+      <ProductViewTracker productId={product.id} />
+
       <div className="shell pt-28 sm:pt-32">
         <nav aria-label={d.a11y.breadcrumb} className="mb-8">
           <ol className="flex flex-wrap items-center gap-1.5 text-xs text-muted">

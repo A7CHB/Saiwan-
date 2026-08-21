@@ -49,10 +49,20 @@ export async function POST(request: NextRequest) {
           meta: meta ? JSON.stringify(meta).slice(0, 1000) : null,
         },
       }),
-      // Denormalised counter on the product so admin lists can sort without a
-      // group-by across the whole event table.
-      ...(type === "whatsapp_click" && validProductId
-        ? [prisma.product.update({ where: { id: validProductId }, data: { whatsappCount: { increment: 1 } } })]
+      // Denormalised counters on the product so admin lists can sort without a
+      // group-by across the whole event table. Views are counted here rather
+      // than while rendering the page: reading the visitor cookie server-side
+      // would opt every product page out of static rendering.
+      ...(validProductId && (type === "whatsapp_click" || type === "product_view")
+        ? [
+            prisma.product.update({
+              where: { id: validProductId },
+              data:
+                type === "whatsapp_click"
+                  ? { whatsappCount: { increment: 1 } }
+                  : { viewCount: { increment: 1 } },
+            }),
+          ]
         : []),
     ]);
   } catch {
