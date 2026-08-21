@@ -112,6 +112,9 @@ const COLORS = [
   { slug: "sand", hex: "#D6C7AC", name: tri("Sand", "رملي", "لمی") },
   { slug: "taupe", hex: "#A2968A", name: tri("Taupe", "بني رمادي", "قاوەیی خۆڵەمێشی") },
   { slug: "olive", hex: "#6A6C54", name: tri("Olive", "زيتوني", "زەیتوونی") },
+  // Sampled from the canopy in product-solis.webp rather than guessed, so the
+  // swatch and the photograph are the same green.
+  { slug: "forest", hex: "#17382E", name: tri("Forest", "أخضر داكن", "سەوزی تۆخ") },
   { slug: "terracotta", hex: "#A86A4A", name: tri("Terracotta", "طيني", "خشتی") },
   { slug: "charcoal", hex: "#3A3630", name: tri("Charcoal", "فحمي", "خەڵووزی") },
 ];
@@ -186,7 +189,8 @@ type ProductSeed = {
   useCases: string[];
   coverageM2: number;
   priceTier: number;
-  images: string[];
+  /** A plain URL, or one bound to the colourway it photographs. */
+  images: (string | { url: string; color: string })[];
   colors: string[];
   sizes: string[];
   materials: string[];
@@ -215,7 +219,7 @@ const PRODUCTS: ProductSeed[] = [
     coverageM2: 16,
     priceTier: 2,
     images: ["/media/product-aria.webp"],
-    colors: ["ivory", "sand", "taupe", "charcoal"],
+    colors: [],
     sizes: ["300-square", "400-square", "400-300-rect"],
     materials: ["anodised-aluminium", "solution-dyed-acrylic", "stainless-fixings"],
     accessories: ["base-granite", "cover-canopy", "light-ring"],
@@ -287,8 +291,11 @@ const PRODUCTS: ProductSeed[] = [
     useCases: ["garden", "terrace", "balcony"],
     coverageM2: 9.6,
     priceTier: 1,
-    images: ["/media/product-orbis.webp"],
-    colors: ["ivory", "sand", "olive", "terracotta"],
+    images: [
+      { url: "/media/product-orbis.webp", color: "ivory" },
+      { url: "/media/product-solis.webp", color: "forest" },
+    ],
+    colors: ["ivory", "forest"],
     sizes: ["250-round", "300-square", "350-round"],
     materials: ["anodised-aluminium", "solution-dyed-acrylic", "teak"],
     accessories: ["base-granite", "cover-canopy"],
@@ -341,7 +348,7 @@ const PRODUCTS: ProductSeed[] = [
     coverageM2: 32,
     priceTier: 3,
     images: ["/media/product-meridian.webp"],
-    colors: ["ivory", "taupe", "charcoal"],
+    colors: [],
     sizes: ["600-400-rect", "800-400-rect", "500-octagon"],
     materials: ["anodised-aluminium", "solution-dyed-acrylic", "stainless-fixings"],
     accessories: ["light-ring", "cover-canopy"],
@@ -394,7 +401,7 @@ const PRODUCTS: ProductSeed[] = [
     coverageM2: 16,
     priceTier: 2,
     images: ["/media/product-atrium.webp"],
-    colors: ["charcoal", "taupe", "ivory"],
+    colors: [],
     sizes: ["300-square", "400-square"],
     materials: ["anodised-aluminium", "solution-dyed-acrylic", "stainless-fixings"],
     accessories: ["light-ring", "base-granite"],
@@ -446,8 +453,11 @@ const PRODUCTS: ProductSeed[] = [
     useCases: ["garden", "balcony", "terrace"],
     coverageM2: 4.9,
     priceTier: 1,
-    images: ["/media/product-solis.webp"],
-    colors: ["olive", "terracotta", "sand", "ivory"],
+    images: [
+      { url: "/media/product-solis.webp", color: "forest" },
+      { url: "/media/product-orbis.webp", color: "ivory" },
+    ],
+    colors: ["forest", "ivory"],
     sizes: ["250-round", "300-square"],
     materials: ["anodised-aluminium", "solution-dyed-acrylic"],
     accessories: ["base-granite", "cover-canopy"],
@@ -499,7 +509,7 @@ const PRODUCTS: ProductSeed[] = [
     coverageM2: 24,
     priceTier: 3,
     images: ["/media/product-vela.webp"],
-    colors: ["charcoal", "taupe", "ivory"],
+    colors: [],
     sizes: ["500-octagon", "600-400-rect"],
     materials: ["anodised-aluminium", "solution-dyed-acrylic", "stainless-fixings"],
     accessories: ["light-ring", "cover-canopy"],
@@ -553,7 +563,7 @@ const PRODUCTS: ProductSeed[] = [
     coverageM2: 0,
     priceTier: 1,
     images: ["/media/product-base.svg"],
-    colors: ["charcoal"],
+    colors: [],
     sizes: [],
     materials: ["stainless-fixings"],
     name: tri("Granite Base", "قاعدة غرانيت", "بنکەی گرانیت"),
@@ -587,7 +597,7 @@ const PRODUCTS: ProductSeed[] = [
     coverageM2: 0,
     priceTier: 1,
     images: ["/media/product-cover.svg"],
-    colors: ["taupe", "charcoal"],
+    colors: [],
     sizes: [],
     materials: ["solution-dyed-acrylic"],
     name: tri("Protective Cover", "غطاء واقٍ", "داپۆشەری پارێزەر"),
@@ -621,7 +631,7 @@ const PRODUCTS: ProductSeed[] = [
     coverageM2: 0,
     priceTier: 2,
     images: ["/media/product-light.svg"],
-    colors: ["charcoal"],
+    colors: [],
     sizes: [],
     materials: ["anodised-aluminium", "stainless-fixings"],
     name: tri("Canopy Light Ring", "حلقة إضاءة المظلّة", "بازنەی ڕووناکی چەتر"),
@@ -787,15 +797,21 @@ async function main() {
 
     await prisma.productImage.deleteMany({ where: { productId: record.id } });
     await prisma.productImage.createMany({
-      data: product.images.map((url, index) => ({
-        productId: record.id,
-        url,
-        alt: `${product.name.en} — ${index === 0 ? "primary view" : `view ${index + 1}`}`,
-        order: index,
-        // Bind the second image to the first colourway so the configurator has
-        // something to swap to out of the box.
-        colorId: index === 1 && product.colors[1] ? colorIds[product.colors[1]] : null,
-      })),
+      data: product.images.map((image, index) => {
+        // An image that names a colourway is bound to it, which is what makes
+        // picking a swatch swap the photograph — and picking a photograph
+        // select the swatch. Nothing is inferred from position any more: a
+        // guess about which image showed which colour was only ever right by
+        // accident, and it is wrong the moment a product has one photograph.
+        const { url, color } = typeof image === "string" ? { url: image, color: undefined } : image;
+        return {
+          productId: record.id,
+          url,
+          alt: `${product.name.en} — ${index === 0 ? "primary view" : `view ${index + 1}`}`,
+          order: index,
+          colorId: color ? (colorIds[color] ?? null) : null,
+        };
+      }),
     });
 
     await prisma.productColor.deleteMany({ where: { productId: record.id } });

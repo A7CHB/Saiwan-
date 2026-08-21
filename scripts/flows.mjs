@@ -39,7 +39,6 @@ const page = await context.newPage();
 await page.goto(`${BASE}/en/collection/aria`, { waitUntil: "networkidle" });
 
 await page.getByRole("button", { name: /Select size 4.0 × 4.0 m/i }).click();
-await page.getByRole("button", { name: /Select colour Sand/i }).click();
 await page.getByRole("button", { name: /Increase quantity/i }).click();
 await page.getByRole("button", { name: /Increase quantity/i }).click();
 await page.locator("label", { hasText: "Granite Base" }).click();
@@ -55,7 +54,6 @@ const message = decodeURIComponent((waHref ?? "").split("text=")[1] ?? "");
 check("WhatsApp link points at the configured number", /wa\.me\/\d{8,}/.test(waHref ?? ""), waHref ?? "");
 check("Message carries the product", message.includes("Aria"), message);
 check("Message carries the chosen size", message.includes("4.0 × 4.0 m"), message);
-check("Message carries the chosen colour", message.includes("Sand"), message);
 check("Message carries the quantity", /Quantity:\*? ?3/.test(message), message);
 check("Message carries the accessory", message.includes("Granite Base"), message);
 check("Message carries the customer name", message.includes("Dara Ahmed"), message);
@@ -70,6 +68,53 @@ check("Summary shows the size", summary.includes("4.0 × 4.0 m"), summary);
 // Colour selection drives the gallery.
 const galleryColourSynced = await page.evaluate(() => document.querySelectorAll("[role=tabpanel], .frame").length > 0);
 check("Gallery rendered", galleryColourSynced);
+
+// ---------------------------------------------------------------------------
+// 1b. Colourways
+//
+// A colour is offered only where the piece is genuinely made in more than one,
+// and where it is offered the photograph has to follow the swatch — otherwise
+// the customer is choosing a colour they never see.
+// ---------------------------------------------------------------------------
+check(
+  "A piece made in one colour offers no colour choice",
+  (await page.getByRole("button", { name: /Select colour/i }).count()) === 0,
+);
+
+await page.goto(`${BASE}/en/collection/solis`, { waitUntil: "networkidle" });
+await page.waitForTimeout(600);
+
+/** Which plate is actually on screen, rather than merely in the document. */
+const shownPlate = () =>
+  page.evaluate(() => {
+    const visible = [...document.querySelectorAll("img")]
+      .filter((img) => /product-/.test(img.currentSrc || img.src))
+      .filter((img) => img.getBoundingClientRect().width > 200)
+      .filter((img) => {
+        let opacity = 1;
+        for (let el = img, i = 0; el && i < 6; el = el.parentElement, i++) {
+          opacity *= Number(getComputedStyle(el).opacity);
+        }
+        return opacity > 0.5;
+      });
+    return decodeURIComponent(visible[0]?.currentSrc ?? "").match(/product-[a-z]+\.webp/)?.[0] ?? "none";
+  });
+
+check("Both colourways are offered", (await page.getByRole("button", { name: /Select colour/i }).count()) === 2);
+check("Opens on its own colourway", (await shownPlate()) === "product-solis.webp", await shownPlate());
+
+await page.getByRole("button", { name: /Select colour Ivory/i }).click();
+await page.waitForTimeout(700);
+check("Choosing a colour swaps the photograph", (await shownPlate()) === "product-orbis.webp", await shownPlate());
+
+await page.locator('input[placeholder="Full name"]').fill("Dara Ahmed");
+await page.waitForTimeout(400);
+const solisHref = await page
+  .locator('a[href*="wa.me"]', { hasText: "Order via WhatsApp" })
+  .first()
+  .getAttribute("href");
+const solisMessage = decodeURIComponent((solisHref ?? "").split("text=")[1] ?? "");
+check("The chosen colour reaches WhatsApp", solisMessage.includes("Ivory"), solisMessage);
 
 // ---------------------------------------------------------------------------
 // 2. Arabic RTL product page
