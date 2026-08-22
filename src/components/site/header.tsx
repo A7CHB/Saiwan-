@@ -74,13 +74,25 @@ export function SiteHeader({ categories }: { categories: HeaderCategory[] }) {
             : "border-b border-line bg-[rgb(var(--c-bg)/0.82)] text-fg backdrop-blur-xl backdrop-saturate-150",
         )}
       >
+        {/* White type over a hero is only legible while the hero happens to be
+            dark behind it, and the showroom's sky is not. A short scrim under
+            the bar costs nothing visually and stops the logo dissolving into a
+            cloud — most visible on a phone, where the bar sits over the
+            brightest part of the frame. */}
+        {transparent ? (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-24 bg-gradient-to-b from-black/45 via-black/20 to-transparent"
+          />
+        ) : null}
+
         <div className="shell flex h-16 items-center justify-between gap-6 lg:h-20">
           <Link
             href={href("/")}
             className="shrink-0 transition-opacity duration-300 hover:opacity-70"
             aria-label={d.meta.siteName}
           >
-            <SaiwanWordmark className="h-10 w-auto lg:h-12" />
+            <SaiwanWordmark className="h-9 w-auto lg:h-12" />
           </Link>
 
           <nav aria-label={d.nav.primary} className="hidden items-center gap-8 lg:flex xl:gap-10">
@@ -113,8 +125,12 @@ export function SiteHeader({ categories }: { categories: HeaderCategory[] }) {
               <SearchIcon className="size-[18px]" strokeWidth={1.4} aria-hidden="true" />
             </button>
 
-            <LanguageSwitcher compact />
-            <ThemeToggle />
+            {/* Both of these are in the mobile menu, so the phone header can
+                stay down to the two things you actually reach for. */}
+            <div className="hidden items-center gap-1 lg:flex sm:gap-2">
+              <LanguageSwitcher compact />
+              <ThemeToggle />
+            </div>
 
             <WhatsAppButton
               variant={transparent ? "ghost-light" : "outline"}

@@ -25,7 +25,9 @@ const variants: Record<Variant, string> = {
 const sizes = {
   sm: "h-9 px-4 text-[0.6875rem]",
   md: "h-12 px-7 text-[0.75rem]",
-  lg: "h-14 px-9 text-[0.8125rem]",
+  // Two 56px buttons stacked is a lot of a phone screen, and the hero stacks
+  // them. The large size steps down rather than being a different size.
+  lg: "h-12 px-7 text-[0.8125rem] sm:h-14 sm:px-9",
 };
 
 /**

@@ -182,10 +182,13 @@ export function Showroom({
   const indicator = (
     <nav
       aria-label={navLabel}
+      // Five names side by side need 600px and a phone has half that, so the
+      // last two used to sit off the edge of a scroller nothing indicated was
+      // scrollable. On a phone only the current scene is named and the rest are
+      // rules — which is what a scene indicator is anyway.
       className={cn(
-        "pointer-events-auto flex gap-x-5 gap-y-2",
-        "max-lg:overflow-x-auto max-lg:no-scrollbar",
-        "lg:flex-col lg:gap-3",
+        "pointer-events-auto flex items-center gap-x-3 gap-y-2",
+        "lg:flex-col lg:items-start lg:gap-3",
       )}
     >
       {scenes.map((scene, index) => {
@@ -196,7 +199,9 @@ export function Showroom({
             type="button"
             onClick={() => goTo(index)}
             aria-current={current ? "true" : undefined}
-            className="group flex shrink-0 items-center gap-3 text-start"
+            // A rule alone is a small thing to hit, so on a phone the button
+            // keeps a full touch target around it.
+            className="group flex min-h-11 shrink-0 items-center gap-3 text-start lg:min-h-0"
           >
             <span
               aria-hidden="true"
@@ -211,8 +216,12 @@ export function Showroom({
                 current ? "text-white" : "text-white/45 group-hover:text-white/80",
               )}
             >
-              <span className="tabular-nums">{String(index + 1).padStart(2, "0")}</span>
-              <span className="ms-2.5">{scene.name}</span>
+              <span className="tabular-nums max-lg:hidden lg:inline">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className={cn("lg:ms-2.5", current ? "max-lg:inline" : "max-lg:hidden")}>
+                {scene.name}
+              </span>
             </span>
           </button>
         );
@@ -280,7 +289,7 @@ export function Showroom({
             element stands in all five environments, which is the whole idea. */}
         <div
           ref={umbrellaRef}
-          className="pointer-events-none absolute inset-x-0 mx-auto will-change-transform bottom-[38%] h-[44%] w-[94vw] sm:bottom-[7%] sm:h-[74%] sm:w-[min(64rem,88vw)]"
+          className="pointer-events-none absolute inset-x-0 mx-auto will-change-transform bottom-[54%] h-[34%] w-[84vw] sm:bottom-[7%] sm:h-[74%] sm:w-[min(64rem,88vw)]"
           style={{ transformOrigin: "50% 34%" }}
           aria-hidden="true"
         >
@@ -335,7 +344,9 @@ export function Showroom({
           ))}
         </div>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-8 z-20 flex justify-center px-6 lg:inset-y-0 lg:end-10 lg:start-auto lg:items-center lg:justify-end lg:px-0">
+        {/* Aligned to the copy on a phone rather than centred under it — the
+            hero reads down one edge, and a centred rail broke that line. */}
+        <div className="shell pointer-events-none absolute inset-x-0 bottom-7 z-20 flex justify-start lg:inset-y-0 lg:end-10 lg:start-auto lg:items-center lg:justify-end lg:px-0">
           {indicator}
         </div>
       </div>
@@ -378,11 +389,11 @@ function Opening({
     <div className="max-w-3xl">
       <div
         aria-hidden="true"
-        className="mb-8 h-px w-14 origin-[left_center] animate-[saiwan-scale-x_1s_var(--ease-out-expo)_both] bg-white/40 [animation-delay:150ms] rtl:origin-[right_center]"
+        className="mb-6 h-px w-12 origin-[left_center] sm:mb-8 sm:w-14 animate-[saiwan-scale-x_1s_var(--ease-out-expo)_both] bg-white/40 [animation-delay:150ms] rtl:origin-[right_center]"
       />
 
       <p
-        className="eyebrow mb-7 animate-fade text-white/60 [animation-delay:250ms]"
+        className="eyebrow mb-4 animate-fade text-white/60 sm:mb-7 [animation-delay:250ms]"
         style={{ animationFillMode: "both" }}
       >
         {eyebrow}
@@ -401,19 +412,19 @@ function Opening({
       </h1>
 
       <p
-        className="mt-8 max-w-sm animate-fade text-lead leading-relaxed text-white/70 [animation-delay:900ms]"
+        className="mt-5 max-w-sm animate-fade text-lead sm:mt-8 leading-relaxed text-white/70 [animation-delay:900ms]"
         style={{ animationFillMode: "both" }}
       >
         {intro}
       </p>
 
       <div
-        className="mt-10 flex animate-fade flex-col gap-3 sm:flex-row sm:items-center [animation-delay:1100ms]"
+        className="mt-7 flex animate-fade flex-col gap-2.5 sm:mt-10 sm:flex-row sm:items-center sm:gap-3 [animation-delay:1100ms]"
         style={{ animationFillMode: "both" }}
       >
         <Link
           href={collectionHref}
-          className="group/cta inline-flex h-14 items-center justify-center gap-3 rounded-xs bg-white px-9 text-[0.8125rem] font-medium uppercase tracking-[0.14em] text-black transition-colors duration-500 hover:bg-champagne rtl:normal-case rtl:tracking-normal"
+          className="group/cta inline-flex h-12 items-center justify-center gap-3 rounded-xs bg-white px-7 sm:h-14 sm:px-9 text-[0.8125rem] font-medium uppercase tracking-[0.14em] text-black transition-colors duration-500 hover:bg-champagne rtl:normal-case rtl:tracking-normal"
         >
           {primaryCta}
           <ArrowRight
