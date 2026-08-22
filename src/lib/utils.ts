@@ -73,3 +73,20 @@ export function isValidPhone(value: string): boolean {
   const digits = normalisePhone(value);
   return digits.length >= 8 && digits.length <= 15;
 }
+
+/**
+ * Can this number be dialled from outside its own country?
+ *
+ * wa.me needs a full international number, and the failure when it does not get
+ * one is silent: `07513330444` is a perfectly good Iraqi mobile, passes every
+ * length check, and produces a link to an account that does not exist. Every
+ * order button on the site would open a dead chat and nothing would look wrong.
+ *
+ * The leading zero is the tell. It is a national trunk prefix — the digit you
+ * dial instead of the country code, never alongside it — so a number that still
+ * has one has not been converted. `07513330444` is `9647513330444`.
+ */
+export function isDiallableInternationally(value: string): boolean {
+  const digits = normalisePhone(value);
+  return isValidPhone(digits) && !digits.startsWith("0");
+}

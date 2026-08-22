@@ -5,6 +5,7 @@ import { AdminFrame } from "@/components/admin/frame";
 import { PageHeader, Panel, Table, Td, Th } from "@/components/admin/ui";
 import { SettingsForm } from "@/components/admin/entity-forms";
 import { formatDate } from "@/lib/i18n/format";
+import { isDiallableInternationally } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Settings" };
 export const dynamic = "force-dynamic";
@@ -31,6 +32,8 @@ export default async function AdminSettingsPage() {
 
   const settings = Object.fromEntries(rows.map((row) => [row.key, row.value]));
 
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
+
   return (
     <AdminFrame role="ADMIN">
       <PageHeader title="Settings" description="Business details used across the site." />
@@ -46,7 +49,22 @@ export default async function AdminSettingsPage() {
               <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-2.5">
                 <dt className="text-muted">WhatsApp number (runtime)</dt>
                 <dd dir="ltr" className="min-w-0 break-all font-mono text-xs">
-                  {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || <span className="text-terracotta">not set</span>}
+                  {whatsappNumber ? (
+                    <>
+                      {whatsappNumber}
+                      {/* A local number passes every length check and produces a
+                          link to an account that does not exist, so the one
+                          place it is displayed is the place to catch it. */}
+                      {isDiallableInternationally(whatsappNumber) ? null : (
+                        <span className="mt-1 block font-sans text-terracotta">
+                          Not diallable internationally — WhatsApp needs the country code and no
+                          leading zero, so 07513330444 is 9647513330444.
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <span className="text-terracotta">not set</span>
+                  )}
                 </dd>
               </div>
               <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 py-2.5">
