@@ -1,8 +1,8 @@
 # Deploying Saiwan
 
-The site runs on Vercel with a Postgres database. Nothing else is required —
-there is no image host, no object storage and no queue. Product images are paths
-under `public/`, so they ship with the code.
+The site runs on Vercel with a Postgres database, plus a Blob store if you want
+to upload product photographs from the dashboard. Nothing else is required —
+no image CDN, no queue. The catalogue's own images ship with the code.
 
 Budget about fifteen minutes for the first deploy. Afterwards, deploys are a
 `git push`.
@@ -75,6 +75,26 @@ to it.
 
 ---
 
+## Image uploads
+
+The dashboard can upload product photographs straight from your computer, but
+it needs somewhere to put them. Vercel's filesystem is read-only and thrown away
+after each request, so an uploaded file has to go to storage.
+
+In the Vercel dashboard: **Storage → Create Database → Blob**, then connect it
+to the `saiwan` project. That sets `BLOB_READ_WRITE_TOKEN` for you. Redeploy and
+the Upload button works.
+
+Until you do, the button answers with exactly what is missing, and you can still
+paste an image URL — nothing else in the dashboard is affected.
+
+Uploads are limited to 8 MB and to formats a browser can display (JPEG, PNG,
+WebP, AVIF, GIF), and only a signed-in member of staff can post to the endpoint.
+Running locally with `npm run dev` needs no storage at all: files go to
+`public/uploads`, which is gitignored.
+
+---
+
 ## After the first deploy
 
 **Deploys never touch your content.** The seed only runs against a database with
@@ -127,7 +147,7 @@ Two harnesses run against any URL, local or deployed:
 
 ```bash
 npm run qa       -- https://your-deployment.vercel.app   # every route × 3 languages × 2 themes × 3 viewports
-npm run qa:flows -- https://your-deployment.vercel.app   # 38 end-to-end checks
+npm run qa:flows -- https://your-deployment.vercel.app   # 42 end-to-end checks
 ```
 
 `qa:flows` signs into the dashboard, edits a product and files an inquiry, so

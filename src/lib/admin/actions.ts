@@ -199,6 +199,20 @@ export async function saveProductAction(_prev: ActionState, formData: FormData):
     .slice(0, 24);
 
   if (imageLines.length > 0 || str(formData, "images") === "") {
+    // An image can be bound to a colourway, which is what makes choosing a
+    // swatch swap the photograph. The form does not carry that binding, so it
+    // is read back off the images being replaced and reattached by URL —
+    // otherwise saving any unrelated field on a two-colour piece would quietly
+    // unbind its colours and the swatches would stop changing the picture.
+    const bindings = new Map(
+      (
+        await prisma.productImage.findMany({
+          where: { productId: product.id, colorId: { not: null } },
+          select: { url: true, colorId: true },
+        })
+      ).map((image) => [image.url, image.colorId]),
+    );
+
     await prisma.productImage.deleteMany({ where: { productId: product.id } });
     if (imageLines.length > 0) {
       await prisma.productImage.createMany({
@@ -207,6 +221,7 @@ export async function saveProductAction(_prev: ActionState, formData: FormData):
           url: url.slice(0, 600),
           alt: str(formData, `name_en`) || data.slug,
           order: index,
+          colorId: bindings.get(url) ?? null,
         })),
       });
     }

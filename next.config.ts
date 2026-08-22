@@ -15,8 +15,11 @@ const nextConfig: NextConfig = {
     // Next 16 requires every quality used in the app to be declared.
     qualities: [75, 82, 88, 90],
     remotePatterns: [
-      // Seed photography. Replace with the Saiwan asset host (or drop entirely
-      // once images are uploaded to /public/uploads) when real shots exist.
+      // Where the dashboard's uploads land in production. Every store gets its
+      // own subdomain, so the wildcard is the store, not an open door.
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+      // Seed photography. Replace with the Saiwan asset host when real shots
+      // exist for everything.
       { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },

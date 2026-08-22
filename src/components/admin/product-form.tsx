@@ -22,6 +22,7 @@ import {
 } from "@/components/admin/form";
 import { Panel } from "@/components/admin/ui";
 import { cn } from "@/lib/utils";
+import { ImageManager } from "@/components/admin/image-manager";
 
 export type ProductFormData = {
   id?: string;
@@ -189,15 +190,8 @@ export function ProductForm({ data, options }: { data: ProductFormData; options:
             })}
           </Panel>
 
-          <Panel title="Images" description="One URL per line. The first is the primary view.">
-            <AdminTextarea
-              label="Image URLs"
-              name="images"
-              defaultValue={data.images}
-              rows={5}
-              hint="Local paths (/media/…, /uploads/…) or absolute URLs on an allowed host."
-              className="font-mono text-xs"
-            />
+          <Panel title="Images" description="The first is the card and the primary view.">
+            <ImageManager name="images" defaultValue={data.images} />
           </Panel>
 
           <Panel title="Options" description="What a customer can choose in the configurator.">
