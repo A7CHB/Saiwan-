@@ -93,10 +93,6 @@ const en = {
         name: "Villa",
         body: "A private terrace, held in shade from midday until the light goes.",
       },
-      resort: {
-        name: "Resort",
-        body: "Open water, open sky, and one line of shade along the deck.",
-      },
       dining: {
         name: "Dining",
         body: "A dining room without walls, warm enough to keep a table late.",

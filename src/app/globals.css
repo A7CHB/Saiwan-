@@ -429,13 +429,20 @@
      stacked crushed the scenes into murk, and a cinematic frame can only afford
      darkening where the type actually sits — bottom and lead edge. The sky, the
      skyline and the water stay untouched. */
+  /* On a phone the copy occupies the bottom half and so does the terrace the
+     umbrella stands on, so the two share the frame whether or not that is
+     convenient. The scrim reaches higher and darker there — far enough up to
+     sit under the headline, which would otherwise be white type crossing a
+     cream canopy. On a wide screen the copy sits in a corner and needs much
+     less. */
   .scrim-scene {
     background:
       linear-gradient(
         to top,
-        rgb(var(--c-overlay) / 0.74) 0%,
-        rgb(var(--c-overlay) / 0.36) 26%,
-        rgb(var(--c-overlay) / 0) 58%
+        rgb(var(--c-overlay) / 0.82) 0%,
+        rgb(var(--c-overlay) / 0.6) 30%,
+        rgb(var(--c-overlay) / 0.24) 52%,
+        rgb(var(--c-overlay) / 0) 72%
       ),
       linear-gradient(
         to right,
@@ -444,13 +451,43 @@
         rgb(var(--c-overlay) / 0) 66%
       );
   }
+  @media (min-width: 1024px) {
+    .scrim-scene,
+    [dir="rtl"] .scrim-scene {
+      background-image:
+        linear-gradient(
+          to top,
+          rgb(var(--c-overlay) / 0.74) 0%,
+          rgb(var(--c-overlay) / 0.36) 26%,
+          rgb(var(--c-overlay) / 0) 58%
+        ),
+        var(--scrim-scene-edge);
+    }
+    .scrim-scene {
+      --scrim-scene-edge: linear-gradient(
+        to right,
+        rgb(var(--c-overlay) / 0.52) 0%,
+        rgb(var(--c-overlay) / 0.2) 34%,
+        rgb(var(--c-overlay) / 0) 66%
+      );
+    }
+    [dir="rtl"] .scrim-scene {
+      --scrim-scene-edge: linear-gradient(
+        to left,
+        rgb(var(--c-overlay) / 0.52) 0%,
+        rgb(var(--c-overlay) / 0.2) 34%,
+        rgb(var(--c-overlay) / 0) 66%
+      );
+    }
+  }
   [dir="rtl"] .scrim-scene {
     background:
       linear-gradient(
         to top,
-        rgb(var(--c-overlay) / 0.74) 0%,
-        rgb(var(--c-overlay) / 0.36) 26%,
-        rgb(var(--c-overlay) / 0) 58%
+        rgb(var(--c-overlay) / 0.82) 0%,
+        rgb(var(--c-overlay) / 0.6) 30%,
+        rgb(var(--c-overlay) / 0.24) 52%,
+        rgb(var(--c-overlay) / 0) 72%
       ),
       linear-gradient(
         to left,
@@ -458,6 +495,28 @@
         rgb(var(--c-overlay) / 0.2) 34%,
         rgb(var(--c-overlay) / 0) 66%
       );
+  }
+
+  /* The hero headline, set over the object it is describing.
+     On a phone the umbrella stands on the terrace, which is the same half of
+     the frame the copy lives in, so the canopy passes behind the type — and a
+     champagne italic over cream canvas is the one pairing the scrim cannot
+     rescue on its own. A soft shadow gives every letter its own edge. It reads
+     as depth rather than as a fix, and it is dropped on wide screens where the
+     copy sits in a corner and never meets the canopy. */
+  .hero-type {
+    text-shadow: 0 1px 2px rgb(var(--c-overlay) / 0.45), 0 2px 28px rgb(var(--c-overlay) / 0.5);
+  }
+  /* Not on the buttons. The primary sets black on solid white, where a shadow
+     meant for type over a photograph only reads as a smudge. */
+  .hero-type a,
+  .hero-type button {
+    text-shadow: none;
+  }
+  @media (min-width: 1024px) {
+    .hero-type {
+      text-shadow: none;
+    }
   }
 
   /* A scrim along the reading edge, for a headline set over a busy photograph.

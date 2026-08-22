@@ -195,13 +195,13 @@ check("Home hero uses the existing WhatsApp flow", /wa\.me\/\d{8,}/.test(heroWa 
 const umbrellaCount = await page.locator('img[src*="hero-umbrella"]').count();
 check("One umbrella stands in every scene", umbrellaCount === 1, `${umbrellaCount} umbrella elements`);
 
-await page.getByRole("button", { name: /04\s*Rooftop/i }).click();
+await page.getByRole("button", { name: /03\s*Rooftop/i }).click();
 await page.waitForTimeout(2200);
 const jumped = await page.evaluate(() => ({
   screens: Math.round(window.scrollY / window.innerHeight),
   current: document.querySelector("[aria-current=true]")?.textContent?.trim() ?? "",
 }));
-check("Scene navigation animates to the chosen scene", jumped.screens === 3, JSON.stringify(jumped));
+check("Scene navigation animates to the chosen scene", jumped.screens === 2, JSON.stringify(jumped));
 check("The chosen scene is marked current", /Rooftop/i.test(jumped.current), jumped.current);
 
 // The space explorer reads the catalogue, not a second list.

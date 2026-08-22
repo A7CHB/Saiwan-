@@ -289,7 +289,7 @@ export function Showroom({
             element stands in all five environments, which is the whole idea. */}
         <div
           ref={umbrellaRef}
-          className="pointer-events-none absolute inset-x-0 mx-auto will-change-transform bottom-[54%] h-[34%] w-[84vw] sm:bottom-[7%] sm:h-[74%] sm:w-[min(64rem,88vw)]"
+          className="pointer-events-none absolute inset-x-0 mx-auto will-change-transform bottom-[18%] h-[46%] w-[92vw] sm:bottom-[7%] sm:h-[74%] sm:w-[min(64rem,88vw)]"
           style={{ transformOrigin: "50% 34%" }}
           aria-hidden="true"
         >
@@ -386,7 +386,7 @@ function Opening({
   collectionHref: string;
 }) {
   return (
-    <div className="max-w-3xl">
+    <div className="hero-type max-w-3xl">
       <div
         aria-hidden="true"
         className="mb-6 h-px w-12 origin-[left_center] sm:mb-8 sm:w-14 animate-[saiwan-scale-x_1s_var(--ease-out-expo)_both] bg-white/40 [animation-delay:150ms] rtl:origin-[right_center]"

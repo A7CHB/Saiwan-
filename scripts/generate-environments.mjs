@@ -420,22 +420,6 @@ const ENVIRONMENTS = {
     ].join("\n  "));
   },
 
-  resort: () => {
-    const l = LIGHT.midday;
-    return plate(l, [
-      water(l, { from: -0.04, to: 0.02, lines: 4, seed: 41 }),
-      hedge(l, { depth: 0.06, height: 0.045 }),
-      paving(l, { opacity: 0.12 }),
-      water(l, { from: 0.26, to: 0.66, lines: 10, seed: 43 }),
-      tree(l, { x: SIZE * 0.08, depth: 0.34, height: 1.15, seed: 47 }),
-      tree(l, { x: SIZE * 0.93, depth: 0.3, height: 1, seed: 53 }),
-      lounger(l, { x: SIZE * 0.17, depth: 0.72 }),
-      lounger(l, { x: SIZE * 0.31, depth: 0.72 }),
-      lounger(l, { x: SIZE * 0.83, depth: 0.78, flip: true }),
-      planting(l, { x: SIZE * 0.99, depth: 0.84, spread: 1.5, seed: 59 }),
-    ].join("\n  "));
-  },
-
   dining: () => {
     const l = LIGHT.evening;
     return plate(l, [

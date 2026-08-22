@@ -17,7 +17,7 @@ import type { UseCase } from "@/lib/constants";
  * `Product.useCases` vocabulary, so "where will yours live?" filters real
  * products rather than a second, hand-maintained list.
  */
-export type SceneKey = "villa" | "resort" | "dining" | "rooftop" | "garden";
+export type SceneKey = "villa" | "dining" | "rooftop" | "garden";
 
 export type Scene = {
   key: SceneKey;
@@ -42,13 +42,6 @@ export const SCENES: Scene[] = [
     position: "center 58%",
     placeholder: false,
     useCases: ["terrace", "pool"],
-  },
-  {
-    key: "resort",
-    image: "/media/env-resort.svg",
-    position: "center 70%",
-    placeholder: true,
-    useCases: ["hotel", "pool"],
   },
   {
     key: "dining",
