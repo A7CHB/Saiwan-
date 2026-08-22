@@ -324,7 +324,11 @@ export function Showroom({
               ref={(node) => {
                 copyRefs.current[index] = node;
               }}
-              className="shell absolute inset-x-0 bottom-0 z-10 pb-28 pt-32 sm:pb-32 lg:pb-36"
+              // On a phone this layer spans the frame so the headline can sit
+              // in the sky and the buttons stay under the thumb, with the
+              // terrace — and the umbrella standing on it — left clear between
+              // them. Above sm it goes back to one block resting on the floor.
+              className="shell absolute inset-x-0 bottom-0 z-10 pb-28 pt-32 max-sm:inset-y-0 max-sm:flex max-sm:flex-col max-sm:pb-24 max-sm:pt-24 sm:pb-32 lg:pb-36"
               style={{ opacity: index === 0 ? 1 : 0, pointerEvents: index === 0 ? "auto" : "none" }}
             >
               {index === 0 ? (
@@ -386,7 +390,9 @@ function Opening({
   collectionHref: string;
 }) {
   return (
-    <div className="hero-type max-w-3xl">
+    <div className="hero-type flex h-full max-w-3xl flex-col justify-between sm:block sm:h-auto">
+      {/* The reading half. On a phone it rides to the top of the frame. */}
+      <div>
       <div
         aria-hidden="true"
         className="mb-6 h-px w-12 origin-[left_center] sm:mb-8 sm:w-14 animate-[saiwan-scale-x_1s_var(--ease-out-expo)_both] bg-white/40 [animation-delay:150ms] rtl:origin-[right_center]"
@@ -418,8 +424,10 @@ function Opening({
         {intro}
       </p>
 
+      </div>
+
       <div
-        className="mt-7 flex animate-fade flex-col gap-2.5 sm:mt-10 sm:flex-row sm:items-center sm:gap-3 [animation-delay:1100ms]"
+        className="mt-7 flex animate-fade flex-col gap-2.5 max-sm:mt-0 sm:mt-10 sm:flex-row sm:items-center sm:gap-3 [animation-delay:1100ms]"
         style={{ animationFillMode: "both" }}
       >
         <Link
@@ -442,7 +450,7 @@ function Opening({
 
 function SceneCopy({ index, name, body }: { index: number; name: string; body: string }) {
   return (
-    <div className="max-w-xl">
+    <div className="mt-auto max-w-xl sm:mt-0">
       <p className="mb-5 flex items-center gap-3 text-[0.6875rem] font-medium uppercase tracking-[0.2em] text-white/60 rtl:text-sm rtl:normal-case rtl:tracking-normal">
         <span className="tabular-nums">{String(index + 1).padStart(2, "0")}</span>
         <span aria-hidden="true" className="h-px w-8 bg-white/30" />

@@ -451,6 +451,31 @@
         rgb(var(--c-overlay) / 0) 66%
       );
   }
+  /* On a phone the headline sits at the top of the frame, in the sky, so the
+     cover has to be there too — the bottom scrim cannot reach it, and the sky
+     is the brightest part of every one of these scenes. The reading-edge
+     gradient is dropped here: the copy runs the full width, so an edge to read
+     against is not a thing that exists. */
+  @media (max-width: 639px) {
+    .scrim-scene,
+    [dir="rtl"] .scrim-scene {
+      background-image:
+        linear-gradient(
+          to bottom,
+          rgb(var(--c-overlay) / 0.5) 0%,
+          rgb(var(--c-overlay) / 0.22) 24%,
+          rgb(var(--c-overlay) / 0) 44%
+        ),
+        linear-gradient(
+          to top,
+          rgb(var(--c-overlay) / 0.82) 0%,
+          rgb(var(--c-overlay) / 0.6) 30%,
+          rgb(var(--c-overlay) / 0.24) 52%,
+          rgb(var(--c-overlay) / 0) 72%
+        );
+    }
+  }
+
   @media (min-width: 1024px) {
     .scrim-scene,
     [dir="rtl"] .scrim-scene {
