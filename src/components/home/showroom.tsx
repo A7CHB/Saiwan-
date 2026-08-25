@@ -18,9 +18,20 @@ export type ShowroomScene = {
   key: SceneKey;
   image: string;
   position: string;
+  /** How this space places the object — see `Scene.stand`. */
+  stand?: { scale?: number; x?: number; y?: number };
   name: string;
   body: string;
 };
+
+/** Linear blend, so the object travels between two placements as you scroll. */
+const mix = (from: number, to: number, t: number) => from + (to - from) * t;
+
+const standOf = (scene: ShowroomScene | undefined) => ({
+  scale: scene?.stand?.scale ?? 1,
+  x: scene?.stand?.x ?? 0,
+  y: scene?.stand?.y ?? 0,
+});
 
 /**
  * One object. Infinite spaces.
@@ -71,6 +82,7 @@ export function Showroom({
   const envRefs = useRef<(HTMLDivElement | null)[]>([]);
   const copyRefs = useRef<(HTMLDivElement | null)[]>([]);
   const umbrellaRef = useRef<HTMLDivElement>(null);
+  const shadowRef = useRef<HTMLDivElement>(null);
   const veilRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -130,7 +142,26 @@ export function Showroom({
         // what the environments change behind. The object never leaves the
         // frame — it is the one thing every scene has in common.
         const swell = Math.pow(between, 1.15);
-        umbrella.style.transform = `scale(${(1 + 2.1 * swell).toFixed(4)})`;
+
+        // Each space stands the object differently, and the object travels
+        // between those placements as the scene changes — which is the moment
+        // it is least visible, under the swell, so it arrives already fitted
+        // rather than being seen to move.
+        const from = standOf(scenes[Math.floor(p)]);
+        const to = standOf(scenes[Math.min(scenes.length - 1, Math.ceil(p))]);
+        const scale = mix(from.scale, to.scale, phase) * (1 + 2.1 * swell);
+        const x = mix(from.x, to.x, phase);
+        const y = mix(from.y, to.y, phase);
+
+        umbrella.style.transform = `translate(${x.toFixed(2)}%, ${y.toFixed(2)}%) scale(${scale.toFixed(4)})`;
+
+        const shadow = shadowRef.current;
+        if (shadow) {
+          // The shadow belongs to the object, so it takes the same placement.
+          // Without it a cut-out at golden hour reads as a sticker: nothing
+          // else in the frame is missing its contact with the floor.
+          shadow.style.transform = `translate(${x.toFixed(2)}%, ${y.toFixed(2)}%) scale(${scale.toFixed(4)})`;
+        }
       }
 
       const veil = veilRef.current;
@@ -284,6 +315,23 @@ export function Showroom({
             <SceneArt scene={scene} priority={index === 0} />
           </div>
         ))}
+
+        {/* The object's contact with the floor. A cut-out dropped onto a
+            photograph at golden hour with nothing beneath it reads as a sticker
+            — every other thing in these frames casts something. It sits under
+            the canopy and takes the same placement, so it stays with the object
+            through the scene changes. */}
+        <div
+          ref={shadowRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 mx-auto will-change-transform bottom-[18%] h-[46%] w-[92vw] sm:bottom-[7%] sm:h-[74%] sm:w-[min(64rem,88vw)]"
+          style={{ transformOrigin: "50% 34%" }}
+        >
+          <div
+            className="absolute bottom-[3%] left-1/2 h-[7%] w-[58%] -translate-x-1/2 rounded-[50%] blur-lg"
+            style={{ background: "radial-gradient(closest-side, rgb(0 0 0 / 0.42), rgb(0 0 0 / 0))" }}
+          />
+        </div>
 
         {/* The constant. It is never re-mounted and never swapped: the same
             element stands in all five environments, which is the whole idea. */}

@@ -76,6 +76,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     key: scene.key,
     image: scene.image,
     position: scene.position,
+    stand: scene.stand,
     name: d.home.scenes[scene.key].name,
     body: d.home.scenes[scene.key].body,
   }));

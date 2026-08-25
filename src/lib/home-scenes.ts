@@ -33,6 +33,18 @@ export type Scene = {
   placeholder: boolean;
   /** Which catalogue use-cases this environment stands for. */
   useCases: UseCase[];
+  /**
+   * Where this space puts the object.
+   *
+   * The same umbrella stands in every scene, but the scenes were not shot from
+   * the same distance, and an object composited at one fixed size only ever
+   * belongs in one of them. `scale` matches it to the furniture it is shading;
+   * `x` and `y` are percentages of its own size, moving its foot onto the floor
+   * that furniture is standing on rather than one in front of it.
+   *
+   * Defaults to standing where the villa put it.
+   */
+  stand?: { scale?: number; x?: number; y?: number };
 };
 
 export const SCENES: Scene[] = [
@@ -52,6 +64,10 @@ export const SCENES: Scene[] = [
     position: "center 50%",
     placeholder: false,
     useCases: ["restaurant"],
+    // The table sits up on a platform behind a step, so the object is lifted
+    // onto it and pulled back — at the default it stood on the lower terrace
+    // and shaded a table on a different floor.
+    stand: { scale: 0.72, x: 6, y: -19 },
   },
   {
     key: "rooftop",
@@ -59,6 +75,7 @@ export const SCENES: Scene[] = [
     position: "center 62%",
     placeholder: false,
     useCases: ["rooftop", "balcony"],
+    stand: { scale: 0.82, x: 2, y: -8 },
   },
   {
     key: "garden",
@@ -66,6 +83,7 @@ export const SCENES: Scene[] = [
     position: "center 56%",
     placeholder: false,
     useCases: ["garden"],
+    stand: { scale: 0.88, x: 3, y: -6 },
   },
 ];
 
