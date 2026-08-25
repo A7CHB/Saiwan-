@@ -45,16 +45,19 @@ export const SCENES: Scene[] = [
   },
   {
     key: "dining",
-    image: "/media/env-dining.svg",
-    position: "center 70%",
-    placeholder: true,
+    image: "/media/env-dining.webp",
+    // The sea sits high in this frame, so the crop is pulled up rather than
+    // down: at the villa's setting it showed nothing but paving, and a scene
+    // the umbrella is meant to be standing *somewhere* in needs its horizon.
+    position: "center 34%",
+    placeholder: false,
     useCases: ["restaurant"],
   },
   {
     key: "rooftop",
-    image: "/media/env-rooftop.svg",
-    position: "center 70%",
-    placeholder: true,
+    image: "/media/env-rooftop.webp",
+    position: "center 62%",
+    placeholder: false,
     useCases: ["rooftop", "balcony"],
   },
   {
