@@ -46,10 +46,10 @@ export const SCENES: Scene[] = [
   {
     key: "dining",
     image: "/media/env-dining.webp",
-    // The sea sits high in this frame, so the crop is pulled up rather than
-    // down: at the villa's setting it showed nothing but paving, and a scene
-    // the umbrella is meant to be standing *somewhere* in needs its horizon.
-    position: "center 34%",
+    // Each crop is set to its own picture. What has to land in frame is the
+    // furniture the canopy is shading, and every plate sits it at a different
+    // height, so there is no house value to share.
+    position: "center 50%",
     placeholder: false,
     useCases: ["restaurant"],
   },
@@ -62,9 +62,9 @@ export const SCENES: Scene[] = [
   },
   {
     key: "garden",
-    image: "/media/env-garden.svg",
-    position: "center 70%",
-    placeholder: true,
+    image: "/media/env-garden.webp",
+    position: "center 56%",
+    placeholder: false,
     useCases: ["garden"],
   },
 ];
