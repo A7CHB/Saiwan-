@@ -409,6 +409,13 @@
   .showroom-stage {
     height: 100vh;
     min-height: 32rem;
+    /* The object's plate is square and `object-contain`s into a box that is
+       not, so the square it actually occupies — bottom-centred inside that box
+       — is the smaller of the box's two edges. Anything that has to line up
+       with the artwork rather than with the box, which means the shadow it
+       casts, is measured from here. Keep it in step with the object's own
+       width and height classes in showroom.tsx. */
+    --plate: min(92vw, 46vh);
   }
   .showroom-scene {
     min-height: 100vh;
@@ -419,9 +426,20 @@
     }
     .showroom-stage {
       height: 100svh;
+      --plate: min(92vw, 46svh);
     }
     .showroom-scene {
       min-height: 100svh;
+    }
+  }
+  @media (min-width: 40rem) {
+    .showroom-stage {
+      --plate: min(64rem, 88vw, 74vh);
+    }
+    @supports (height: 100svh) {
+      .showroom-stage {
+        --plate: min(64rem, 88vw, 74svh);
+      }
     }
   }
 

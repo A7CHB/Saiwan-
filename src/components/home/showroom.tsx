@@ -320,7 +320,15 @@ export function Showroom({
             photograph at golden hour with nothing beneath it reads as a sticker
             — every other thing in these frames casts something. It sits under
             the canopy and takes the same placement, so it stays with the object
-            through the scene changes. */}
+            through the scene changes.
+
+            The two ellipses are measured against `--plate`, the square the
+            artwork occupies, not against the box that holds it: the box's
+            aspect changes with the viewport and the artwork's does not, so
+            percentages of the box would slide the shadow off the foot on every
+            screen but the one it was tuned on. Within the plate the mast comes
+            down at 23% across and meets the floor at 86% down, and the canopy
+            hangs centred above — which is where these two sit. */}
         <div
           ref={shadowRef}
           aria-hidden="true"
@@ -328,9 +336,31 @@ export function Showroom({
           style={{ transformOrigin: "50% 34%" }}
         >
           <div
-            className="absolute bottom-[3%] left-1/2 h-[7%] w-[58%] -translate-x-1/2 rounded-[50%] blur-lg"
-            style={{ background: "radial-gradient(closest-side, rgb(0 0 0 / 0.42), rgb(0 0 0 / 0))" }}
-          />
+            className="absolute bottom-0 left-1/2 -translate-x-1/2"
+            style={{ width: "var(--plate)", height: "var(--plate)" }}
+          >
+            {/* Under the canopy: not a cast shadow with a sun angle — the sun
+                is somewhere different in all four photographs — but the floor
+                simply being darker where something large is overhead. */}
+            <div
+              className="absolute left-[51%] top-[85%] h-[9%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] blur-2xl"
+              style={{ background: "radial-gradient(closest-side, rgb(0 0 0 / 0.30), rgb(0 0 0 / 0))" }}
+            />
+            {/* Where the base actually touches, and the only thing deciding
+                whether the object is standing on the floor or hovering above
+                it. Two parts, because one soft ellipse reads as a smudge: a
+                spill that spreads forward off the base plate, and a tight core
+                right where the metal meets the stone. Against pale limestone a
+                single faint pool disappeared entirely and the plate floated. */}
+            <div
+              className="absolute left-[22.6%] top-[86.7%] h-[3.6%] w-[17%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] blur-[6px]"
+              style={{ background: "radial-gradient(closest-side, rgb(0 0 0 / 0.52), rgb(0 0 0 / 0))" }}
+            />
+            <div
+              className="absolute left-[22.6%] top-[86.3%] h-[1.7%] w-[7.5%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] blur-[2px]"
+              style={{ background: "radial-gradient(closest-side, rgb(0 0 0 / 0.8), rgb(0 0 0 / 0))" }}
+            />
+          </div>
         </div>
 
         {/* The constant. It is never re-mounted and never swapped: the same
