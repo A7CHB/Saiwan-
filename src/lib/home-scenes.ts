@@ -42,7 +42,7 @@ export type Scene = {
    * `x` and `y` are percentages of its own size, moving its foot onto the floor
    * that furniture is standing on rather than one in front of it.
    *
-   * Defaults to standing where the villa put it.
+   * Omitting it stands the object dead centre at full size.
    */
   stand?: { scale?: number; x?: number; y?: number };
 };
@@ -50,17 +50,21 @@ export type Scene = {
 export const SCENES: Scene[] = [
   {
     key: "villa",
-    image: "/media/hero-terrace.webp",
-    position: "center 58%",
+    image: "/media/env-villa.webp",
+    // Each crop is set to its own picture. What has to land in frame is the
+    // furniture the canopy is shading, and every plate sits it at a different
+    // height, so there is no house value to share.
+    position: "center 54%",
     placeholder: false,
     useCases: ["terrace", "pool"],
+    // The mast is cantilevered off to the left, so the object is pushed left
+    // until its foot is on open paving beside the loungers rather than through
+    // the nearer one, and widened until the canopy reaches across both.
+    stand: { scale: 1, x: -7, y: -6 },
   },
   {
     key: "dining",
     image: "/media/env-dining.webp",
-    // Each crop is set to its own picture. What has to land in frame is the
-    // furniture the canopy is shading, and every plate sits it at a different
-    // height, so there is no house value to share.
     position: "center 50%",
     placeholder: false,
     useCases: ["restaurant"],
