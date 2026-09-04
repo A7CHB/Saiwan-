@@ -79,7 +79,10 @@ export const SCENES: Scene[] = [
     position: "center 62%",
     placeholder: false,
     useCases: ["rooftop", "balcony"],
-    stand: { scale: 0.82, x: 2, y: -8 },
+    // This lounge is the closest to camera of the four, so the object is the
+    // largest here: at the size the others use, the canopy read as narrower
+    // than the sofa it is meant to be shading.
+    stand: { scale: 1.15, x: -6, y: -16 },
   },
   {
     key: "garden",
