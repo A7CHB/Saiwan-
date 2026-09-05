@@ -80,9 +80,16 @@ export const SCENES: Scene[] = [
     placeholder: false,
     useCases: ["rooftop", "balcony"],
     // This lounge is the closest to camera of the four, so the object is the
-    // largest here: at the size the others use, the canopy read as narrower
-    // than the sofa it is meant to be shading.
-    stand: { scale: 1.15, x: -6, y: -16 },
+    // largest here. The canopy spans the sofa and reaches on towards the
+    // armchair, and it is lifted until its rim clears the sofa back with air
+    // to spare — at the height it sat before, the rim ran along the top of the
+    // back cushions and along the parapet behind them, so it read as resting
+    // on the sofa rather than hanging over it.
+    //
+    // The scale is what the phone allows rather than what this crop would
+    // take: a stand is shared by every viewport, and wider than this clipped
+    // the canopy's right corner off the frame at 390px.
+    stand: { scale: 1.32, x: 0, y: -21 },
   },
   {
     key: "garden",
