@@ -4,6 +4,7 @@ import { getSessionUser } from "@/lib/auth/session";
 import { hasRole } from "@/lib/constants";
 import { SaiwanMark } from "@/components/icons/logo";
 import { AdminLoginForm } from "@/components/admin/login-form";
+import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = { title: "Sign in" };
 
@@ -37,7 +38,10 @@ export default async function AdminLoginPage({
         </div>
 
         <p className="mt-6 text-center text-xs text-subtle">
-          Looking for the storefront? It is at <span className="text-muted">saiwan.com</span> and needs no
+          Looking for the storefront? It is at{" "}
+          {/* Named from the configured address rather than written out here, so
+              this cannot go on pointing at a domain the site has moved off. */}
+          <span className="text-muted">{siteUrl().replace(/^https?:\/\//, "")}</span> and needs no
           account.
         </p>
       </div>
