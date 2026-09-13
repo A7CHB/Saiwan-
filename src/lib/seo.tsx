@@ -133,10 +133,11 @@ export function organizationSchema(locale: Locale, name: string, description: st
     description,
     logo: absoluteUrl("/icon.svg"),
     // The profiles that prove this organisation is a real one. Google uses
-    // them to reconcile the entity across the web, so an empty list is the
-    // difference between a name and a known business. Fill it with the real
-    // Instagram, Facebook and Google Business Profile URLs.
-    sameAs: [] as string[],
+    // them to reconcile the entity across the web — with nothing here, the
+    // brand is a string on a page rather than a business it knows about.
+    // Worth adding the Facebook page and Google Business Profile as they
+    // exist; the list is the point, not any single entry.
+    sameAs: ["https://www.instagram.com/saiwan.official/"],
   };
 }
 
