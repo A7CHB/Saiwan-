@@ -109,15 +109,33 @@ export function buildMetadata({
 // JSON-LD
 // ---------------------------------------------------------------------------
 
+/**
+ * What the brand is called in the scripts its customers actually type.
+ *
+ * "Saiwan" in Latin letters is a hard thing to own: it is a common Kurdish
+ * given name before it is a business. Declaring the Arabic and Kurdish
+ * spellings — the ones already used throughout the dictionaries — is how a
+ * search engine is told that all three strings name one organisation, rather
+ * than treating the Latin one as the only form of the name and every search
+ * in the local scripts as being about somebody else.
+ */
+const BRAND_ALTERNATE_NAMES = ["سايوان", "سایوان"];
+
 export function organizationSchema(locale: Locale, name: string, description: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${siteUrl()}/#organization`,
     name,
+    // Every spelling except the one this locale already calls it.
+    alternateName: BRAND_ALTERNATE_NAMES.filter((n) => n !== name),
     url: absoluteUrl(`/${locale}`),
     description,
     logo: absoluteUrl("/icon.svg"),
+    // The profiles that prove this organisation is a real one. Google uses
+    // them to reconcile the entity across the web, so an empty list is the
+    // difference between a name and a known business. Fill it with the real
+    // Instagram, Facebook and Google Business Profile URLs.
     sameAs: [] as string[],
   };
 }
