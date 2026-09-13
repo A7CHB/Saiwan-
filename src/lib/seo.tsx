@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { locales, localeMeta, type Locale } from "@/lib/i18n/config";
+import { getWhatsAppNumber } from "@/lib/whatsapp";
 
 /**
  * The address this site is published at.
@@ -122,6 +123,7 @@ export function buildMetadata({
 const BRAND_ALTERNATE_NAMES = ["سايوان", "سەیوان"];
 
 export function organizationSchema(locale: Locale, name: string, description: string) {
+  const phone = getWhatsAppNumber();
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -132,6 +134,30 @@ export function organizationSchema(locale: Locale, name: string, description: st
     url: absoluteUrl(`/${locale}`),
     description,
     logo: absoluteUrl("/icon.svg"),
+    // Where the business sells, which for a business with no premises is the
+    // only geography it has. `LocalBusiness` is the schema that would normally
+    // carry this, and it is the wrong one here: it requires a street address,
+    // and inventing one to satisfy it would be a lie a search engine acts on.
+    // An Organization that serves a named area is the honest shape, and it is
+    // still what tells Google this company belongs to searches from Erbil.
+    areaServed: [
+      { "@type": "City", name: "Erbil" },
+      { "@type": "AdministrativeArea", name: "Kurdistan Region" },
+      { "@type": "Country", name: "Iraq" },
+    ],
+    // Orders arrive by WhatsApp, so the business's contact point is the number
+    // every button on the site already opens. Omitted rather than guessed when
+    // none is configured.
+    ...(phone
+      ? {
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "sales",
+            telephone: `+${phone}`,
+            availableLanguage: locales.map((l) => localeMeta[l].htmlLang),
+          },
+        }
+      : {}),
     // The profiles that prove this organisation is a real one. Google uses
     // them to reconcile the entity across the web — with nothing here, the
     // brand is a string on a page rather than a business it knows about.
