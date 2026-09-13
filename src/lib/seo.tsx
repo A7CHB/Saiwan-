@@ -119,7 +119,7 @@ export function buildMetadata({
  * than treating the Latin one as the only form of the name and every search
  * in the local scripts as being about somebody else.
  */
-const BRAND_ALTERNATE_NAMES = ["سايوان", "سایوان"];
+const BRAND_ALTERNATE_NAMES = ["سايوان", "سەیوان"];
 
 export function organizationSchema(locale: Locale, name: string, description: string) {
   return {
