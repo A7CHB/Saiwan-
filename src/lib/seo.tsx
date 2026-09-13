@@ -16,8 +16,16 @@ import { locales, localeMeta, type Locale } from "@/lib/i18n/config";
  *
  * Only production is pinned. Local and preview builds still answer with
  * whatever `NEXT_PUBLIC_SITE_URL` says, so they go on describing themselves.
+ *
+ * It must name the hostname that *serves* the site, not the one that
+ * redirects to it. Both `saiwan.store` and `www.saiwan.store` answer, but
+ * only one of them answers with a page: the other returns a 308. Naming the
+ * redirecting one tells search engines the canonical page is at an address
+ * that immediately sends them somewhere else, which is a contradiction they
+ * resolve by guessing. `www` is primary in the Vercel project, so `www` is
+ * what belongs here — change both together or neither.
  */
-const CANONICAL_ORIGIN = "https://saiwan.store";
+const CANONICAL_ORIGIN = "https://www.saiwan.store";
 
 export function siteUrl(): string {
   const raw =

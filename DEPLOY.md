@@ -57,7 +57,11 @@ Tick all three environments (Production, Preview, Development) unless noted.
 | `NEXT_PUBLIC_SITE_URL` | Local and preview builds only — production ignores it. See below. |
 
 **The production address is not an environment variable.** It is
-`CANONICAL_ORIGIN` in `src/lib/seo.tsx`, currently `https://saiwan.store`.
+`CANONICAL_ORIGIN` in `src/lib/seo.tsx`, currently `https://www.saiwan.store`.
+It must name whichever hostname Vercel → Settings → Domains has serving the
+site rather than redirecting: `saiwan.store` and `www.saiwan.store` both
+answer, but one of them only answers with a 308. If you change which is
+primary there, change this too — they are one decision in two places.
 Change the domain there and nowhere else.
 
 It lives in the repository because it is a fact about the site rather than
