@@ -54,18 +54,22 @@ Tick all three environments (Production, Preview, Development) unless noted.
 | `ADMIN_EMAIL` | The address you want to sign in to the dashboard with. |
 | `ADMIN_PASSWORD` | The password for that account. Change it after first sign-in. |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | The business number, digits only, international format — e.g. `9647501234567`. No `+`, spaces or dashes. |
-| `NEXT_PUBLIC_SITE_URL` | The public address, `https://saiwan.store`. Production only, no trailing slash. |
+| `NEXT_PUBLIC_SITE_URL` | Local and preview builds only — production ignores it. See below. |
 
-`NEXT_PUBLIC_SITE_URL` is the one that is easy to forget and easy to spot: it
-feeds canonical URLs, the sitemap and the WhatsApp share links, so if it still
-says `localhost` in production the share cards will point at nothing.
+**The production address is not an environment variable.** It is
+`CANONICAL_ORIGIN` in `src/lib/seo.tsx`, currently `https://saiwan.store`.
+Change the domain there and nowhere else.
 
-Set it to the custom domain rather than the `.vercel.app` address as soon as the
-domain resolves. Both serve the same site, but whichever one this names is the
-address Google indexes and the one every share card and canonical tag claims as
-canonical — so leaving it on `.vercel.app` splits the site across two hostnames
-in search results. It is a `NEXT_PUBLIC_` value, inlined at build time, so
-changing it takes a redeploy before anything on the site reflects it.
+It lives in the repository because it is a fact about the site rather than
+about the machine building it, and because it is the one setting whose being
+wrong is both expensive and invisible: it feeds every canonical tag, hreflang
+alternate, sitemap entry, robots `host` and WhatsApp share card. It was a
+dashboard variable, and the dashboard went on naming the old `.vercel.app`
+address for a week after the domain was connected — which quietly asked Google
+to index that address instead of the real one.
+
+`NEXT_PUBLIC_SITE_URL` still governs local and preview builds, so a preview
+goes on describing itself rather than claiming to be production.
 
 ---
 

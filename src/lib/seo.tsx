@@ -1,8 +1,29 @@
 import type { Metadata } from "next";
 import { locales, localeMeta, type Locale } from "@/lib/i18n/config";
 
+/**
+ * The address this site is published at.
+ *
+ * This is a fact about the site, not about the machine that happens to be
+ * building it, so it lives in the repository where it is reviewed and
+ * versioned rather than in a dashboard field. It was a dashboard field, and
+ * the field went on saying `saiwan.vercel.app` long after the site moved to
+ * its own domain — which is the one setting here where being wrong is
+ * expensive and invisible: it is what every canonical tag, hreflang
+ * alternate, sitemap entry, robots `host` and share card claims as the
+ * site's identity. Pointing it at the wrong one of two working hostnames
+ * asks search engines to index the other address instead of this one.
+ *
+ * Only production is pinned. Local and preview builds still answer with
+ * whatever `NEXT_PUBLIC_SITE_URL` says, so they go on describing themselves.
+ */
+const CANONICAL_ORIGIN = "https://saiwan.store";
+
 export function siteUrl(): string {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const raw =
+    process.env.VERCEL_ENV === "production"
+      ? CANONICAL_ORIGIN
+      : process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   return raw.replace(/\/$/, "");
 }
 
