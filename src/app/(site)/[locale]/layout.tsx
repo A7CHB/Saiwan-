@@ -15,6 +15,7 @@ import { LocaleProvider } from "@/components/i18n/locale-provider";
 import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { WhatsAppFloat } from "@/components/site/whatsapp-float";
+import { GoogleTag } from "@/components/site/google-tag";
 import { CompareProvider } from "@/components/product/compare-provider";
 import { CompareTray } from "@/components/product/compare-tray";
 
@@ -127,6 +128,10 @@ export default async function SiteLayout({
             websiteSchema(locale, d.meta.siteName),
           ]}
         />
+
+        {/* Storefront only. The dashboard is staff working, not customers
+            visiting, and counting it would just inflate the numbers. */}
+        <GoogleTag />
       </body>
     </html>
   );
