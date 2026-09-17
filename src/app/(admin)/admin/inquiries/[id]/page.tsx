@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
-import { requireRole } from "@/lib/auth/session";
+import { requireRole, getSessionUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/db";
 import { AdminFrame } from "@/components/admin/frame";
 import { Badge, PageHeader, Panel } from "@/components/admin/ui";
@@ -11,12 +11,15 @@ import { STATUS_TONE } from "@/app/(admin)/admin/inquiries/page";
 import { formatDate } from "@/lib/i18n/format";
 import { normalisePhone, parseJson } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/icons/whatsapp";
+import { DangerSubmit } from "@/components/admin/form";
+import { deleteInquiryAction } from "@/lib/admin/actions";
 
 export const metadata: Metadata = { title: "Inquiry" };
 export const dynamic = "force-dynamic";
 
 export default async function InquiryDetailPage({ params }: { params: Promise<{ id: string }> }) {
   await requireRole("STAFF");
+  const viewer = await getSessionUser();
   const { id } = await params;
 
   const inquiry = await prisma.inquiry.findUnique({
@@ -163,6 +166,21 @@ export default async function InquiryDetailPage({ params }: { params: Promise<{ 
           </Panel>
         </div>
       </div>
+
+      {viewer?.role === "ADMIN" ? (
+        <Panel
+          title="Delete this inquiry"
+          description="Removes the record and its timeline. Cancelling it instead keeps the history — prefer that unless this is spam or a duplicate."
+          className="mt-8 border-terracotta/40"
+        >
+          <form action={deleteInquiryAction}>
+            <input type="hidden" name="id" value={inquiry.id} />
+            <DangerSubmit message={`Permanently delete ${inquiry.reference}?`}>
+              Delete {inquiry.reference}
+            </DangerSubmit>
+          </form>
+        </Panel>
+      ) : null}
     </AdminFrame>
   );
 }

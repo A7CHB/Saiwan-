@@ -14,6 +14,7 @@ import {
   INQUIRY_STATUSES,
   PRODUCT_STATUSES,
   ROLES,
+  SHAPES,
   SEGMENTS,
   STYLES,
   USE_CASES,
@@ -405,6 +406,232 @@ export async function updateInquiryAction(_prev: ActionState, formData: FormData
   revalidatePath("/admin/inquiries");
   revalidatePath(`/admin/inquiries/${id}`);
   return { ok: true, message: "Inquiry updated." };
+}
+
+export async function deleteInquiryAction(formData: FormData) {
+  const user = await authorize("ADMIN");
+  if (!user) return;
+
+  const id = str(formData, "id");
+  if (!id) return;
+
+  // The timeline is cascaded by the schema; the record is the thing being
+  // deleted, not just its current status.
+  await prisma.inquiry.delete({ where: { id } });
+  await audit(user.id, "inquiry.delete", "Inquiry", id);
+
+  revalidatePath("/admin/inquiries");
+  redirect("/admin/inquiries?cleared=1");
+}
+
+/**
+ * Empty the inbox.
+ *
+ * An inquiry is a customer who asked for something, so this is the most
+ * destructive thing the dashboard can do and the only action here that is
+ * not undoable by re-entering data. Two guards, neither of them decorative:
+ * it is ADMIN-only, and it requires the word DELETE to be typed rather than
+ * a button to be clicked, because a confirm dialog is one stray Enter away
+ * from an empty inbox.
+ *
+ * The count is recorded in the audit log. After the fact it is the only
+ * evidence of how much was there.
+ */
+export async function deleteAllInquiriesAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const user = await authorize("ADMIN");
+  if (!user) return DENIED;
+
+  if (str(formData, "confirm") !== "DELETE") {
+    return { error: 'Type DELETE in the box to confirm. Nothing was deleted.' };
+  }
+
+  const { count } = await prisma.inquiry.deleteMany({});
+  await audit(user.id, "inquiry.deleteAll", "Inquiry", undefined, { count });
+
+  revalidatePath("/admin/inquiries");
+  return { ok: true, message: `Deleted ${count} ${count === 1 ? "inquiry" : "inquiries"}.` };
+}
+
+// ---------------------------------------------------------------------------
+// Options: colours, sizes, materials
+//
+// The three libraries a product is assembled from. The product form has always
+// been able to *pick* from them; until now nothing could add to them, so a new
+// canopy colour or a new size meant editing the seed and redeploying.
+// ---------------------------------------------------------------------------
+
+export async function saveColorAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const user = await authorize("STAFF");
+  if (!user) return DENIED;
+
+  const id = str(formData, "id") || null;
+  const slug = slugify(str(formData, "slug") || str(formData, "name_en"));
+  if (!slug) return { error: "A slug or English name is required." };
+
+  // The swatch on the storefront is this value, so a malformed one is a
+  // colourless square rather than a visible error.
+  const hex = str(formData, "hex").toUpperCase();
+  if (!/^#[0-9A-F]{6}$/.test(hex)) return { error: "Hex must look like #17382E." };
+
+  const clash = await prisma.color.findUnique({ where: { slug }, select: { id: true } });
+  if (clash && clash.id !== id) return { error: `The slug "${slug}" is already in use.` };
+
+  const payload = { slug, hex, order: num(formData, "order") ?? 0 };
+  const color = id
+    ? await prisma.color.update({ where: { id }, data: payload, select: { id: true } })
+    : await prisma.color.create({ data: payload, select: { id: true } });
+
+  for (const locale of locales) {
+    const name = str(formData, `name_${locale}`);
+    if (!name) continue;
+    await prisma.colorTranslation.upsert({
+      where: { colorId_locale: { colorId: color.id, locale } },
+      update: { name: name.slice(0, 160) },
+      create: { colorId: color.id, locale, name: name.slice(0, 160) },
+    });
+  }
+
+  await audit(user.id, id ? "color.update" : "color.create", "Color", color.id, { slug, hex });
+
+  revalidatePath("/admin/options");
+  revalidatePath("/", "layout");
+  return { ok: true, message: "Colour saved." };
+}
+
+export async function deleteColorAction(formData: FormData) {
+  const user = await authorize("ADMIN");
+  if (!user) return;
+
+  const id = str(formData, "id");
+  if (!id) return;
+
+  // A colour in use is bound to product images as well as to products, and
+  // deleting it would unbind the photographs a swatch switches between.
+  const inUse = await prisma.productColor.count({ where: { colorId: id } });
+  if (inUse > 0) return;
+
+  await prisma.color.delete({ where: { id } });
+  await audit(user.id, "color.delete", "Color", id);
+
+  revalidatePath("/admin/options");
+  revalidatePath("/", "layout");
+}
+
+export async function saveSizeAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const user = await authorize("STAFF");
+  if (!user) return DENIED;
+
+  const id = str(formData, "id") || null;
+  const label = str(formData, "label");
+  if (!label) return { error: "A label is required — it is what the customer picks." };
+
+  const slug = slugify(str(formData, "slug") || label);
+  if (!slug) return { error: "A slug is required." };
+
+  const shape = str(formData, "shape") || "SQUARE";
+  if (!(SHAPES as readonly string[]).includes(shape)) return { error: "Unknown shape." };
+
+  const clash = await prisma.size.findUnique({ where: { slug }, select: { id: true } });
+  if (clash && clash.id !== id) return { error: `The slug "${slug}" is already in use.` };
+
+  const widthCm = num(formData, "widthCm");
+  const depthCm = num(formData, "depthCm");
+
+  const payload = {
+    slug,
+    // Deliberately not translated: "3.0 × 3.0 m" reads the same in all three
+    // languages, and a translated one would only ever be a typo away.
+    label: label.slice(0, 80),
+    shape,
+    widthCm: widthCm === null ? null : Math.round(widthCm),
+    depthCm: depthCm === null ? null : Math.round(depthCm),
+    // Derived rather than typed, so it cannot disagree with the dimensions
+    // beside it. Left alone when there is nothing to derive it from.
+    areaM2:
+      widthCm && depthCm ? Math.round(((widthCm / 100) * (depthCm / 100) + Number.EPSILON) * 100) / 100 : null,
+    order: num(formData, "order") ?? 0,
+  };
+
+  const size = id
+    ? await prisma.size.update({ where: { id }, data: payload, select: { id: true } })
+    : await prisma.size.create({ data: payload, select: { id: true } });
+
+  await audit(user.id, id ? "size.update" : "size.create", "Size", size.id, { slug, label });
+
+  revalidatePath("/admin/options");
+  revalidatePath("/", "layout");
+  return { ok: true, message: "Size saved." };
+}
+
+export async function deleteSizeAction(formData: FormData) {
+  const user = await authorize("ADMIN");
+  if (!user) return;
+
+  const id = str(formData, "id");
+  if (!id) return;
+
+  const inUse = await prisma.productSize.count({ where: { sizeId: id } });
+  if (inUse > 0) return;
+
+  await prisma.size.delete({ where: { id } });
+  await audit(user.id, "size.delete", "Size", id);
+
+  revalidatePath("/admin/options");
+  revalidatePath("/", "layout");
+}
+
+export async function saveMaterialAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
+  const user = await authorize("STAFF");
+  if (!user) return DENIED;
+
+  const id = str(formData, "id") || null;
+  const slug = slugify(str(formData, "slug") || str(formData, "name_en"));
+  if (!slug) return { error: "A slug or English name is required." };
+
+  const clash = await prisma.material.findUnique({ where: { slug }, select: { id: true } });
+  if (clash && clash.id !== id) return { error: `The slug "${slug}" is already in use.` };
+
+  const payload = { slug, order: num(formData, "order") ?? 0 };
+  const material = id
+    ? await prisma.material.update({ where: { id }, data: payload, select: { id: true } })
+    : await prisma.material.create({ data: payload, select: { id: true } });
+
+  for (const locale of locales) {
+    const name = str(formData, `name_${locale}`);
+    if (!name) continue;
+    const translation = {
+      name: name.slice(0, 160),
+      description: str(formData, `description_${locale}`).slice(0, 2000) || null,
+    };
+    await prisma.materialTranslation.upsert({
+      where: { materialId_locale: { materialId: material.id, locale } },
+      update: translation,
+      create: { materialId: material.id, locale, ...translation },
+    });
+  }
+
+  await audit(user.id, id ? "material.update" : "material.create", "Material", material.id, { slug });
+
+  revalidatePath("/admin/options");
+  revalidatePath("/", "layout");
+  return { ok: true, message: "Material saved." };
+}
+
+export async function deleteMaterialAction(formData: FormData) {
+  const user = await authorize("ADMIN");
+  if (!user) return;
+
+  const id = str(formData, "id");
+  if (!id) return;
+
+  const inUse = await prisma.productMaterial.count({ where: { materialId: id } });
+  if (inUse > 0) return;
+
+  await prisma.material.delete({ where: { id } });
+  await audit(user.id, "material.delete", "Material", id);
+
+  revalidatePath("/admin/options");
+  revalidatePath("/", "layout");
 }
 
 // ---------------------------------------------------------------------------

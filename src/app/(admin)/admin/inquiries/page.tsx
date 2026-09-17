@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireRole } from "@/lib/auth/session";
+import { requireRole, getSessionUser } from "@/lib/auth/session";
 import { prisma } from "@/lib/db";
 import { AdminFrame } from "@/components/admin/frame";
 import { Badge, EmptyState, PageHeader, Panel, Table, Td, Th } from "@/components/admin/ui";
+import { ClearInquiriesForm } from "@/components/admin/entity-forms";
 import { INQUIRY_STATUSES, type InquiryStatus } from "@/lib/constants";
 import { formatDate, formatRelative } from "@/lib/i18n/format";
 import { parseJson, normalisePhone } from "@/lib/utils";
@@ -25,6 +26,9 @@ export const STATUS_TONE: Record<string, "neutral" | "accent" | "success" | "war
 
 export default async function AdminInquiriesPage({ searchParams }: { searchParams: SearchParams }) {
   await requireRole("STAFF");
+  // Emptying the inbox is an owner's decision, so the panel is rendered only
+  // for an administrator; the action re-checks the role regardless.
+  const viewer = await getSessionUser();
 
   const query = await searchParams;
   const statusParam = Array.isArray(query.status) ? query.status[0] : query.status;
@@ -168,6 +172,16 @@ export default async function AdminInquiriesPage({ searchParams }: { searchParam
           </Table>
         )}
       </Panel>
+
+      {viewer?.role === "ADMIN" && countFor() > 0 ? (
+        <Panel
+          title="Danger zone"
+          description="Emptying the inbox deletes what customers sent, not just how it is filed."
+          className="mt-8 border-terracotta/40"
+        >
+          <ClearInquiriesForm count={countFor()} />
+        </Panel>
+      ) : null}
     </AdminFrame>
   );
 }

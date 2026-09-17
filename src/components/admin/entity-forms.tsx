@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { locales, localeMeta } from "@/lib/i18n/config";
-import { GALLERY_TAGS, IMAGE_SPANS, ROLES } from "@/lib/constants";
+import { GALLERY_TAGS, IMAGE_SPANS, ROLES, SHAPES } from "@/lib/constants";
 import {
   saveCategoryAction,
   saveGalleryItemAction,
@@ -10,6 +10,10 @@ import {
   saveTranslationAction,
   saveContentAction,
   saveUserAction,
+  saveColorAction,
+  saveSizeAction,
+  saveMaterialAction,
+  deleteAllInquiriesAction,
   type ActionState,
 } from "@/lib/admin/actions";
 import {
@@ -333,6 +337,244 @@ export function UserForm({
       <AdminCheckbox label="Active" name="isActive" defaultChecked={user?.isActive ?? true} />
 
       <SubmitButton className="self-start">{user ? "Save account" : "Create account"}</SubmitButton>
+    </form>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Options: colours, sizes, materials
+// ---------------------------------------------------------------------------
+
+/**
+ * A colourway. The hex is the swatch the storefront paints, so it is shown
+ * next to a native colour picker rather than asked for as text alone — the
+ * value is still typed, because a designer arrives with `#17382E` and not
+ * with a position in a gradient.
+ */
+export function ColorForm({
+  color,
+}: {
+  color?: {
+    id: string;
+    slug: string;
+    hex: string;
+    order: number;
+    translations: Record<string, { name: string }>;
+  };
+}) {
+  const [state, action] = useActionState(saveColorAction, initial);
+
+  return (
+    <form action={action} className="flex flex-col gap-4">
+      {color ? <input type="hidden" name="id" value={color.id} /> : null}
+      <FormMessage state={state} />
+
+      <div className="grid gap-4 sm:grid-cols-4">
+        <AdminInput
+          label="Slug"
+          name="slug"
+          defaultValue={color?.slug ?? ""}
+          hint="Blank generates it from the English name."
+          className="font-mono text-xs"
+        />
+        <AdminInput
+          label="Hex"
+          name="hex"
+          defaultValue={color?.hex ?? "#000000"}
+          required
+          placeholder="#17382E"
+          className="font-mono text-xs uppercase"
+          hint="Six digits, e.g. #17382E."
+        />
+        <AdminInput
+          label="Picker"
+          name="hexPicker"
+          type="color"
+          defaultValue={color?.hex ?? "#000000"}
+          hint="Reference only — the Hex field is saved."
+          className="h-10 cursor-pointer p-1"
+        />
+        <AdminInput label="Sort order" name="order" type="number" min={0} defaultValue={color?.order ?? 0} />
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        {locales.map((locale) => (
+          <div key={locale} dir={localeMeta[locale].dir} className="rounded-md border border-line p-4">
+            <p className="mb-3 text-xs font-medium text-muted" dir="ltr">
+              {localeMeta[locale].label}
+            </p>
+            <AdminInput
+              label="Name"
+              name={`name_${locale}`}
+              defaultValue={color?.translations[locale]?.name ?? ""}
+              required={locale === "en"}
+            />
+          </div>
+        ))}
+      </div>
+
+      <SubmitButton>{color ? "Save colour" : "Create colour"}</SubmitButton>
+    </form>
+  );
+}
+
+/**
+ * A size. The label is deliberately not translated — "3.0 × 3.0 m" reads the
+ * same in all three languages, and a per-language copy would only ever be a
+ * typo away from disagreeing with itself. Area is derived on save from the
+ * two dimensions rather than typed, for the same reason.
+ */
+export function SizeForm({
+  size,
+}: {
+  size?: {
+    id: string;
+    slug: string;
+    label: string;
+    shape: string;
+    widthCm: number | null;
+    depthCm: number | null;
+    order: number;
+  };
+}) {
+  const [state, action] = useActionState(saveSizeAction, initial);
+
+  return (
+    <form action={action} className="flex flex-col gap-4">
+      {size ? <input type="hidden" name="id" value={size.id} /> : null}
+      <FormMessage state={state} />
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <AdminInput
+          label="Label"
+          name="label"
+          defaultValue={size?.label ?? ""}
+          required
+          placeholder="3.0 × 3.0 m"
+          hint="What the customer picks. Shown as typed, in every language."
+        />
+        <AdminInput
+          label="Slug"
+          name="slug"
+          defaultValue={size?.slug ?? ""}
+          hint="Blank generates it from the label."
+          className="font-mono text-xs"
+        />
+        <AdminSelect label="Shape" name="shape" defaultValue={size?.shape ?? "SQUARE"}>
+          {SHAPES.map((shape) => (
+            <option key={shape} value={shape}>
+              {shape.charAt(0) + shape.slice(1).toLowerCase()}
+            </option>
+          ))}
+        </AdminSelect>
+        <AdminInput
+          label="Width (cm)"
+          name="widthCm"
+          type="number"
+          min={0}
+          defaultValue={size?.widthCm ?? ""}
+        />
+        <AdminInput
+          label="Depth (cm)"
+          name="depthCm"
+          type="number"
+          min={0}
+          defaultValue={size?.depthCm ?? ""}
+          hint="Area is calculated from width × depth."
+        />
+        <AdminInput label="Sort order" name="order" type="number" min={0} defaultValue={size?.order ?? 0} />
+      </div>
+
+      <SubmitButton>{size ? "Save size" : "Create size"}</SubmitButton>
+    </form>
+  );
+}
+
+/** A material, with the short description the product page prints beside it. */
+export function MaterialForm({
+  material,
+}: {
+  material?: {
+    id: string;
+    slug: string;
+    order: number;
+    translations: Record<string, { name: string; description: string }>;
+  };
+}) {
+  const [state, action] = useActionState(saveMaterialAction, initial);
+
+  return (
+    <form action={action} className="flex flex-col gap-4">
+      {material ? <input type="hidden" name="id" value={material.id} /> : null}
+      <FormMessage state={state} />
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <AdminInput
+          label="Slug"
+          name="slug"
+          defaultValue={material?.slug ?? ""}
+          hint="Blank generates it from the English name."
+          className="font-mono text-xs"
+        />
+        <AdminInput label="Sort order" name="order" type="number" min={0} defaultValue={material?.order ?? 0} />
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        {locales.map((locale) => (
+          <div key={locale} dir={localeMeta[locale].dir} className="flex flex-col gap-3 rounded-md border border-line p-4">
+            <p className="text-xs font-medium text-muted" dir="ltr">
+              {localeMeta[locale].label}
+            </p>
+            <AdminInput
+              label="Name"
+              name={`name_${locale}`}
+              defaultValue={material?.translations[locale]?.name ?? ""}
+              required={locale === "en"}
+            />
+            <AdminTextarea
+              label="Description"
+              name={`description_${locale}`}
+              rows={3}
+              defaultValue={material?.translations[locale]?.description ?? ""}
+            />
+          </div>
+        ))}
+      </div>
+
+      <SubmitButton>{material ? "Save material" : "Create material"}</SubmitButton>
+    </form>
+  );
+}
+
+/**
+ * Empty the inquiry inbox.
+ *
+ * Typing the word rather than clicking through a dialog is the point: this is
+ * the one action in the dashboard that destroys something a customer sent and
+ * that cannot be re-entered from memory.
+ */
+export function ClearInquiriesForm({ count }: { count: number }) {
+  const [state, action] = useActionState(deleteAllInquiriesAction, initial);
+
+  return (
+    <form action={action} className="flex flex-col gap-3">
+      <FormMessage state={state} />
+      <p className="text-sm text-muted">
+        Permanently deletes {count === 1 ? "the 1 inquiry" : `all ${count} inquiries`} and their timelines.
+        Customers are not notified, and this cannot be undone.
+      </p>
+      <div className="flex flex-wrap items-end gap-3">
+        <AdminInput
+          label="Type DELETE to confirm"
+          name="confirm"
+          required
+          autoComplete="off"
+          placeholder="DELETE"
+          className="font-mono"
+          containerClassName="max-w-[16rem]"
+        />
+        <SubmitButton>Delete every inquiry</SubmitButton>
+      </div>
     </form>
   );
 }
