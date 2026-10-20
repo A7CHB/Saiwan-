@@ -105,6 +105,75 @@ const CATEGORIES = [
       "ئەو بەشانەی وا دەکەن چەترێک لە بۆشاییەکی ڕاستەقینەدا کار بکات — بنکەی قورس، داپۆشەری پارێزەر، و ڕووناکی تێکەڵکراو بۆ کاتژمێرەکانی دوای ئاوابوونی خۆر.",
     ),
   },
+  // Shade structures. Added to the live catalogue by the
+  // 20261020120000_shade_structure_categories migration; kept here so a fresh
+  // database matches it. No image yet — none of the plates show these.
+  {
+    slug: "car-parking-shades",
+    image: null,
+    name: tri("Car Parking Shades", "مظلات مواقف السيارات", "سێبەری پارکینگی ئۆتۆمبێل"),
+    tagline: tri("Cover for every bay", "غطاءٌ لكل موقف", "داپۆشین بۆ هەموو شوێنێکی وەستان"),
+    description: tri(
+      "Steel-framed shade over parking bays that keeps cars, and the people getting into them, out of the midday sun.",
+      "مظلات بإطاراتٍ فولاذية فوق مواقف السيارات تحمي السيارات ومن يركبها من شمس الظهيرة.",
+      "سێبەری چوارچێوە پۆڵایی بەسەر شوێنی وەستانی ئۆتۆمبێلەکاندا کە ئۆتۆمبێلەکان و ئەو کەسانەی سواریان دەبن لە خۆری نیوەڕۆ دەپارێزێت.",
+    ),
+  },
+  {
+    slug: "tensile-structures",
+    image: null,
+    name: tri("Tensile Structures", "المنشآت الشدّية", "بنیاتی کێشراو"),
+    tagline: tri("Fabric held in tension", "قماشٌ مشدود بإحكام", "قوماش بە ڕاکێشان ڕاگیراو"),
+    description: tri(
+      "Membrane canopies tensioned between masts and cables to cover large spans with a light, sculptural roof.",
+      "أغشية مشدودة بين الأعمدة والكابلات لتغطية مساحاتٍ واسعة بسقفٍ خفيفٍ ذي طابعٍ نحتي.",
+      "پەردەی قوماش کە لە نێوان کۆڵەکە و کێبڵەکاندا ڕادەکێشرێن بۆ داپۆشینی ماوەی گەورە بە سەقفێکی سووک و پەیکەرئاسا.",
+    ),
+  },
+  {
+    slug: "walkway-shades",
+    image: null,
+    name: tri("Walkway Shades", "مظلات الممرات", "سێبەری ڕێڕەو"),
+    tagline: tri("Shade from door to door", "ظلٌّ من بابٍ إلى باب", "سێبەر لە دەرگاوە بۆ دەرگا"),
+    description: tri(
+      "Continuous cover along paths, entrances and connecting walkways, so moving between buildings never means stepping into full sun.",
+      "غطاءٌ متصل على امتداد الممرات والمداخل وطرق الربط، فلا يعني التنقّل بين المباني الخروج إلى الشمس المباشرة.",
+      "داپۆشینی بەردەوام بە درێژایی ڕێگا و دەروازە و ڕێڕەوە پەیوەندکەرەکان، بۆ ئەوەی جووڵە لە نێوان باڵەخانەکاندا هەرگیز بە مانای چوونە ناو خۆری ڕاستەوخۆ نەبێت.",
+    ),
+  },
+  {
+    slug: "pergolas-louvres",
+    image: null,
+    name: tri("Pergolas & Louvres", "البرغولات والسقوف الشرائحية", "پێرگۆلا و لووڤەر"),
+    tagline: tri("Architecture for outdoor rooms", "عمارةٌ للغرف الخارجية", "تەلارسازی بۆ ژووری دەرەوە"),
+    description: tri(
+      "Fixed frames with open or adjustable louvred roofs that turn a terrace into a room you can use in sun or shade.",
+      "هياكل ثابتة بأسقفٍ مفتوحة أو بشرائح قابلة للتعديل تحوّل التراس إلى غرفةٍ تُستعمل في الشمس والظل.",
+      "چوارچێوەی جێگیر بە سەقفی کراوە یان لووڤەری گۆڕاو کە تەراسێک دەکاتە ژوورێک کە لە خۆر و سێبەردا بەکاربهێنرێت.",
+    ),
+  },
+  {
+    slug: "commercial-shade-structures",
+    image: null,
+    name: tri("Commercial Shade Structures", "منشآت التظليل التجارية", "بنیاتی سێبەری بازرگانی"),
+    tagline: tri("Engineered for public spaces", "مُهندَسة للمساحات العامة", "بۆ شوێنە گشتییەکان ئەندازیاری کراوە"),
+    description: tri(
+      "Permanent shade structures for schools, hospitality, retail and public projects, specified to the site and its loads.",
+      "منشآت تظليل دائمة للمدارس والضيافة والتجزئة والمشاريع العامة، تُحدَّد وفق الموقع وأحماله.",
+      "بنیاتی سێبەری هەمیشەیی بۆ قوتابخانە و میوانداری و فرۆشگا و پڕۆژە گشتییەکان، بەپێی شوێنەکە و بارەکانی دیاری دەکرێن.",
+    ),
+  },
+  {
+    slug: "shade-sails",
+    image: null,
+    name: tri("Shade Sails", "أشرعة التظليل", "چارۆکەی سێبەر"),
+    tagline: tri("Shade drawn in clean lines", "ظلٌّ مرسومٌ بخطوطٍ نقية", "سێبەر بە هێڵی ڕوون کێشراو"),
+    description: tri(
+      "Tensioned fabric sails fixed between posts and walls — a light, flexible way to shade courtyards, play areas and terraces.",
+      "أشرعة من القماش المشدود تُثبَّت بين الأعمدة والجدران — طريقةٌ خفيفة ومرنة لتظليل الأفنية ومناطق اللعب والتراسات.",
+      "چارۆکەی قوماشی ڕاکێشراو لە نێوان کۆڵەکە و دیوارەکاندا جێگیر دەکرێن — ڕێگایەکی سووک و نەرم بۆ سێبەرکردنی حەوشە و شوێنی یاری و تەراس.",
+    ),
+  },
 ];
 
 const COLORS = [
