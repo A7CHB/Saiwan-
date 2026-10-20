@@ -7,7 +7,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { useLocale } from "@/components/i18n/locale-provider";
 import { cn } from "@/lib/utils";
 
-export type GalleryImage = { id: string; url: string; alt: string; colorId: string | null };
+export type GalleryImage = { id: string; url: string; alt: string; colorId: string | null; ratio?: string | null };
 
 /**
  * Product imagery.
@@ -62,6 +62,11 @@ export function ProductGallery({
     return <Media src={null} alt={productName} ratio="3 / 4" className="w-full" />;
   }
 
+  // One frame for the whole gallery, so swapping plates never changes its
+  // height: the lead photograph's own shape when it must be seen whole
+  // (see photoRatio), the house portrait otherwise.
+  const frame = images[0].ratio ?? "3 / 4";
+
   return (
     <>
       {/* Mobile: snap carousel */}
@@ -83,7 +88,7 @@ export function ProductGallery({
               <Media
                 src={image.url}
                 alt={image.alt}
-                ratio="3 / 4"
+                ratio={frame}
                 sizes="100vw"
                 priority={image.id === images[0].id}
                 className="w-full"
@@ -124,7 +129,7 @@ export function ProductGallery({
                   thumbIndex === index ? "opacity-100" : "opacity-45 hover:opacity-80",
                 )}
               >
-                <Media src={image.url} alt="" ratio="3 / 4" sizes="88px" className="w-full" />
+                <Media src={image.url} alt="" ratio={frame} sizes="88px" className="w-full" />
               </button>
             </li>
           ))}
@@ -133,7 +138,7 @@ export function ProductGallery({
         <div className="group relative">
           {/* All plates stay mounted and cross-fade so switching a colourway
               never shows an empty frame. */}
-          <div className="relative aspect-3/4 w-full">
+          <div className="relative w-full" style={{ aspectRatio: frame }}>
             {images.map((image, plateIndex) => (
               <div
                 key={image.id}
@@ -198,7 +203,7 @@ export function ProductGallery({
         panelClassName="w-full max-w-6xl"
       >
         <div className="flex h-full flex-col justify-center">
-          <div className="relative aspect-3/4 max-h-[78vh] w-full">
+          <div className="relative max-h-[78vh] w-full" style={{ aspectRatio: frame }}>
             <Media
               src={current?.url}
               alt={current?.alt ?? productName}

@@ -258,8 +258,11 @@ type ProductSeed = {
   useCases: string[];
   coverageM2: number;
   priceTier: number;
-  /** A plain URL, or one bound to the colourway it photographs. */
-  images: (string | { url: string; color: string })[];
+  /**
+   * A plain URL, or one bound to the colourway it photographs, or one with its
+   * dimensions recorded so it is shown whole rather than cropped (photoRatio).
+   */
+  images: (string | { url: string; color?: string; width?: number; height?: number })[];
   colors: string[];
   sizes: string[];
   materials: string[];
@@ -725,7 +728,8 @@ const PRODUCTS: ProductSeed[] = [
   // Added to the live catalogue by the 20261021120000_car_parking_products
   // migration; kept here so a fresh database matches it. Built to measure, so
   // no price, sizes or colours, and coverage 0 keeps them out of the umbrella
-  // quiz (see isRecommendable).
+  // quiz (see isRecommendable). The photographs are wide site shots with their
+  // dimensions recorded, so they are framed whole rather than cropped.
   {
     slug: "cable-stayed-parking-shade",
     sku: "SW-CPS-01",
@@ -738,7 +742,7 @@ const PRODUCTS: ProductSeed[] = [
     useCases: [],
     coverageM2: 0,
     priceTier: 3,
-    images: ["/media/parking-cable-stayed.jpg"],
+    images: [{ url: "/media/parking-cable-stayed.jpg", width: 2000, height: 1130 }],
     colors: [],
     sizes: [],
     materials: [],
@@ -772,7 +776,7 @@ const PRODUCTS: ProductSeed[] = [
     useCases: [],
     coverageM2: 0,
     priceTier: 3,
-    images: ["/media/parking-pyramid.jpg"],
+    images: [{ url: "/media/parking-pyramid.jpg", width: 2000, height: 1125 }],
     colors: [],
     sizes: [],
     materials: [],
@@ -806,7 +810,7 @@ const PRODUCTS: ProductSeed[] = [
     useCases: [],
     coverageM2: 0,
     priceTier: 3,
-    images: ["/media/parking-cantilever.jpg"],
+    images: [{ url: "/media/parking-cantilever.jpg", width: 2000, height: 1109 }],
     colors: [],
     sizes: [],
     materials: [],
@@ -840,7 +844,7 @@ const PRODUCTS: ProductSeed[] = [
     useCases: [],
     coverageM2: 0,
     priceTier: 3,
-    images: ["/media/parking-steel-roof.jpg"],
+    images: [{ url: "/media/parking-steel-roof.jpg", width: 2000, height: 1120 }],
     colors: [],
     sizes: [],
     materials: [],
@@ -874,7 +878,7 @@ const PRODUCTS: ProductSeed[] = [
     useCases: [],
     coverageM2: 0,
     priceTier: 3,
-    images: ["/media/parking-double-arch.jpg"],
+    images: [{ url: "/media/parking-double-arch.jpg", width: 2000, height: 1101 }],
     colors: [],
     sizes: [],
     materials: [],
@@ -1047,13 +1051,15 @@ async function main() {
         // select the swatch. Nothing is inferred from position any more: a
         // guess about which image showed which colour was only ever right by
         // accident, and it is wrong the moment a product has one photograph.
-        const { url, color } = typeof image === "string" ? { url: image, color: undefined } : image;
+        const { url, color, width, height } = typeof image === "string" ? { url: image } : image;
         return {
           productId: record.id,
           url,
           alt: `${product.name.en} — ${index === 0 ? "primary view" : `view ${index + 1}`}`,
           order: index,
           colorId: color ? (colorIds[color] ?? null) : null,
+          width: width ?? null,
+          height: height ?? null,
         };
       }),
     });

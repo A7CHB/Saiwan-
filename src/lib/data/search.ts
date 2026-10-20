@@ -1,7 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/db";
 import { defaultLocale, type Locale } from "@/lib/i18n/config";
-import type { ProductCard } from "./products";
+import { photoRatio, type ProductCard } from "./products";
 import { parseJson } from "@/lib/utils";
 import type { Availability, Segment, Style, UseCase } from "@/lib/constants";
 
@@ -75,6 +75,7 @@ export async function searchProducts(query: string, locale: Locale, limit = 12):
         categorySlug: row.category.slug,
         image: row.images[0]?.url ?? null,
         imageAlt: row.images[0]?.alt ?? name,
+        imageRatio: photoRatio(row.images[0]),
         price: row.price,
         currency: row.currency,
         showPrice: row.showPrice,

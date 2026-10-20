@@ -32,6 +32,8 @@ export type ProductCard = {
   categorySlug: string;
   image: string | null;
   imageAlt: string;
+  /** The photograph's own shape, when recorded — see `photoRatio`. */
+  imageRatio: string | null;
   price: number | null;
   currency: string;
   showPrice: boolean;
@@ -64,7 +66,7 @@ export type ProductDetail = ProductCard & {
   metaTitle: string | null;
   metaDescription: string | null;
   leadTimeDays: number | null;
-  images: { id: string; url: string; alt: string; colorId: string | null }[];
+  images: { id: string; url: string; alt: string; colorId: string | null; ratio: string | null }[];
   colors: ProductColorOption[];
   sizes: ProductSizeOption[];
   materials: { id: string; slug: string; name: string; description: string | null }[];
@@ -92,8 +94,21 @@ type CardRow = {
   isFeatured: boolean;
   category: { slug: string; translations: TranslationRow[] };
   translations: TranslationRow[];
-  images: { url: string; alt: string | null }[];
+  images: { url: string; alt: string | null; width: number | null; height: number | null }[];
 };
+
+/**
+ * The frame a photograph is shown in, when it should not be the house 3:4.
+ *
+ * Scene photography is composed to be cropped into the catalogue's portrait
+ * frames. A photograph with its dimensions recorded on the ProductImage row is
+ * one that must be seen whole — a wide shot of a car park loses the structure
+ * it exists to show — so it is framed at its own shape instead. Rows without
+ * dimensions keep the house frame.
+ */
+export function photoRatio(image?: { width: number | null; height: number | null }): string | null {
+  return image?.width && image.height ? `${image.width} / ${image.height}` : null;
+}
 
 function toCard(row: CardRow, locale: Locale): ProductCard {
   const t = pick(row.translations, locale);
@@ -109,6 +124,7 @@ function toCard(row: CardRow, locale: Locale): ProductCard {
     categorySlug: row.category.slug,
     image: row.images[0]?.url ?? null,
     imageAlt: row.images[0]?.alt ?? name,
+    imageRatio: photoRatio(row.images[0]),
     price: row.price,
     currency: row.currency,
     showPrice: row.showPrice,
@@ -230,6 +246,7 @@ export const getProductBySlug = cache(
         url: image.url,
         alt: image.alt ?? card.name,
         colorId: image.colorId,
+        ratio: photoRatio(image),
       })),
       colors: row.colors.map((link) => {
         const ct = pick(link.color.translations, locale);

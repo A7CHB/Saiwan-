@@ -35,7 +35,10 @@ export function ProductCard({
   const { has, toggle, isFull } = useCompare();
   const inCompare = has(product.id);
 
-  const ratio = size === "large" ? "4 / 5" : size === "compact" ? "1 / 1" : "3 / 4";
+  // A photograph that must be seen whole keeps its own shape; compact cards
+  // stay square because they sit in tight rows.
+  const ratio =
+    size === "compact" ? "1 / 1" : (product.imageRatio ?? (size === "large" ? "4 / 5" : "3 / 4"));
   const sizes =
     size === "large"
       ? "(max-width: 768px) 100vw, 50vw"

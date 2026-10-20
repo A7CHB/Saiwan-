@@ -56,14 +56,16 @@ FROM (VALUES
 WHERE EXISTS (SELECT 1 FROM "Product" p WHERE p."id" = t.product_id)
 ON CONFLICT ("productId", "locale") DO NOTHING;
 
-INSERT INTO "ProductImage" ("id", "productId", "url", "alt", "order")
-SELECT i.product_id || 'img0', i.product_id, i.url, i.alt, 0
+-- Wide site shots, so their dimensions are recorded: that is what frames them
+-- whole on the card and the product page instead of cropping them to 3:4.
+INSERT INTO "ProductImage" ("id", "productId", "url", "alt", "order", "width", "height")
+SELECT i.product_id || 'img0', i.product_id, i.url, i.alt, 0, i.width, i.height
 FROM (VALUES
-  ('prd0cablestayedparkingsha', '/media/parking-cable-stayed.jpg', 'Cable-Stayed Parking Shade — primary view'),
-  ('prd0pyramidparkingshade00', '/media/parking-pyramid.jpg', 'Pyramid Parking Shade — primary view'),
-  ('prd0cantileverparkingshad', '/media/parking-cantilever.jpg', 'Cantilever Parking Shade — primary view'),
-  ('prd0steelroofcarport00000', '/media/parking-steel-roof.jpg', 'Steel Roof Carport — primary view'),
-  ('prd0doublearchparkingshad', '/media/parking-double-arch.jpg', 'Double Arch Parking Shade — primary view')
-) AS i(product_id, url, alt)
+  ('prd0cablestayedparkingsha', '/media/parking-cable-stayed.jpg', 'Cable-Stayed Parking Shade — primary view', 2000, 1130),
+  ('prd0pyramidparkingshade00', '/media/parking-pyramid.jpg', 'Pyramid Parking Shade — primary view', 2000, 1125),
+  ('prd0cantileverparkingshad', '/media/parking-cantilever.jpg', 'Cantilever Parking Shade — primary view', 2000, 1109),
+  ('prd0steelroofcarport00000', '/media/parking-steel-roof.jpg', 'Steel Roof Carport — primary view', 2000, 1120),
+  ('prd0doublearchparkingshad', '/media/parking-double-arch.jpg', 'Double Arch Parking Shade — primary view', 2000, 1101)
+) AS i(product_id, url, alt, width, height)
 WHERE EXISTS (SELECT 1 FROM "Product" p WHERE p."id" = i.product_id)
 ON CONFLICT ("id") DO NOTHING;
