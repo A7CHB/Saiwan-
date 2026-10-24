@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { isLocale, localePath, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n";
 import { buildMetadata } from "@/lib/seo";
-import { getFeaturedProducts, getProducts, type ProductCard } from "@/lib/data/products";
+import { getFeaturedProducts, getProducts, getStructureShowcase, type ProductCard } from "@/lib/data/products";
 import { getContent } from "@/lib/data/catalog";
 import { SCENES } from "@/lib/home-scenes";
 
@@ -11,6 +11,7 @@ import { Showroom } from "@/components/home/showroom";
 import { CollectionEditorial } from "@/components/home/collection-editorial";
 import { SpaceExplorer } from "@/components/home/space-explorer";
 import { QuizTeaser } from "@/components/home/closing";
+import { StructuresShowcase } from "@/components/home/structures";
 
 /** Media defaults — overridden by the `home.media` content block. */
 const MEDIA_FALLBACK = {
@@ -48,9 +49,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
 
-  const [d, featured, media, spaceProducts] = await Promise.all([
+  const [d, featured, structures, media, spaceProducts] = await Promise.all([
     getDictionary(locale),
     getFeaturedProducts(locale, 3),
+    getStructureShowcase(locale, 4),
     getContent("home.media", locale, MEDIA_FALLBACK),
     // One query per use-case, against the same filter the collection page uses.
     // `getProducts` is request-cached, so a use-case shared by two scenes costs
@@ -105,6 +107,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       />
 
       <CollectionEditorial d={d} locale={locale} products={featured} />
+
+      <StructuresShowcase
+        d={d}
+        locale={locale}
+        products={structures.products}
+        categories={structures.categories}
+      />
 
       <SpaceExplorer spaces={spaces} />
 

@@ -92,6 +92,20 @@ export const PUBLIC_PRODUCT_WHERE = { status: "PUBLISHED" as const };
  */
 export const ADD_ON_CATEGORIES = ["accessories"] as const;
 
+/**
+ * Built-to-measure structures, as opposed to umbrellas. The home page gives
+ * them a section of their own, because the showroom and the collection spread
+ * above it are about the umbrella.
+ */
+export const STRUCTURE_CATEGORIES = [
+  "car-parking-shades",
+  "tensile-structures",
+  "walkway-shades",
+  "pergolas-louvres",
+  "commercial-shade-structures",
+  "shade-sails",
+] as const;
+
 export const SESSION_COOKIE = "saiwan_session";
 export const THEME_COOKIE = "saiwan_theme";
 export const LOCALE_COOKIE = "saiwan_locale";

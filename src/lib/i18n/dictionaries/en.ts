@@ -111,6 +111,11 @@ const en = {
       title: "Pieces made to be lived beneath",
       cta: "View all pieces",
     },
+    structures: {
+      eyebrow: "Shade structures",
+      title: "Beyond the umbrella",
+      body: "Car park shades, tensile roofs and larger structures — designed and built to measure for each site.",
+    },
     explorer: {
       eyebrow: "Find your space",
       title: "Where will yours live?",

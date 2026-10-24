@@ -3,7 +3,7 @@ import { cache } from "react";
 import { prisma } from "@/lib/db";
 import { parseJson } from "@/lib/utils";
 import { defaultLocale, type Locale } from "@/lib/i18n/config";
-import { ADD_ON_CATEGORIES } from "@/lib/constants";
+import { ADD_ON_CATEGORIES, STRUCTURE_CATEGORIES } from "@/lib/constants";
 import type { Availability, ProductStatus, Segment, Style, UseCase } from "@/lib/constants";
 
 /**
@@ -151,6 +151,44 @@ export const getFeaturedProducts = cache(async (locale: Locale, take = 4): Promi
   });
   return rows.map((row) => toCard(row as unknown as CardRow, locale));
 });
+
+/**
+ * The home page's structures section: published pieces from the structure
+ * categories, taken in turn from each category so the section shows the range
+ * rather than one category's first four. Featured pieces lead within each
+ * category, then the dashboard's order. `categories` lists every structure
+ * category that has something to show, in the dashboard's category order.
+ */
+export const getStructureShowcase = cache(
+  async (
+    locale: Locale,
+    take = 4,
+  ): Promise<{ products: ProductCard[]; categories: { slug: string; name: string }[] }> => {
+    const rows = await prisma.product.findMany({
+      where: { status: "PUBLISHED", category: { slug: { in: [...STRUCTURE_CATEGORIES] }, isActive: true } },
+      include: { ...cardInclude, category: { select: { slug: true, order: true, translations: true } } },
+      orderBy: [{ isFeatured: "desc" }, { order: "asc" }, { createdAt: "desc" }],
+    });
+
+    const byCategory = new Map<string, { order: number; name: string; cards: ProductCard[] }>();
+    for (const row of rows) {
+      const card = toCard(row as unknown as CardRow, locale);
+      const group = byCategory.get(card.categorySlug) ?? { order: row.category.order, name: card.categoryName, cards: [] };
+      group.cards.push(card);
+      byCategory.set(card.categorySlug, group);
+    }
+
+    const groups = [...byCategory.entries()].sort(([, a], [, b]) => a.order - b.order);
+    const products: ProductCard[] = [];
+    for (let round = 0; products.length < take && groups.some(([, g]) => g.cards.length > round); round++) {
+      for (const [, group] of groups) {
+        if (products.length < take && group.cards[round]) products.push(group.cards[round]);
+      }
+    }
+
+    return { products, categories: groups.map(([slug, group]) => ({ slug, name: group.name })) };
+  },
+);
 
 export type CollectionFilters = {
   category?: string;
