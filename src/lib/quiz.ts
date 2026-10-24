@@ -116,7 +116,12 @@ export function scoreProducts(products: ProductCard[], answers: QuizAnswers): Re
       if (answers.area) {
         const band = AREA_BANDS[answers.area];
         const coverage = product.coverageM2 ?? 0;
-        if (coverage >= band.min && coverage < band.max) earned += WEIGHTS.area;
+        if (isBuiltToMeasure(product)) {
+          // No fixed canopy: sized to the project, so it suits a large area
+          // fully, a medium one partly, and is too much structure for a small
+          // terrace or balcony.
+          earned += WEIGHTS.area * (band.min >= 20 ? 1 : band.min >= 9 ? 0.5 : 0);
+        } else if (coverage >= band.min && coverage < band.max) earned += WEIGHTS.area;
         else {
           // Distance from the band, expressed as a proportion of the band width.
           const distance = coverage < band.min ? band.min - coverage : coverage - band.max;
@@ -216,5 +221,15 @@ function adjacent(useCase: UseCase): UseCase[] {
  */
 export function isRecommendable(product: ProductCard, answers: QuizAnswers = {}): boolean {
   if (isParking(answers)) return product.useCases.includes("parking");
-  return product.categorySlug !== "accessories" && (product.coverageM2 ?? 0) > 0;
+  if (product.categorySlug === "accessories" || product.useCases.includes("parking")) return false;
+  return (product.coverageM2 ?? 0) > 0 || isBuiltToMeasure(product);
+}
+
+/**
+ * A structure with no fixed canopy size — a tensile roof, say — that is still
+ * offered for the settings it is tagged with. Untagged, it stays out of the
+ * consultation, as a grandstand roof does: no setting here is a stadium.
+ */
+function isBuiltToMeasure(product: ProductCard): boolean {
+  return (product.coverageM2 ?? 0) <= 0 && product.useCases.length > 0 && !product.useCases.includes("parking");
 }

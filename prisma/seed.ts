@@ -904,9 +904,12 @@ const PRODUCTS: ProductSeed[] = [
   // --- Tensile structures -------------------------------------------------
   // Added to the live catalogue by the 20261025120000_tensile_products
   // migration; kept here so a fresh database matches it. Built to measure for
-  // each project, so no price, sizes or colours, and coverage 0 keeps them out
-  // of the umbrella consultation. Wide project photographs with their
-  // dimensions recorded, so they are framed whole rather than cropped.
+  // each project, so no price, sizes or colours. With coverage 0 the
+  // consultation treats them as built to measure: offered for the settings
+  // they are tagged with, and for larger areas (see isBuiltToMeasure). The
+  // grandstand roof suits none of those settings, so it stays out. Wide
+  // project photographs with their dimensions recorded, so they are framed
+  // whole rather than cropped.
   {
     slug: "arched-membrane-canopy",
     sku: "SW-TEN-01",
@@ -916,7 +919,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["hotel", "restaurant", "terrace", "garden"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/tensile-arched.webp", width: 1024, height: 576 }],
@@ -950,7 +953,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["restaurant", "hotel", "terrace", "rooftop"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/tensile-twin-peak.webp", width: 1024, height: 576 }],
@@ -984,7 +987,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["hotel", "pool", "terrace", "rooftop"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/tensile-multi-mast.webp", width: 1024, height: 576 }],
@@ -1052,7 +1055,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["hotel", "garden", "terrace", "pool"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/tensile-multi-peak.webp", width: 1024, height: 576 }],
@@ -1086,7 +1089,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["garden", "pool", "rooftop", "hotel", "restaurant"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/tensile-inverted-cone.webp", width: 1024, height: 572 }],

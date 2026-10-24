@@ -17,12 +17,12 @@ INSERT INTO "Product" ("id", "slug", "sku", "categoryId", "status", "isFeatured"
 SELECT p.id, p.slug, p.sku, c."id", 'PUBLISHED', false, p.ord, NULL, false,
   p.availability, p.style, p.use_cases, p.segment, p.coverage, p.tier, CURRENT_TIMESTAMP
 FROM (VALUES
-  ('prd0archedmembranecanopy0', 'arched-membrane-canopy', 'SW-TEN-01', 40, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Arched Membrane Canopy'),
-  ('prd0twinpeakcanopy0000000', 'twin-peak-canopy', 'SW-TEN-02', 41, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Twin Peak Canopy'),
-  ('prd0multimastmembrane0000', 'multi-mast-membrane', 'SW-TEN-03', 42, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Multi-Mast Membrane'),
+  ('prd0archedmembranecanopy0', 'arched-membrane-canopy', 'SW-TEN-01', 40, 'MADE_TO_ORDER', 'MODERN', '["hotel","restaurant","terrace","garden"]', 'COMMERCIAL', 0, 3, 'Arched Membrane Canopy'),
+  ('prd0twinpeakcanopy0000000', 'twin-peak-canopy', 'SW-TEN-02', 41, 'MADE_TO_ORDER', 'MODERN', '["restaurant","hotel","terrace","rooftop"]', 'COMMERCIAL', 0, 3, 'Twin Peak Canopy'),
+  ('prd0multimastmembrane0000', 'multi-mast-membrane', 'SW-TEN-03', 42, 'MADE_TO_ORDER', 'MODERN', '["hotel","pool","terrace","rooftop"]', 'COMMERCIAL', 0, 3, 'Multi-Mast Membrane'),
   ('prd0grandstandroof0000000', 'grandstand-roof', 'SW-TEN-04', 43, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Grandstand Roof'),
-  ('prd0multipeakcanopy000000', 'multi-peak-canopy', 'SW-TEN-05', 44, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Multi-Peak Canopy'),
-  ('prd0invertedconecanopy000', 'inverted-cone-canopy', 'SW-TEN-06', 45, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Inverted Cone Canopy')
+  ('prd0multipeakcanopy000000', 'multi-peak-canopy', 'SW-TEN-05', 44, 'MADE_TO_ORDER', 'MODERN', '["hotel","garden","terrace","pool"]', 'COMMERCIAL', 0, 3, 'Multi-Peak Canopy'),
+  ('prd0invertedconecanopy000', 'inverted-cone-canopy', 'SW-TEN-06', 45, 'MADE_TO_ORDER', 'MODERN', '["garden","pool","rooftop","hotel","restaurant"]', 'COMMERCIAL', 0, 3, 'Inverted Cone Canopy')
 ) AS p(id, slug, sku, ord, availability, style, use_cases, segment, coverage, tier, name_en)
 JOIN "Category" c ON c."slug" = 'tensile-structures'
 WHERE NOT EXISTS (
