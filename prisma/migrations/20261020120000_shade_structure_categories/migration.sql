@@ -42,7 +42,7 @@ FROM (VALUES
 
   ('cat0tensilestructures001', 'en', 'Tensile Structures', 'Fabric held in tension',
    'Membrane canopies tensioned between masts and cables to cover large spans with a light, sculptural roof.'),
-  ('cat0tensilestructures001', 'ar', 'المنشآت الشدّية', 'قماشٌ مشدود بإحكام',
+  ('cat0tensilestructures001', 'ar', 'مظلات الشد الإنشائي', 'قماشٌ مشدود بإحكام',
    'أغشية مشدودة بين الأعمدة والكابلات لتغطية مساحاتٍ واسعة بسقفٍ خفيفٍ ذي طابعٍ نحتي.'),
   ('cat0tensilestructures001', 'ckb', 'بنیاتی کێشراو', 'قوماش بە ڕاکێشان ڕاگیراو',
    'پەردەی قوماش کە لە نێوان کۆڵەکە و کێبڵەکاندا ڕادەکێشرێن بۆ داپۆشینی ماوەی گەورە بە سەقفێکی سووک و پەیکەرئاسا.'),

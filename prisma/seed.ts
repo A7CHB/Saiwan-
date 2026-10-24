@@ -122,7 +122,7 @@ const CATEGORIES = [
   {
     slug: "tensile-structures",
     image: null,
-    name: tri("Tensile Structures", "المنشآت الشدّية", "بنیاتی کێشراو"),
+    name: tri("Tensile Structures", "مظلات الشد الإنشائي", "بنیاتی کێشراو"),
     tagline: tri("Fabric held in tension", "قماشٌ مشدود بإحكام", "قوماش بە ڕاکێشان ڕاگیراو"),
     description: tri(
       "Membrane canopies tensioned between masts and cables to cover large spans with a light, sculptural roof.",
