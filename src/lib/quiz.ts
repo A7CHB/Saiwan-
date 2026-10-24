@@ -20,6 +20,9 @@ export const AREA_BANDS: Record<AreaBand, { min: number; max: number }> = {
   xlarge: { min: 40, max: Infinity },
 };
 
+export type CarsBand = "few" | "some" | "many" | "fleet";
+export type Roof = "FABRIC" | "METAL";
+
 export type QuizAnswers = {
   placement?: UseCase;
   area?: AreaBand;
@@ -27,7 +30,49 @@ export type QuizAnswers = {
   style?: Style;
   color?: string;
   tier?: 1 | 2 | 3;
+  // Car park questions — asked instead of area, style and colour.
+  cars?: CarsBand;
+  roof?: Roof;
 };
+
+export type QuizStepKey = "placement" | "area" | "segment" | "style" | "color" | "tier" | "cars" | "roof";
+
+/**
+ * The questions, in order. A car park is a different structure from an
+ * umbrella, so choosing it swaps the umbrella questions (area in m², style,
+ * canopy colour) for the two that actually decide a parking shade: how many
+ * cars, and fabric or a solid roof.
+ */
+export const UMBRELLA_STEPS: QuizStepKey[] = ["placement", "area", "segment", "style", "color", "tier"];
+export const PARKING_STEPS: QuizStepKey[] = ["placement", "cars", "segment", "roof", "tier"];
+
+export const isParking = (answers: QuizAnswers) => answers.placement === "parking";
+
+export const stepsFor = (answers: QuizAnswers) => (isParking(answers) ? PARKING_STEPS : UMBRELLA_STEPS);
+
+/**
+ * What each parking design suits. These are structural facts about the type
+ * (a cantilever row suits a frontage, a double arch two rows of bays), not
+ * something the dashboard holds, so they live here beside the weights. A
+ * parking product added in the dashboard without an entry is still offered,
+ * scored on the answers it can be judged on.
+ */
+const PARKING_PROFILES: Record<string, { roof: Roof; cars: CarsBand[] }> = {
+  "cable-stayed-parking-shade": { roof: "FABRIC", cars: ["some", "many"] },
+  "pyramid-parking-shade": { roof: "FABRIC", cars: ["many", "fleet"] },
+  "cantilever-parking-shade": { roof: "FABRIC", cars: ["few", "some"] },
+  "steel-roof-carport": { roof: "METAL", cars: ["few", "some", "many"] },
+  "double-arch-parking-shade": { roof: "FABRIC", cars: ["many", "fleet"] },
+};
+
+const CARS_ORDER: CarsBand[] = ["few", "some", "many", "fleet"];
+
+const PARKING_WEIGHTS = {
+  cars: 30,
+  roof: 24,
+  segment: 18,
+  tier: 12,
+} as const;
 
 const WEIGHTS = {
   placement: 30,
@@ -40,6 +85,8 @@ const WEIGHTS = {
 export type Recommendation = { product: ProductCard; score: number };
 
 export function scoreProducts(products: ProductCard[], answers: QuizAnswers): Recommendation[] {
+  if (isParking(answers)) return scoreParking(products, answers);
+
   // Only the questions actually answered count towards the denominator, so
   // skipping a question lowers confidence rather than penalising every product.
   const possible =
@@ -95,6 +142,58 @@ export function scoreProducts(products: ProductCard[], answers: QuizAnswers): Re
     .sort((a, b) => b.score - a.score || Number(b.product.isFeatured) - Number(a.product.isFeatured));
 }
 
+/**
+ * Car parks: every candidate is already a parking structure, so the setting
+ * earns nothing to tell them apart. Bays, roof, use and tier do, with the same
+ * answered-questions-only denominator as above.
+ */
+function scoreParking(products: ProductCard[], answers: QuizAnswers): Recommendation[] {
+  const possible =
+    (answers.cars ? PARKING_WEIGHTS.cars : 0) +
+    (answers.roof ? PARKING_WEIGHTS.roof : 0) +
+    (answers.segment ? PARKING_WEIGHTS.segment : 0) +
+    (answers.tier ? PARKING_WEIGHTS.tier : 0);
+
+  return products
+    .map((product) => {
+      // Skipping everything after "car parking" is still a fair answer: every
+      // design is a match for the setting.
+      if (possible === 0) return { product, score: 100 };
+
+      const profile = PARKING_PROFILES[product.slug];
+      let earned = 0;
+
+      if (answers.cars) {
+        if (!profile) earned += PARKING_WEIGHTS.cars * 0.5;
+        else if (profile.cars.includes(answers.cars)) earned += PARKING_WEIGHTS.cars;
+        else {
+          // One band away is a stretch, not a mismatch.
+          const wanted = CARS_ORDER.indexOf(answers.cars);
+          const gap = Math.min(...profile.cars.map((band) => Math.abs(CARS_ORDER.indexOf(band) - wanted)));
+          if (gap === 1) earned += PARKING_WEIGHTS.cars * 0.4;
+        }
+      }
+
+      if (answers.roof) {
+        if (!profile) earned += PARKING_WEIGHTS.roof * 0.5;
+        else if (profile.roof === answers.roof) earned += PARKING_WEIGHTS.roof;
+      }
+
+      if (answers.segment) {
+        if (product.segment === answers.segment) earned += PARKING_WEIGHTS.segment;
+        else if (product.segment === "BOTH") earned += PARKING_WEIGHTS.segment * 0.8;
+      }
+
+      if (answers.tier) {
+        const gap = Math.abs(product.priceTier - answers.tier);
+        earned += PARKING_WEIGHTS.tier * (gap === 0 ? 1 : gap === 1 ? 0.5 : 0);
+      }
+
+      return { product, score: Math.round((earned / possible) * 100) };
+    })
+    .sort((a, b) => b.score - a.score || Number(b.product.isFeatured) - Number(a.product.isFeatured));
+}
+
 /** Settings that behave similarly enough to earn partial credit. */
 function adjacent(useCase: UseCase): UseCase[] {
   const map: Record<UseCase, UseCase[]> = {
@@ -105,11 +204,17 @@ function adjacent(useCase: UseCase): UseCase[] {
     rooftop: ["terrace", "restaurant"],
     terrace: ["garden", "rooftop", "balcony"],
     balcony: ["terrace", "garden"],
+    parking: [],
   };
   return map[useCase] ?? [];
 }
 
-/** Accessories are add-ons, never a recommendation in their own right. */
-export function isRecommendable(product: ProductCard): boolean {
+/**
+ * What the consultation may put forward for these answers. Accessories are
+ * add-ons, never a recommendation in their own right; a car park gets parking
+ * structures and nothing else, and the umbrella questions never get them.
+ */
+export function isRecommendable(product: ProductCard, answers: QuizAnswers = {}): boolean {
+  if (isParking(answers)) return product.useCases.includes("parking");
   return product.categorySlug !== "accessories" && (product.coverageM2 ?? 0) > 0;
 }

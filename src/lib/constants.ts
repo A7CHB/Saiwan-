@@ -38,6 +38,9 @@ export const USE_CASES = [
   "rooftop",
   "terrace",
   "balcony",
+  // Car parks take a different structure altogether; in the consultation this
+  // setting switches to its own questions (see PARKING_STEPS in lib/quiz.ts).
+  "parking",
 ] as const;
 export type UseCase = (typeof USE_CASES)[number];
 

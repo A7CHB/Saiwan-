@@ -17,11 +17,11 @@ INSERT INTO "Product" ("id", "slug", "sku", "categoryId", "status", "isFeatured"
 SELECT p.id, p.slug, p.sku, c."id", 'PUBLISHED', false, p.ord, NULL, false,
   p.availability, p.style, p.use_cases, p.segment, p.coverage, p.tier, CURRENT_TIMESTAMP
 FROM (VALUES
-  ('prd0cablestayedparkingsha', 'cable-stayed-parking-shade', 'SW-CPS-01', 30, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Cable-Stayed Parking Shade'),
-  ('prd0pyramidparkingshade00', 'pyramid-parking-shade', 'SW-CPS-02', 31, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Pyramid Parking Shade'),
-  ('prd0cantileverparkingshad', 'cantilever-parking-shade', 'SW-CPS-03', 32, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Cantilever Parking Shade'),
-  ('prd0steelroofcarport00000', 'steel-roof-carport', 'SW-CPS-04', 33, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Steel Roof Carport'),
-  ('prd0doublearchparkingshad', 'double-arch-parking-shade', 'SW-CPS-05', 34, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Double Arch Parking Shade')
+  ('prd0cablestayedparkingsha', 'cable-stayed-parking-shade', 'SW-CPS-01', 30, 'MADE_TO_ORDER', 'MODERN', '["parking"]', 'COMMERCIAL', 0, 3, 'Cable-Stayed Parking Shade'),
+  ('prd0pyramidparkingshade00', 'pyramid-parking-shade', 'SW-CPS-02', 31, 'MADE_TO_ORDER', 'MODERN', '["parking"]', 'COMMERCIAL', 0, 3, 'Pyramid Parking Shade'),
+  ('prd0cantileverparkingshad', 'cantilever-parking-shade', 'SW-CPS-03', 32, 'MADE_TO_ORDER', 'MODERN', '["parking"]', 'BOTH', 0, 3, 'Cantilever Parking Shade'),
+  ('prd0steelroofcarport00000', 'steel-roof-carport', 'SW-CPS-04', 33, 'MADE_TO_ORDER', 'MODERN', '["parking"]', 'BOTH', 0, 3, 'Steel Roof Carport'),
+  ('prd0doublearchparkingshad', 'double-arch-parking-shade', 'SW-CPS-05', 34, 'MADE_TO_ORDER', 'MODERN', '["parking"]', 'COMMERCIAL', 0, 3, 'Double Arch Parking Shade')
 ) AS p(id, slug, sku, ord, availability, style, use_cases, segment, coverage, tier, name_en)
 JOIN "Category" c ON c."slug" = 'car-parking-shades'
 WHERE NOT EXISTS (

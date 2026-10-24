@@ -11,13 +11,29 @@ import { WhatsAppIcon } from "@/components/icons/whatsapp";
 import { Reveal } from "@/components/motion/reveal";
 import { CanopyRadial } from "@/components/icons/canopy";
 import { STYLES, USE_CASES, PRICE_TIERS } from "@/lib/constants";
-import { scoreProducts, isRecommendable, type QuizAnswers, type AreaBand } from "@/lib/quiz";
+import {
+  scoreProducts,
+  isRecommendable,
+  isParking,
+  stepsFor,
+  type QuizAnswers,
+  type QuizStepKey,
+  type AreaBand,
+  type CarsBand,
+} from "@/lib/quiz";
 import { track } from "@/lib/analytics-client";
 import { buildWhatsAppUrl, composeMessage, quizInquiryPayload } from "@/lib/whatsapp";
 import { absoluteUrl } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-type StepKey = "placement" | "area" | "segment" | "style" | "color" | "tier";
+type StepKey = QuizStepKey;
+
+type StepDefinition = {
+  key: StepKey;
+  title: string;
+  body: string;
+  options: { value: string; label: string; hint?: string; swatch?: string }[];
+};
 
 /**
  * The consultation.
@@ -34,12 +50,7 @@ export function ShadeFinder({ products, colors }: { products: ProductCardModel[]
   const [done, setDone] = useState(false);
   const [name, setName] = useState("");
 
-  const steps: {
-    key: StepKey;
-    title: string;
-    body: string;
-    options: { value: string; label: string; hint?: string; swatch?: string }[];
-  }[] = [
+  const definitions: StepDefinition[] = [
     {
       key: "placement",
       title: d.quiz.questions.placement.title,
@@ -88,18 +99,50 @@ export function ShadeFinder({ products, colors }: { products: ProductCardModel[]
         label: d.quiz.tierOptions[String(tier) as "1" | "2" | "3"],
       })),
     },
+    {
+      key: "cars",
+      title: d.quiz.questions.cars.title,
+      body: d.quiz.questions.cars.body,
+      options: (["few", "some", "many", "fleet"] as CarsBand[]).map((band) => ({
+        value: band,
+        label: d.quiz.carsOptions[band],
+      })),
+    },
+    {
+      key: "roof",
+      title: d.quiz.questions.roof.title,
+      body: d.quiz.questions.roof.body,
+      options: [
+        { value: "FABRIC", label: d.quiz.roofOptions.FABRIC },
+        { value: "METAL", label: d.quiz.roofOptions.METAL },
+        { value: "", label: d.quiz.colorNoPreference },
+      ],
+    },
   ];
+
+  // The first answer decides which questions follow (see stepsFor).
+  const steps = stepsFor(answers).map((key) => definitions.find((step) => step.key === key)!);
 
   const recommendations = useMemo(() => {
     if (!done) return [];
-    return scoreProducts(products.filter(isRecommendable), answers).slice(0, 3);
+    return scoreProducts(
+      products.filter((product) => isRecommendable(product, answers)),
+      answers,
+    ).slice(0, 3);
   }, [done, products, answers]);
 
   const choose = (key: StepKey, value: string) => {
-    setAnswers((current) => ({
-      ...current,
-      [key]: key === "tier" ? (value ? Number(value) : undefined) : value || undefined,
-    }));
+    setAnswers((current) => {
+      // Moving between a car park and anywhere else changes the questions, so
+      // answers from the other path would only mislead the result.
+      if (key === "placement" && (value === "parking") !== isParking(current)) {
+        return { placement: (value || undefined) as QuizAnswers["placement"] };
+      }
+      return {
+        ...current,
+        [key]: key === "tier" ? (value ? Number(value) : undefined) : value || undefined,
+      };
+    });
     advance();
   };
 
@@ -133,6 +176,8 @@ export function ShadeFinder({ products, colors }: { products: ProductCardModel[]
         quizInquiryPayload(d, {
           placement: labelFor("placement"),
           area: labelFor("area"),
+          cars: labelFor("cars"),
+          roof: labelFor("roof"),
           segment: labelFor("segment"),
           style: labelFor("style"),
           color: colorName,

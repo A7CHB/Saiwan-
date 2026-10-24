@@ -214,6 +214,7 @@ const en = {
       rooftop: "Rooftop",
       terrace: "Terrace",
       balcony: "Balcony",
+      parking: "Car parking",
     },
     tiers: {
       "1": "Essential",
@@ -278,12 +279,30 @@ const en = {
         title: "Where should we position the specification?",
         body: "This only guides the recommendation — nothing is committed.",
       },
+      cars: {
+        title: "How many cars need cover?",
+        body: "Count the bays you want shaded — an estimate is enough.",
+      },
+      roof: {
+        title: "Fabric, or a solid roof?",
+        body: "Fabric gives light, bright shade; a metal roof keeps the rain off too.",
+      },
     },
     areaOptions: {
       small: "Up to 9 m² — a small terrace or balcony",
       medium: "9–20 m² — a dining set or lounge",
       large: "20–40 m² — a pool deck or large terrace",
       xlarge: "Over 40 m² — a commercial span",
+    },
+    carsOptions: {
+      few: "1–3 cars — a home or small frontage",
+      some: "4–10 cars — an office or showroom",
+      many: "11–40 cars — a building's car park",
+      fleet: "Over 40 cars — a large car park",
+    },
+    roofOptions: {
+      FABRIC: "Tensioned fabric — light, bright shade",
+      METAL: "Solid metal roof — cover from sun and rain",
     },
     colorNoPreference: "No preference",
     tierOptions: {
@@ -430,6 +449,8 @@ const en = {
       link: "Link",
       placement: "Setting",
       area: "Area required",
+      cars: "Cars",
+      roof: "Roof",
       segment: "Use",
       style: "Style",
       budget: "Tier",

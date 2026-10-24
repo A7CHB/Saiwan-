@@ -107,6 +107,8 @@ export function productInquiryPayload(d: Dictionary, input: ProductInquiryInput)
 export type QuizInquiryInput = {
   placement?: string;
   area?: string;
+  cars?: string;
+  roof?: string;
   segment?: string;
   style?: string;
   color?: string;
@@ -124,6 +126,8 @@ export function quizInquiryPayload(d: Dictionary, input: QuizInquiryInput): What
     lines: [
       { label: f.placement, value: input.placement ?? "" },
       { label: f.area, value: input.area ?? "" },
+      { label: f.cars, value: input.cars ?? "" },
+      { label: f.roof, value: input.roof ?? "" },
       { label: f.segment, value: input.segment ?? "" },
       { label: f.style, value: input.style ?? "" },
       { label: f.color, value: input.color ?? "" },

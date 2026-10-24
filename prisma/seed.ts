@@ -727,8 +727,9 @@ const PRODUCTS: ProductSeed[] = [
   // --- Car parking shades ---------------------------------------------------
   // Added to the live catalogue by the 20261021120000_car_parking_products
   // migration; kept here so a fresh database matches it. Built to measure, so
-  // no price, sizes or colours, and coverage 0 keeps them out of the umbrella
-  // quiz (see isRecommendable). The photographs are wide site shots with their
+  // no price, sizes or colours. The "parking" setting is what the consultation
+  // offers them for, and coverage 0 keeps them out of the umbrella questions
+  // (see isRecommendable). The photographs are wide site shots with their
   // dimensions recorded, so they are framed whole rather than cropped.
   {
     slug: "cable-stayed-parking-shade",
@@ -739,7 +740,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["parking"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/parking-cable-stayed.jpg", width: 2000, height: 1130 }],
@@ -773,7 +774,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["parking"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/parking-pyramid.jpg", width: 2000, height: 1125 }],
@@ -806,8 +807,8 @@ const PRODUCTS: ProductSeed[] = [
     price: null,
     availability: "MADE_TO_ORDER",
     style: "MODERN",
-    segment: "COMMERCIAL",
-    useCases: [],
+    segment: "BOTH",
+    useCases: ["parking"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/parking-cantilever.jpg", width: 2000, height: 1109 }],
@@ -840,8 +841,8 @@ const PRODUCTS: ProductSeed[] = [
     price: null,
     availability: "MADE_TO_ORDER",
     style: "MODERN",
-    segment: "COMMERCIAL",
-    useCases: [],
+    segment: "BOTH",
+    useCases: ["parking"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/parking-steel-roof.jpg", width: 2000, height: 1120 }],
@@ -875,7 +876,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["parking"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/parking-double-arch.jpg", width: 2000, height: 1101 }],
