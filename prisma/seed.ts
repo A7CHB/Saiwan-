@@ -112,11 +112,15 @@ const CATEGORIES = [
     slug: "car-parking-shades",
     image: null,
     name: tri("Car Parking Shades", "مظلات مواقف السيارات", "سێبەری پارکینگی ئۆتۆمبێل"),
-    tagline: tri("Cover for every bay", "غطاءٌ لكل موقف", "داپۆشین بۆ هەموو شوێنێکی وەستان"),
+    tagline: tri(
+      "Cover for every car, through the hottest summers",
+      "حمايةٌ لكل سيارة في أشدّ أيام الصيف حرارة",
+      "پاراستن بۆ هەموو ئۆتۆمبێلێک، لە گەرمترین هاوینەکاندا",
+    ),
     description: tri(
-      "Steel-framed shade over parking bays that keeps cars, and the people getting into them, out of the midday sun.",
-      "مظلات بإطاراتٍ فولاذية فوق مواقف السيارات تحمي السيارات ومن يركبها من شمس الظهيرة.",
-      "سێبەری چوارچێوە پۆڵایی بەسەر شوێنی وەستانی ئۆتۆمبێلەکاندا کە ئۆتۆمبێلەکان و ئەو کەسانەی سواریان دەبن لە خۆری نیوەڕۆ دەپارێزێت.",
+      "Across Kurdistan and Iraq, summer temperatures regularly pass 40–45°C, and a car parked in full sun becomes far hotter inside than the air around it. Steering wheels and seats become too hot to touch, dashboards crack and fade, and paint, tyres and electronics wear out years early. Our car parking shades keep vehicles out of the direct sun all day, protecting the car and making it comfortable to get into — whether at home, at the office, at a hotel or across a large car park. Every structure is built to measure, engineered for local heat and dust, and installed by our team.",
+      "تتجاوز درجات الحرارة صيفًا في إقليم كوردستان والعراق ٤٠–٤٥ درجة مئوية بانتظام، وحين تُركن السيارة تحت أشعة الشمس المباشرة تصبح حرارتها من الداخل أعلى بكثير من حرارة الهواء المحيط بها؛ فيغدو المقود والمقاعد ساخنةً لا تُلمس، وتتشقّق لوحة القيادة ويبهت لونها، ويتلف الطلاء والإطارات والأجهزة الإلكترونية قبل أوانها بسنوات. تُبقي مظلات مواقف السيارات لدينا المركبات بعيدةً عن أشعة الشمس المباشرة طوال اليوم، فتحمي السيارة وتجعل ركوبها مريحًا — سواء في المنزل أو المكتب أو الفندق أو في مواقف السيارات الكبيرة. تُصمَّم كل منشأة حسب المقاس، وتُهندَس لتتحمّل حرارة المنطقة وغبارها، ويتولّى فريقنا تركيبها.",
+      "لە هەرێمی کوردستان و سەرانسەری عێراقدا، پلەی گەرمی هاوینان بە بەردەوامی لە ٤٠–٤٥ پلەی سەدی تێدەپەڕێت، و ئۆتۆمبێلێک کە لە ژێر تیشکی ڕاستەوخۆی خۆردا وەستێنرابێت، ناوەوەی زۆر لە هەوای دەوروبەری گەرمتر دەبێت. سوکان و کورسییەکان ئەوەندە گەرم دەبن کە دەستیان لێ نادرێت، داشبۆرد درز دەبات و ڕەنگی کاڵ دەبێتەوە، و بۆیە و تایە و ئامێرە ئەلیکترۆنییەکان چەندین ساڵ زووتر لە کاتی خۆیان تێکدەچن. سێبەرەکانی پارکینگی ئێمە ئۆتۆمبێلەکان بە درێژایی ڕۆژ لە تیشکی ڕاستەوخۆی خۆر دەپارێزن، ئۆتۆمبێلەکە دەپارێزن و سواربوونی ئاسوودە دەکەن — جا لە ماڵەوە بێت یان ئۆفیس یان هۆتێل یان پارکینگێکی گەورە. هەموو بنیاتێک بەپێی پێوانە دروست دەکرێت، بۆ بەرگەگرتنی گەرما و تۆزی ناوچەکە ئەندازیاری دەکرێت، و تیمەکەمان خۆی دایدەمەزرێنێت.",
     ),
   },
   {
@@ -750,9 +754,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Cable-Stayed Parking Shade", "مظلة مواقف معلّقة بالكابلات", "سێبەری پارکینگی هەڵواسراو بە کێبڵ"),
     tagline: tri("Clear bays, held from above", "مواقف خالية، محمولة من الأعلى", "شوێنی وەستانی بەتاڵ، لە سەرەوە هەڵگیراو"),
     description: tri(
-      "Tall masts and cables suspend a continuous fabric canopy over the row, keeping the bays open so doors swing and cars turn freely.",
-      "أعمدةٌ عالية وكابلات تحمل غطاءً قماشيًا متصلًا فوق صف المواقف، فتبقى المواقف مفتوحة لتُفتح الأبواب وتدور السيارات بحرية.",
-      "کۆڵەکەی بەرز و کێبڵەکان داپۆشینێکی قوماشی بەردەوام بەسەر ڕیزی شوێنی وەستاندا هەڵدەواسن، بۆ ئەوەی شوێنەکان کراوە بمێننەوە و دەرگاکان بە ئازادی بکرێنەوە و ئۆتۆمبێلەکان بسووڕێنەوە.",
+      "Tall masts and steel cables hold a continuous fabric canopy over the whole row, so the bays underneath stay open. Doors swing freely, cars turn in easily, and every vehicle stays in the shade through the hottest hours of the day. Ideal for long frontages, streets and commercial car parks.",
+      "تحمل أعمدةٌ عالية وكابلاتٌ فولاذية مظلةً قماشية متصلة فوق الصف بأكمله، فتبقى المواقف أسفلها مفتوحة بالكامل. تُفتح الأبواب بحرية، وتدخل السيارات بسهولة، وتبقى كل مركبة في الظل طوال ساعات النهار الأشدّ حرارة. مثالية للواجهات الطويلة والشوارع ومواقف السيارات التجارية.",
+      "کۆڵەکەی بەرز و کێبڵی پۆڵایی سێبەرێکی قوماشی بەردەوام بەسەر تەواوی ڕیزەکەدا هەڵدەگرن، بۆیە شوێنەکانی وەستان لە ژێرەوە بە تەواوی کراوە دەمێننەوە. دەرگاکان بە ئازادی دەکرێنەوە، ئۆتۆمبێلەکان بە ئاسانی دەچنە ژێرەوە، و هەموو ئۆتۆمبێلێک لە گەرمترین کاتژمێرەکانی ڕۆژدا لە سێبەردا دەمێنێتەوە. گونجاوە بۆ ڕووکاری درێژ و شەقام و پارکینگە بازرگانییەکان.",
     ),
     features: {
       en: ["Masts and cables carry the canopy", "Continuous cover along the whole row", "Made to measure for each site"],
@@ -784,9 +788,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Pyramid Parking Shade", "مظلة مواقف هرمية", "سێبەری پارکینگی هەرەمی"),
     tagline: tri("Rows of peaks for large car parks", "صفوفٌ من القمم لمواقف السيارات الكبيرة", "ڕیزی لووتکە بۆ پارکینگی گەورە"),
     description: tri(
-      "Repeating pyramid canopies on a shared frame — the classic way to shade a large car park row by row, with rain running off every peak.",
-      "مظلات هرمية متكرّرة على هيكلٍ مشترك — الطريقة الكلاسيكية لتظليل مواقف السيارات الكبيرة صفًّا بعد صف، ينساب المطر عن كل قمة.",
-      "سێبەری هەرەمی دووبارەبووەوە لەسەر چوارچێوەیەکی هاوبەش — ڕێگای کلاسیکی بۆ سێبەرکردنی پارکینگی گەورە ڕیز بە ڕیز، باران لە هەموو لووتکەیەکەوە دەڕژێتە خوارەوە.",
+      "Repeating pyramid canopies on a shared steel frame — the most popular way to shade a large car park row by row. The peaked shape lets hot air rise and escape and sheds rain quickly, keeping cars cooler underneath in summer and drier in winter. Suits offices, hospitals, universities and shopping centres.",
+      "مظلاتٌ هرمية متتالية على هيكلٍ فولاذي مشترك — وهي الطريقة الأكثر شيوعًا لتظليل مواقف السيارات الكبيرة صفًّا بعد صف. يسمح شكلها المدبّب بصعود الهواء الساخن وخروجه، ويصرّف مياه الأمطار بسرعة، فتبقى السيارات أسفلها أبرد صيفًا وأكثر جفافًا شتاءً. تناسب المكاتب والمستشفيات والجامعات والمراكز التجارية.",
+      "سێبەری هەرەمی بەدوای یەکدا لەسەر چوارچێوەیەکی پۆڵایی هاوبەش — باوترین ڕێگا بۆ سێبەرکردنی پارکینگە گەورەکان ڕیز بە ڕیز. شێوە لووتکەییەکەی ڕێگە دەدات هەوای گەرم بەرز ببێتەوە و دەربچێت، و ئاوی باران بە خێرایی دەڕژێنێتە خوارەوە، بۆیە ئۆتۆمبێلەکانی ژێرەوەی لە هاویندا فێنکتر و لە زستاندا وشکتر دەمێننەوە. گونجاوە بۆ ئۆفیس و نەخۆشخانە و زانکۆ و سەنتەرە بازرگانییەکان.",
     ),
     features: {
       en: ["Repeating pyramid canopies", "Sheds rain from every peak", "Scales to car parks of any size"],
@@ -818,9 +822,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Cantilever Parking Shade", "مظلة مواقف كابولية", "سێبەری پارکینگی کانتیلیڤەر"),
     tagline: tri("Posts at the back, open at the front", "أعمدة في الخلف، وواجهة مفتوحة", "کۆڵەکە لە دواوە، کراوە لە پێشەوە"),
     description: tri(
-      "Single posts stand at the rear of the bays and the canopy reaches forward, leaving the front open for an easy way in — at home beside a building's entrance.",
-      "أعمدة مفردة تقف في مؤخرة المواقف ويمتد الغطاء إلى الأمام، فتبقى الواجهة مفتوحة لدخولٍ سهل — مثالية بجوار مدخل المبنى.",
-      "کۆڵەکەی تاک لە دواوەی شوێنی وەستانەکان ڕادەوەستن و داپۆشینەکە بەرەو پێشەوە درێژ دەبێتەوە، بەشی پێشەوە بۆ چوونەژوورەوەی ئاسان کراوە دەهێڵێتەوە — گونجاو لە تەنیشت دەروازەی باڵەخانە.",
+      "Single posts stand at the back of the bays and the canopy reaches forward, leaving the front completely open for easy parking. A clean, modern look that suits villas, building entrances and smaller car parks where every car still needs protection from the summer sun.",
+      "تقف أعمدةٌ مفردة في مؤخرة المواقف وتمتد المظلة إلى الأمام، فتبقى الواجهة مفتوحة تمامًا لركنٍ سهل. تصميمٌ عصري أنيق يناسب الفلل ومداخل المباني ومواقف السيارات الصغيرة، حيث تحتاج كل سيارة مع ذلك إلى الحماية من شمس الصيف.",
+      "کۆڵەکەی تاک لە دواوەی شوێنەکانی وەستان ڕادەوەستن و سێبەرەکە بەرەو پێشەوە درێژ دەبێتەوە، بەمەش بەشی پێشەوە بە تەواوی کراوە دەمێنێتەوە بۆ وەستانێکی ئاسان. شێوەیەکی مۆدێرن و ڕێکوپێک کە لەگەڵ ڤێلا و دەروازەی باڵەخانە و پارکینگە بچووکەکاندا دەگونجێت، کە هەموو ئۆتۆمبێلێکیان هێشتا پێویستی بە پاراستن لە خۆری هاوین هەیە.",
     ),
     features: {
       en: ["Posts kept to the rear of the bays", "Open front for easy parking", "Suits building entrances and frontages"],
@@ -852,9 +856,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Steel Roof Carport", "مظلة مواقف بسقف معدني", "سێبەری پارکینگی بە سەقفی کانزایی"),
     tagline: tri("A solid roof for every season", "سقفٌ صلب لكل المواسم", "سەقفێکی پتەو بۆ هەموو وەرزێک"),
     description: tri(
-      "A steel frame under a metal panel roof, for sites that want fully solid cover against sun and rain, in clean lines that suit offices and hospitals.",
-      "هيكل فولاذي تحت سقفٍ من الألواح المعدنية، للمواقع التي تريد غطاءً صلبًا بالكامل من الشمس والمطر، بخطوطٍ نظيفة تناسب المكاتب والمستشفيات.",
-      "چوارچێوەیەکی پۆڵایی لە ژێر سەقفێکی پانێڵی کانزاییدا، بۆ ئەو شوێنانەی داپۆشینێکی تەواو پتەویان دەوێت دژی خۆر و باران، بە هێڵی پاک کە لەگەڵ ئۆفیس و نەخۆشخانەکان دەگونجێت.",
+      "A steel frame with a solid metal roof gives full cover from the strong summer sun and from winter rain and dust. A durable, low-maintenance choice for homes, offices, hospitals and government buildings that want a permanent, clean-lined structure.",
+      "هيكلٌ فولاذي بسقفٍ معدني صلب يوفّر حمايةً كاملة من شمس الصيف القوية ومن أمطار الشتاء والغبار. خيارٌ متين وقليل الصيانة للمنازل والمكاتب والمستشفيات والمباني الحكومية التي تبحث عن منشأةٍ دائمة بخطوطٍ نظيفة.",
+      "چوارچێوەیەکی پۆڵایی لەگەڵ سەقفێکی کانزایی پتەو پاراستنێکی تەواو دابین دەکات لە خۆری بەهێزی هاوین و لە بارانی زستان و تۆز. هەڵبژاردنێکی بەرگەگر و کەم چاککردنەوەیە بۆ ماڵ و ئۆفیس و نەخۆشخانە و باڵەخانە حکومییەکان کە بنیاتێکی هەمیشەیی و ڕێکوپێکیان دەوێت.",
     ),
     features: {
       en: ["Solid metal roof", "Shelter from sun and rain", "Clean lines for offices and hospitals"],
@@ -886,9 +890,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Double Arch Parking Shade", "مظلة مواقف مقوّسة مزدوجة", "سێبەری پارکینگی کەوانەیی دووانە"),
     tagline: tri("Two rows from one line of posts", "صفّان من خطٍّ واحد من الأعمدة", "دوو ڕیز لە یەک هێڵی کۆڵەکە"),
     description: tri(
-      "Curved canopies reach out to both sides of a central line of posts, covering two rows of bays at once with a single structure.",
-      "أغطية مقوّسة تمتد إلى جانبَي خطٍّ مركزي من الأعمدة، فتغطي صفّين من المواقف في آنٍ واحد ببنيةٍ واحدة.",
-      "داپۆشینی کەوانەیی بۆ هەردوو لای هێڵێکی ناوەندی کۆڵەکە درێژ دەبنەوە، و بە یەک بنیات دوو ڕیز شوێنی وەستان پێکەوە دادەپۆشن.",
+      "Curved canopies reach out to both sides of a single central line of posts, covering two rows of bays at once. Fewer posts means more space to manoeuvre, and the arched shape gives a striking, modern look to large car parks at hotels, malls and public buildings.",
+      "تمتد مظلاتٌ مقوّسة إلى جانبَي خطٍّ مركزي واحد من الأعمدة، فتغطي صفّين من المواقف في آنٍ واحد. أعمدةٌ أقل تعني مساحةً أكبر للمناورة، ويمنح الشكل المقوّس مواقف السيارات الكبيرة في الفنادق والمولات والمباني العامة مظهرًا عصريًا لافتًا.",
+      "سێبەری کەوانەیی بۆ هەردوو لای یەک هێڵی ناوەندی کۆڵەکە درێژ دەبنەوە و دوو ڕیز شوێنی وەستان پێکەوە دادەپۆشن. کۆڵەکەی کەمتر واتە بۆشایی زیاتر بۆ جووڵەی ئۆتۆمبێل، و شێوە کەوانەییەکەی ڕووکارێکی مۆدێرن و سەرنجڕاکێش دەبەخشێتە پارکینگە گەورەکانی هۆتێل و مۆڵ و باڵەخانە گشتییەکان.",
     ),
     features: {
       en: ["Covers two rows of bays at once", "One central line of posts", "Curved canopies on both sides"],
