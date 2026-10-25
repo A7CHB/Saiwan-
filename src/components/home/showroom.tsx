@@ -193,6 +193,9 @@ export function Showroom({
       window.removeEventListener("resize", schedule);
       if (raf) cancelAnimationFrame(raf);
     };
+    // Re-attached when the number of scenes changes, not on every new array
+    // from a parent render — rebinding scroll listeners mid-scroll stutters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced, scenes.length]);
 
   const goTo = useCallback(

@@ -32,6 +32,7 @@ export function CompareProvider({ children }: { children: React.ReactNode }) {
       if (!raw) return;
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed)) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage is browser-only; reading it during render would break hydration
         setIds(parsed.filter((x): x is string => typeof x === "string").slice(0, COMPARE_LIMIT));
       }
     } catch {

@@ -21,6 +21,7 @@ export function CompareTray() {
 
   useEffect(() => {
     if (ids.length === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- previews come from a fetch below; an empty tray simply drops them
       setItems([]);
       return;
     }

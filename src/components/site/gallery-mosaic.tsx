@@ -33,8 +33,6 @@ export function GalleryMosaic({
   const { d, t } = useLocale();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  if (items.length === 0) return null;
-
   // Matches the featured row exactly, so the two read as siblings.
   const tileClass = "w-[74%] shrink-0 snap-start sm:w-[46%] lg:w-[31%]";
 
@@ -83,6 +81,11 @@ export function GalleryMosaic({
       if (frame) cancelAnimationFrame(frame);
     };
   }, [scroller, items.length]);
+
+  // After every hook, never before: a gallery that empties between renders (a
+  // filter with no photographs) must still call the same hooks in the same
+  // order, or React throws.
+  if (items.length === 0) return null;
 
   const step = (delta: number) => {
     setOpenIndex((current) => {

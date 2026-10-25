@@ -35,6 +35,7 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
 
   useEffect(() => {
     if (!open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- closing the dialog resets it for the next time it opens
       setQuery("");
       setResults([]);
       setStatus("idle");
@@ -45,6 +46,7 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
   useEffect(() => {
     const trimmed = query.trim();
     if (trimmed.length < 2) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- results come from a debounced fetch below; too short a query clears them
       setResults([]);
       setStatus("idle");
       return;

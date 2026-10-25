@@ -11,7 +11,9 @@ const results = [];
 const check = (name, passed, detail = "") =>
   results.push({ name, passed, detail: passed ? "" : detail });
 
-const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+// Playwright's own Chromium (`npx playwright install chromium`), unless
+// CHROMIUM_PATH names another — a fixed path only works on one machine.
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 
 function summarise(fatal) {
   const failed = results.filter((result) => !result.passed);

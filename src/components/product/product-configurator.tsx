@@ -40,6 +40,7 @@ export function ProductConfigurator({
   // than during render: a random value produced on both server and client
   // would differ and break hydration.
   const [reference, setReference] = useState<string | null>(null);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- see above: a random value must not be produced during render
   useEffect(() => setReference(inquiryReference()), []);
 
   const size = product.sizes.find((option) => option.id === sizeId) ?? null;

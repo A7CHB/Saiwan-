@@ -40,6 +40,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const root = document.documentElement;
     const initial = (root.dataset.theme as ThemePreference) || "system";
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- adopts what ThemeScript decided before paint; the DOM is browser-only
     setPreferenceState(initial);
     setResolved(root.classList.contains("dark") ? "dark" : "light");
   }, []);

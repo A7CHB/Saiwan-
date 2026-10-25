@@ -119,6 +119,9 @@ export function SiteFooter({
 
         <div className="flex flex-wrap items-center gap-5">
           <p className="hidden text-xs text-subtle sm:block">{d.footer.madeIn}</p>
+          {/* A plain link on purpose: the dashboard is a different root
+              layout, which only a full page load can switch to. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a
             href="/admin"
             className="inline-flex items-center gap-1 text-xs text-subtle transition-colors hover:text-accent"

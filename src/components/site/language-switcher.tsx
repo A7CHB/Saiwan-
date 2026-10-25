@@ -50,6 +50,7 @@ export function LanguageSwitcher({ compact = false, className }: { compact?: boo
     else segments.splice(1, 0, next);
 
     const query = window.location.search;
+    // eslint-disable-next-line react-hooks/immutability -- remembering the language is the point of this click handler
     document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
 
     startTransition(() => {

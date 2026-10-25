@@ -99,7 +99,9 @@ async function auditPage(page, where) {
   return audit;
 }
 
-const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+// Playwright's own Chromium (`npx playwright install chromium`), unless
+// CHROMIUM_PATH names another — a fixed path only works on one machine.
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
 
 for (const scheme of ["light", "dark"]) {
   for (const viewport of VIEWPORTS) {

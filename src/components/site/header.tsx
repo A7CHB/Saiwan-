@@ -50,6 +50,7 @@ export function SiteHeader({ categories }: { categories: HeaderCategory[] }) {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the menu closes whenever navigation lands on a new page
     setMenuOpen(false);
   }, [pathname]);
 

@@ -48,6 +48,7 @@ export function Reveal({
 
     // No observer (very old browsers, or JSDOM): show the content immediately.
     if (typeof IntersectionObserver === "undefined") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- feature detection only exists in the browser, after mount
       setVisible(true);
       return;
     }
@@ -65,7 +66,7 @@ export function Reveal({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [threshold, rootMargin]);
+  }, [ref, threshold, rootMargin]);
 
   return (
     <Tag
@@ -113,6 +114,7 @@ export function RevealText({
     const node = ref.current;
     if (!node) return;
     if (typeof IntersectionObserver === "undefined") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- feature detection only exists in the browser, after mount
       setVisible(true);
       return;
     }
