@@ -118,64 +118,84 @@ const CATEGORIES = [
       "پاراستن بۆ هەموو ئۆتۆمبێلێک، لە گەرمترین هاوینەکاندا",
     ),
     description: tri(
-      "Across Kurdistan and Iraq, summer temperatures regularly pass 40–45°C, and a car parked in full sun becomes far hotter inside than the air around it. Steering wheels and seats become too hot to touch, dashboards crack and fade, and paint, tyres and electronics wear out years early. Our car parking shades keep vehicles out of the direct sun all day, protecting the car and making it comfortable to get into — whether at home, at the office, at a hotel or across a large car park. Every structure is built to measure, engineered for local heat and dust, and installed by our team.",
-      "تتجاوز درجات الحرارة صيفًا في إقليم كوردستان والعراق ٤٠–٤٥ درجة مئوية بانتظام، وحين تُركن السيارة تحت أشعة الشمس المباشرة تصبح حرارتها من الداخل أعلى بكثير من حرارة الهواء المحيط بها؛ فيغدو المقود والمقاعد ساخنةً لا تُلمس، وتتشقّق لوحة القيادة ويبهت لونها، ويتلف الطلاء والإطارات والأجهزة الإلكترونية قبل أوانها بسنوات. تُبقي مظلات مواقف السيارات لدينا المركبات بعيدةً عن أشعة الشمس المباشرة طوال اليوم، فتحمي السيارة وتجعل ركوبها مريحًا — سواء في المنزل أو المكتب أو الفندق أو في مواقف السيارات الكبيرة. تُصمَّم كل منشأة حسب المقاس، وتُهندَس لتتحمّل حرارة المنطقة وغبارها، ويتولّى فريقنا تركيبها.",
-      "لە هەرێمی کوردستان و سەرانسەری عێراقدا، پلەی گەرمی هاوینان بە بەردەوامی لە ٤٠–٤٥ پلەی سەدی تێدەپەڕێت، و ئۆتۆمبێلێک کە لە ژێر تیشکی ڕاستەوخۆی خۆردا وەستێنرابێت، ناوەوەی زۆر لە هەوای دەوروبەری گەرمتر دەبێت. سوکان و کورسییەکان ئەوەندە گەرم دەبن کە دەستیان لێ نادرێت، داشبۆرد درز دەبات و ڕەنگی کاڵ دەبێتەوە، و بۆیە و تایە و ئامێرە ئەلیکترۆنییەکان چەندین ساڵ زووتر لە کاتی خۆیان تێکدەچن. سێبەرەکانی پارکینگی ئێمە ئۆتۆمبێلەکان بە درێژایی ڕۆژ لە تیشکی ڕاستەوخۆی خۆر دەپارێزن، ئۆتۆمبێلەکە دەپارێزن و سواربوونی ئاسوودە دەکەن — جا لە ماڵەوە بێت یان ئۆفیس یان هۆتێل یان پارکینگێکی گەورە. هەموو بنیاتێک بەپێی پێوانە دروست دەکرێت، بۆ بەرگەگرتنی گەرما و تۆزی ناوچەکە ئەندازیاری دەکرێت، و تیمەکەمان خۆی دایدەمەزرێنێت.",
+      "Across Kurdistan and Iraq, summer temperatures regularly pass 40–45°C, and a car parked in full sun becomes far hotter inside than the air around it. Steering wheels and seats become too hot to touch, dashboards crack and fade, and paint, tyres and electronics wear out years early. Our car parking shades keep vehicles out of the direct sun all day, protecting the car and making it comfortable to get into — whether at home, at the office, at a hotel or across a large car park. Every structure is built to measure and engineered for local heat and dust.",
+      "تتجاوز درجات الحرارة صيفًا في إقليم كوردستان والعراق ٤٠–٤٥ درجة مئوية بانتظام، وحين تُركن السيارة تحت أشعة الشمس المباشرة تصبح حرارتها من الداخل أعلى بكثير من حرارة الهواء المحيط بها؛ فيغدو المقود والمقاعد ساخنةً لا تُلمس، وتتشقّق لوحة القيادة ويبهت لونها، ويتلف الطلاء والإطارات والأجهزة الإلكترونية قبل أوانها بسنوات. تُبقي مظلات مواقف السيارات لدينا المركبات بعيدةً عن أشعة الشمس المباشرة طوال اليوم، فتحمي السيارة وتجعل ركوبها مريحًا — سواء في المنزل أو المكتب أو الفندق أو في مواقف السيارات الكبيرة. تُصمَّم كل منشأة حسب المقاس، وتُهندَس لتتحمّل حرارة المنطقة وغبارها.",
+      "لە هەرێمی کوردستان و سەرانسەری عێراقدا، پلەی گەرمی هاوینان بە بەردەوامی لە ٤٠–٤٥ پلەی سەدی تێدەپەڕێت، و ئۆتۆمبێلێک کە لە ژێر تیشکی ڕاستەوخۆی خۆردا وەستێنرابێت، ناوەوەی زۆر لە هەوای دەوروبەری گەرمتر دەبێت. سوکان و کورسییەکان ئەوەندە گەرم دەبن کە دەستیان لێ نادرێت، داشبۆرد درز دەبات و ڕەنگی کاڵ دەبێتەوە، و بۆیە و تایە و ئامێرە ئەلیکترۆنییەکان چەندین ساڵ زووتر لە کاتی خۆیان تێکدەچن. سێبەرەکانی پارکینگی ئێمە ئۆتۆمبێلەکان بە درێژایی ڕۆژ لە تیشکی ڕاستەوخۆی خۆر دەپارێزن، ئۆتۆمبێلەکە دەپارێزن و سواربوونی ئاسوودە دەکەن — جا لە ماڵەوە بێت یان ئۆفیس یان هۆتێل یان پارکینگێکی گەورە. هەموو بنیاتێک بەپێی پێوانە دروست دەکرێت و بۆ بەرگەگرتنی گەرما و تۆزی ناوچەکە ئەندازیاری دەکرێت.",
     ),
   },
   {
     slug: "tensile-structures",
     image: null,
     name: tri("Tensile Structures", "مظلات الشد الإنشائي", "بنیاتی کێشراو"),
-    tagline: tri("Fabric held in tension", "قماشٌ مشدود بإحكام", "قوماش بە ڕاکێشان ڕاگیراو"),
+    tagline: tri(
+      "Architectural shade for the hottest public spaces",
+      "تظليلٌ معماري لأكثر الأماكن العامة حرارة",
+      "سێبەری تەلارسازی بۆ گەرمترین شوێنە گشتییەکان",
+    ),
     description: tri(
-      "Membrane canopies tensioned between masts and cables to cover large spans with a light, sculptural roof.",
-      "أغشية مشدودة بين الأعمدة والكابلات لتغطية مساحاتٍ واسعة بسقفٍ خفيفٍ ذي طابعٍ نحتي.",
-      "پەردەی قوماش کە لە نێوان کۆڵەکە و کێبڵەکاندا ڕادەکێشرێن بۆ داپۆشینی ماوەی گەورە بە سەقفێکی سووک و پەیکەرئاسا.",
+      "In a climate where summer temperatures pass 40–45°C, outdoor spaces only work if they are properly shaded. Tensile structures stretch a strong, lightweight membrane between steel masts, arches and cables to cover large areas without columns in the way — courtyards, stages, plazas, stadiums and entrances. The membrane blocks the direct sun while staying bright underneath, and its sculptural forms become landmarks in their own right. Every structure is designed for its site and engineered for local heat, wind and dust.",
+      "في مناخٍ تتجاوز فيه درجات الحرارة صيفًا ٤٠–٤٥ درجة مئوية، لا تصلح المساحات الخارجية للاستخدام إلا إذا كانت مظلّلة كما ينبغي. تشدّ منشآت الشد الإنشائي غشاءً متينًا وخفيف الوزن بين أعمدةٍ وأقواسٍ وكابلات فولاذية، لتغطي مساحاتٍ واسعة دون أعمدة تعترض المكان — من الأفنية والمسارح إلى الساحات والملاعب والمداخل. يحجب الغشاء أشعة الشمس المباشرة مع بقاء المكان أسفله مضيئًا، وتتحوّل أشكاله النحتية إلى معالم بحدّ ذاتها. تُصمَّم كل منشأة وفق موقعها، وتُهندَس لتتحمّل حرارة المنطقة ورياحها وغبارها.",
+      "لە کەشوهەوایەکدا کە پلەی گەرمی هاوینان لە ٤٠–٤٥ پلەی سەدی تێدەپەڕێت، شوێنە کراوەکان تەنها کاتێک بەکاردێن کە بە باشی سێبەر کرابن. بنیاتی کێشراو پەردەیەکی بەهێز و سووک لە نێوان کۆڵەکە و کەوانە و کێبڵی پۆڵاییدا ڕادەکێشێت، بۆ داپۆشینی ڕووبەری فراوان بەبێ ئەوەی کۆڵەکە ڕێگر بێت — لە حەوشە و شانۆوە تا گۆڕەپان و یاریگا و دەروازەکان. پەردەکە تیشکی ڕاستەوخۆی خۆر ڕادەگرێت و ژێرەوەی هەر ڕووناک دەمێنێتەوە، و شێوە پەیکەرئاساکانی خۆیان دەبنە نیشانەیەکی دیار. هەموو بنیاتێک بەپێی شوێنەکەی دیزاین دەکرێت و بۆ بەرگەگرتنی گەرما و با و تۆزی ناوچەکە ئەندازیاری دەکرێت.",
     ),
   },
   {
     slug: "walkway-shades",
     image: null,
     name: tri("Walkway Shades", "مظلات الممرات", "سێبەری ڕێڕەو"),
-    tagline: tri("Shade from door to door", "ظلٌّ من بابٍ إلى باب", "سێبەر لە دەرگاوە بۆ دەرگا"),
+    tagline: tri(
+      "Walk in the shade, even at midday",
+      "امشِ في الظل حتى في عزّ الظهيرة",
+      "لە ژێر سێبەردا بڕۆ، تەنانەت لە نیوەڕۆشدا",
+    ),
     description: tri(
-      "Continuous cover along paths, entrances and connecting walkways, so moving between buildings never means stepping into full sun.",
-      "غطاءٌ متصل على امتداد الممرات والمداخل وطرق الربط، فلا يعني التنقّل بين المباني الخروج إلى الشمس المباشرة.",
-      "داپۆشینی بەردەوام بە درێژایی ڕێگا و دەروازە و ڕێڕەوە پەیوەندکەرەکان، بۆ ئەوەی جووڵە لە نێوان باڵەخانەکاندا هەرگیز بە مانای چوونە ناو خۆری ڕاستەوخۆ نەبێت.",
+      "When summer temperatures pass 40–45°C, even a short walk across an open path or car park becomes exhausting. Walkway shades keep people covered from the car to the door, between buildings and along campus paths — protecting them from the midday sun in summer and from rain in winter. We build fabric, louvred and solid-roof walkways to measure for schools, hospitals, hotels, residential communities and factories, engineered for local conditions.",
+      "حين تتجاوز درجات الحرارة صيفًا ٤٠–٤٥ درجة مئوية، يصبح حتى المشي القصير عبر ممرٍّ مكشوف أو موقف سيارات أمرًا مرهقًا. تُبقي مظلات الممرات الناس محميّين من السيارة حتى الباب، وبين المباني وعلى طول ممرات الحرم — فتقيهم شمس الظهيرة صيفًا والمطر شتاءً. ننفّذ ممراتٍ بالقماش أو بالشرائح أو بالأسقف الصلبة حسب المقاس للمدارس والمستشفيات والفنادق والمجمّعات السكنية والمصانع، مُهندَسة لظروف المنطقة.",
+      "کاتێک پلەی گەرمی هاوین لە ٤٠–٤٥ پلەی سەدی تێدەپەڕێت، تەنانەت ڕۆیشتنێکی کورتیش بە ڕێگایەکی کراوە یان پارکینگێکدا ماندووکەر دەبێت. سێبەری ڕێڕەو خەڵک لە ئۆتۆمبێلەوە تا دەرگا، لە نێوان باڵەخانەکاندا و بە درێژایی ڕێگاکانی کەمپەس داپۆشراو دەهێڵێتەوە — لە هاویندا لە خۆری نیوەڕۆ و لە زستاندا لە باران دەیانپارێزێت. ڕێڕەوی قوماشی و لووڤەری و سەقف پتەو بەپێی پێوانە دروست دەکەین بۆ قوتابخانە و نەخۆشخانە و هۆتێل و کۆمەڵگە نیشتەجێبوونەکان و کارگەکان، کە بۆ بارودۆخی ناوچەکە ئەندازیاری کراون.",
     ),
   },
   {
     slug: "pergolas-louvres",
     image: null,
     name: tri("Pergolas & Louvres", "البرغولات والسقوف الشرائحية", "پێرگۆلا و لووڤەر"),
-    tagline: tri("Architecture for outdoor rooms", "عمارةٌ للغرف الخارجية", "تەلارسازی بۆ ژووری دەرەوە"),
+    tagline: tri(
+      "Outdoor living, even in the summer heat",
+      "حياةٌ في الهواء الطلق حتى في حرّ الصيف",
+      "ژیان لە دەرەوە، تەنانەت لە گەرمای هاویندا",
+    ),
     description: tri(
-      "Fixed frames with open or adjustable louvred roofs that turn a terrace into a room you can use in sun or shade.",
-      "هياكل ثابتة بأسقفٍ مفتوحة أو بشرائح قابلة للتعديل تحوّل التراس إلى غرفةٍ تُستعمل في الشمس والظل.",
-      "چوارچێوەی جێگیر بە سەقفی کراوە یان لووڤەری گۆڕاو کە تەراسێک دەکاتە ژوورێک کە لە خۆر و سێبەردا بەکاربهێنرێت.",
+      "Pergolas and louvred roofs turn terraces, gardens and rooftops into outdoor rooms you can use through the long Kurdish and Iraqi summer. Louvred roofs filter the strong sun while letting air move through, keeping terraces comfortable even on 45°C days. Designed and built to measure for villas, restaurants, cafés and hotels.",
+      "تحوّل البرغولات والأسقف ذات الشرائح التراسات والحدائق والأسطح إلى غرفٍ خارجية تستمتع بها طوال صيف كوردستان والعراق الطويل. تُرشّح الأسقف ذات الشرائح أشعة الشمس القوية وتسمح بمرور الهواء، فتبقى التراسات مريحة حتى في أيامٍ تبلغ فيها الحرارة ٤٥ درجة. تُصمَّم وتُنفَّذ حسب المقاس للفلل والمطاعم والمقاهي والفنادق.",
+      "پێرگۆلا و سەقفی لووڤەری تەراس و باخچە و سەربانەکان دەگۆڕن بۆ ژووری دەرەوە کە بە درێژایی هاوینی درێژی کوردستان و عێراق بەکاریان بهێنیت. سەقفی لووڤەری خۆری بەهێز دەپاڵێوێت و ڕێگە بە تێپەڕبوونی هەوا دەدات، بۆیە تەراسەکان تەنانەت لە ڕۆژانی ٤٥ پلەشدا ئاسوودە دەمێننەوە. بەپێی پێوانە دیزاین و دروست دەکرێن بۆ ڤێلا و چێشتخانە و کافێ و هۆتێل.",
     ),
   },
   {
     slug: "commercial-shade-structures",
     image: null,
     name: tri("Commercial Shade Structures", "منشآت التظليل التجارية", "بنیاتی سێبەری بازرگانی"),
-    tagline: tri("Engineered for public spaces", "مُهندَسة للمساحات العامة", "بۆ شوێنە گشتییەکان ئەندازیاری کراوە"),
+    tagline: tri(
+      "Large-scale shade for public and commercial projects",
+      "تظليلٌ واسع النطاق للمشاريع العامة والتجارية",
+      "سێبەری گەورە بۆ پڕۆژە گشتی و بازرگانییەکان",
+    ),
     description: tri(
-      "Permanent shade structures for schools, hospitality, retail and public projects, specified to the site and its loads.",
-      "منشآت تظليل دائمة للمدارس والضيافة والتجزئة والمشاريع العامة، تُحدَّد وفق الموقع وأحماله.",
-      "بنیاتی سێبەری هەمیشەیی بۆ قوتابخانە و میوانداری و فرۆشگا و پڕۆژە گشتییەکان، بەپێی شوێنەکە و بارەکانی دیاری دەکرێن.",
+      "Schools, hospitals, shopping centres, government buildings and public spaces across Kurdistan and Iraq need reliable shade through summers that regularly pass 40–45°C. We design, engineer and build permanent shade structures for large commercial and public projects — from playgrounds and waiting areas to plazas and loading zones — built to measure and made for local heat, wind and dust.",
+      "تحتاج المدارس والمستشفيات والمراكز التجارية والمباني الحكومية والأماكن العامة في كوردستان والعراق إلى تظليلٍ موثوق خلال صيفٍ تتجاوز حرارته ٤٠–٤٥ درجة مئوية بانتظام. نصمّم ونهندس وننفّذ منشآت تظليل دائمة للمشاريع التجارية والعامة الكبيرة — من ساحات اللعب ومناطق الانتظار إلى الساحات العامة ومناطق التحميل — حسب المقاس، ومصمّمة لتتحمّل حرارة المنطقة ورياحها وغبارها.",
+      "قوتابخانە و نەخۆشخانە و سەنتەرە بازرگانییەکان و باڵەخانە حکومییەکان و شوێنە گشتییەکان لە سەرانسەری کوردستان و عێراقدا پێویستیان بە سێبەرێکی متمانەپێکراوە لە هاوینانێکدا کە پلەی گەرمی بە بەردەوامی لە ٤٠–٤٥ پلەی سەدی تێدەپەڕێت. ئێمە بنیاتی سێبەری هەمیشەیی بۆ پڕۆژە بازرگانی و گشتییە گەورەکان دیزاین و ئەندازیاری و دروست دەکەین — لە یاریگای منداڵان و شوێنی چاوەڕوانییەوە تا گۆڕەپان و شوێنی بارکردن — بەپێی پێوانە و بۆ بەرگەگرتنی گەرما و با و تۆزی ناوچەکە.",
     ),
   },
   {
     slug: "shade-sails",
     image: null,
     name: tri("Shade Sails", "أشرعة التظليل", "چارۆکەی سێبەر"),
-    tagline: tri("Shade drawn in clean lines", "ظلٌّ مرسومٌ بخطوطٍ نقية", "سێبەر بە هێڵی ڕوون کێشراو"),
+    tagline: tri(
+      "Simple, elegant shade for any space",
+      "تظليلٌ بسيط وأنيق لأي مساحة",
+      "سێبەرێکی سادە و جوان بۆ هەر شوێنێک",
+    ),
     description: tri(
-      "Tensioned fabric sails fixed between posts and walls — a light, flexible way to shade courtyards, play areas and terraces.",
-      "أشرعة من القماش المشدود تُثبَّت بين الأعمدة والجدران — طريقةٌ خفيفة ومرنة لتظليل الأفنية ومناطق اللعب والتراسات.",
-      "چارۆکەی قوماشی ڕاکێشراو لە نێوان کۆڵەکە و دیوارەکاندا جێگیر دەکرێن — ڕێگایەکی سووک و نەرم بۆ سێبەرکردنی حەوشە و شوێنی یاری و تەراس.",
+      "Shade sails are tensioned fabric sails fixed between posts and walls — a light, flexible and attractive way to shade courtyards, playgrounds, gardens, pools and terraces. The fabric blocks the direct sun while letting air move freely, keeping spaces comfortable in the summer heat. Available in many shapes and sizes, and made to measure.",
+      "أشرعة التظليل أشرعةٌ قماشية مشدودة تُثبَّت بين الأعمدة والجدران — طريقةٌ خفيفة ومرنة وجذّابة لتظليل الأفنية وساحات اللعب والحدائق والمسابح والتراسات. يحجب القماش أشعة الشمس المباشرة ويسمح بحركة الهواء بحرية، فتبقى المساحات مريحة في حرّ الصيف. متوفّرة بأشكالٍ ومقاساتٍ متعدّدة، وتُنفَّذ حسب المقاس.",
+      "چارۆکەی سێبەر چارۆکەی قوماشی ڕاکێشراون کە لە نێوان کۆڵەکە و دیوارەکاندا جێگیر دەکرێن — ڕێگایەکی سووک و نەرم و سەرنجڕاکێش بۆ سێبەرکردنی حەوشە و یاریگای منداڵان و باخچە و مەلەوانگە و تەراس. قوماشەکە تیشکی ڕاستەوخۆی خۆر ڕادەگرێت و ڕێگە دەدات هەوا بە ئازادی بجووڵێت، بۆیە شوێنەکان لە گەرمای هاویندا ئاسوودە دەمێننەوە. بە چەندین شێوە و قەبارەی جیاواز بەردەستە و بەپێی پێوانە دروست دەکرێت.",
     ),
   },
 ];
@@ -933,9 +953,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Arched Membrane Canopy", "مظلة غشائية مقوّسة", "سێبەری پەردەیی کەوانەیی"),
     tagline: tri("A sweeping roof on curved steel arches", "سقفٌ منساب على أقواس فولاذية", "سەقفێکی ڕەوان لەسەر کەوانەی پۆڵایی"),
     description: tri(
-      "Curved steel arches carry a tensioned membrane in one sweeping span, sheltering a stage, seating or a courtyard without columns in the middle.",
-      "أقواس فولاذية منحنية تحمل غشاءً مشدودًا في امتدادٍ واحد منساب، تظلّل مسرحًا أو مقاعد أو فناءً دون أعمدة في الوسط.",
-      "کەوانەی پۆڵایی چەماوە پەردەیەکی ڕاکێشراو لە یەک ماوەی ڕەواندا هەڵدەگرن، سێبەر بۆ شانۆ یان شوێنی دانیشتن یان حەوشە دەکەن بەبێ کۆڵەکە لە ناوەڕاستدا.",
+      "Curved steel arches carry a tensioned membrane in one sweeping span, covering a stage, seating area or courtyard without a single column in the middle. Guests stay in the shade through long summer afternoons, and the open span keeps every view clear. Ideal for amphitheatres, event spaces, schools and heritage sites.",
+      "تحمل أقواسٌ فولاذية منحنية غشاءً مشدودًا في امتدادٍ واحد منساب، يغطي مسرحًا أو منطقة جلوس أو فناءً دون عمودٍ واحد في الوسط. يبقى الضيوف في الظل طوال ساعات العصر الطويلة في الصيف، ويُبقي الامتداد المفتوح كل الإطلالات واضحة. مثالية للمدرّجات المفتوحة وأماكن الفعاليات والمدارس والمواقع التراثية.",
+      "کەوانەی پۆڵایی چەماوە پەردەیەکی ڕاکێشراو لە یەک ماوەی ڕەواندا هەڵدەگرن، شانۆیەک یان شوێنی دانیشتن یان حەوشەیەک دادەپۆشن بەبێ تاکە کۆڵەکەیەک لە ناوەڕاستدا. میوانەکان لە ئێوارە درێژەکانی هاویندا لە سێبەردا دەمێننەوە، و ماوە کراوەکە هەموو دیمەنێک ڕوون دەهێڵێتەوە. گونجاوە بۆ ئەمفیتیاتر و شوێنی بۆنەکان و قوتابخانە و شوێنە مێژووییەکان.",
     ),
     features: {
       en: ["Curved steel arches", "Open span with no central columns", "Suits stages, amphitheatres and courtyards"],
@@ -967,9 +987,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Twin Peak Canopy", "مظلة القمّتين", "سێبەری دوو لووتکە"),
     tagline: tri("Two peaks over a shaded courtyard", "قمّتان فوق فناءٍ مظلّل", "دوو لووتکە بەسەر حەوشەیەکی سێبەرداردا"),
     description: tri(
-      "Two cone-shaped membranes rise from central masts to shade cafés, courtyards and outdoor seating, with low anchor points that keep the space open.",
-      "غشاءان مخروطيان يرتفعان من أعمدة مركزية لتظليل المقاهي والأفنية وجلسات الهواء الطلق، مع نقاط تثبيت منخفضة تُبقي المكان مفتوحًا.",
-      "دوو پەردەی قووچەکی لە کۆڵەکەی ناوەندییەوە بەرز دەبنەوە بۆ سێبەرکردنی کافێ و حەوشە و شوێنی دانیشتنی دەرەوە، بە خاڵی بەستنەوەی نزم کە شوێنەکە کراوە دەهێڵنەوە.",
+      "Two cone-shaped membranes rise from central masts to shade cafés, courtyards and outdoor seating. The high peaks let warm air rise away from guests, and the low anchor points keep the space open on every side. A favourite for restaurants, hotels and heritage courtyards that stay busy all summer.",
+      "يرتفع غشاءان مخروطيان من أعمدةٍ مركزية لتظليل المقاهي والأفنية وجلسات الهواء الطلق. تسمح القمم العالية بصعود الهواء الدافئ بعيدًا عن الضيوف، وتُبقي نقاط التثبيت المنخفضة المكان مفتوحًا من كل الجهات. خيارٌ مفضّل للمطاعم والفنادق والأفنية التراثية التي تبقى مزدحمة طوال الصيف.",
+      "دوو پەردەی قووچەکی لە کۆڵەکەی ناوەندییەوە بەرز دەبنەوە بۆ سێبەرکردنی کافێ و حەوشە و شوێنی دانیشتنی دەرەوە. لووتکە بەرزەکان ڕێگە دەدەن هەوای گەرم بەرز ببێتەوە و لە میوانەکان دوور بکەوێتەوە، و خاڵە نزمەکانی بەستنەوە شوێنەکە لە هەموو لایەکەوە کراوە دەهێڵنەوە. هەڵبژاردەیەکی دڵخوازە بۆ چێشتخانە و هۆتێل و حەوشە مێژووییەکان کە بە درێژایی هاوین قەرەباڵغن.",
     ),
     features: {
       en: ["Two cone-shaped peaks", "Low anchor points around the edge", "Suits cafés, courtyards and outdoor seating"],
@@ -1001,9 +1021,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Multi-Mast Membrane", "غشاء متعدد الأعمدة", "پەردەی فرە کۆڵەکە"),
     tagline: tri("A sculptural roof held by masts and cables", "سقفٌ نحتي تحمله أعمدة وكابلات", "سەقفێکی پەیکەرئاسا کە کۆڵەکە و کێبڵ هەڵیدەگرن"),
     description: tri(
-      "A single membrane stretched between tall masts and cables into a sculptural, high-and-low form — a landmark over an entrance, plaza or drop-off.",
-      "غشاءٌ واحد مشدود بين أعمدة عالية وكابلات بشكلٍ نحتي يعلو ويهبط — معلمٌ فوق مدخل أو ساحة أو منطقة إنزال.",
-      "یەک پەردە لە نێوان کۆڵەکەی بەرز و کێبڵەکاندا ڕادەکێشرێت بۆ شێوەیەکی پەیکەرئاسای بەرز و نزم — نیشانەیەک بەسەر دەروازە یان گۆڕەپان یان شوێنی دابەزاندندا.",
+      "A single sculptural membrane stretched between tall masts and cables, rising and falling across an entrance, plaza or drop-off area. It gives arriving guests shade from the summer sun and gives the building a memorable landmark. Suits hotels, resorts, cultural centres and government buildings.",
+      "غشاءٌ نحتي واحد مشدود بين أعمدةٍ عالية وكابلات، يعلو ويهبط فوق مدخلٍ أو ساحةٍ أو منطقة إنزال. يمنح الضيوف عند وصولهم ظلًّا من شمس الصيف، ويمنح المبنى معلمًا لا يُنسى. يناسب الفنادق والمنتجعات والمراكز الثقافية والمباني الحكومية.",
+      "یەک پەردەی پەیکەرئاسا لە نێوان کۆڵەکەی بەرز و کێبڵەکاندا ڕاکێشراوە، بەسەر دەروازەیەک یان گۆڕەپانێک یان شوێنی دابەزاندندا بەرز و نزم دەبێتەوە. سێبەر لە خۆری هاوین دەبەخشێتە میوانانی تازەگەیشتوو، و نیشانەیەکی لەبیرنەکراو دەبەخشێتە باڵەخانەکە. گونجاوە بۆ هۆتێل و ڕیزۆرت و سەنتەرە ڕۆشنبیرییەکان و باڵەخانە حکومییەکان.",
     ),
     features: {
       en: ["Tall masts with tension cables", "High and low points in one membrane", "Suits entrances, plazas and drop-offs"],
@@ -1035,9 +1055,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Grandstand Roof", "سقف المدرّجات", "سەقفی سەکۆی تەماشاکەران"),
     tagline: tri("Cover for every seat in the stand", "غطاءٌ لكل مقعد في المدرّج", "داپۆشین بۆ هەموو کورسییەک لە سەکۆکەدا"),
     description: tri(
-      "Steel trusses carry a tensioned membrane over spectator stands, keeping the sun off every row while leaving the view of the field clear.",
-      "جمالونات فولاذية تحمل غشاءً مشدودًا فوق مدرّجات المتفرجين، فتحجب الشمس عن كل صف وتُبقي رؤية الملعب واضحة.",
-      "خەرپای پۆڵایی پەردەیەکی ڕاکێشراو بەسەر سەکۆی تەماشاکەراندا هەڵدەگرن، خۆر لە هەموو ڕیزێک دەگرێتەوە و دیمەنی یاریگاکە ڕوون دەهێڵێتەوە.",
+      "Steel trusses carry a tensioned membrane over spectator stands, keeping the summer sun off every row while leaving a clear view of the pitch. Spectators can watch afternoon matches and events in comfort. Built for stadiums, school and university sports grounds, and club facilities.",
+      "تحمل جمالوناتٌ فولاذية غشاءً مشدودًا فوق مدرّجات المتفرجين، فتحجب شمس الصيف عن كل الصفوف وتُبقي رؤية الملعب واضحة. يتابع المتفرجون مباريات العصر والفعاليات براحة. مصمّم للملاعب والمنشآت الرياضية في المدارس والجامعات والأندية.",
+      "خەرپای پۆڵایی پەردەیەکی ڕاکێشراو بەسەر سەکۆی تەماشاکەراندا هەڵدەگرن، خۆری هاوین لە هەموو ڕیزەکان دوور دەخەنەوە و دیمەنی یاریگاکە ڕوون دەهێڵنەوە. تەماشاکەران دەتوانن یارییەکانی ئێوارە و بۆنەکان بە ئاسوودەیی ببینن. بۆ یاریگا و مەیدانە وەرزشییەکانی قوتابخانە و زانکۆ و یانەکان دروست کراوە.",
     ),
     features: {
       en: ["Steel truss frame", "Shades every row of seating", "Clear view of the field"],
@@ -1069,9 +1089,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Multi-Peak Canopy", "مظلة متعددة القمم", "سێبەری فرە لووتکە"),
     tagline: tri("A row of peaks over a gathering place", "صفٌّ من القمم فوق مكان التجمّع", "ڕیزێک لووتکە بەسەر شوێنی کۆبوونەوەدا"),
     description: tri(
-      "Linked conical peaks on slender masts cover amphitheatres, event spaces and public gathering places — a landmark you can see from far away.",
-      "قممٌ مخروطية متصلة على أعمدة رشيقة تغطي المدرّجات المفتوحة وأماكن الفعاليات والتجمّعات العامة — معلمٌ يُرى من بعيد.",
-      "لووتکەی قووچەکی بەیەکەوە بەستراو لەسەر کۆڵەکەی باریک ئەمفیتیاتر و شوێنی بۆنەکان و شوێنی کۆبوونەوەی گشتی دادەپۆشن — نیشانەیەک کە لە دوورەوە دەبینرێت.",
+      "A row of linked conical peaks on slender masts covers amphitheatres, event spaces and public gathering places. Visible from far away, it turns a hot, open square into a shaded place people want to stay. Suits parks, cultural venues, resorts and municipal projects.",
+      "صفٌّ من القمم المخروطية المتصلة على أعمدةٍ رشيقة يغطي المدرّجات المفتوحة وأماكن الفعاليات والتجمّعات العامة. يُرى من بعيد، ويحوّل الساحة المفتوحة الحارّة إلى مكانٍ مظلّل يرغب الناس في البقاء فيه. يناسب الحدائق والأماكن الثقافية والمنتجعات ومشاريع البلديات.",
+      "ڕیزێک لووتکەی قووچەکی بەیەکەوە بەستراو لەسەر کۆڵەکەی باریک، ئەمفیتیاتر و شوێنی بۆنەکان و شوێنی کۆبوونەوەی گشتی دادەپۆشێت. لە دوورەوە دەبینرێت، و گۆڕەپانێکی کراوەی گەرم دەگۆڕێت بۆ شوێنێکی سێبەردار کە خەڵک حەز دەکەن تێیدا بمێننەوە. گونجاوە بۆ پارک و شوێنە ڕۆشنبیرییەکان و ڕیزۆرت و پڕۆژەکانی شارەوانی.",
     ),
     features: {
       en: ["Linked conical peaks", "Slender masts", "Suits amphitheatres and event spaces"],
@@ -1103,9 +1123,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Inverted Cone Canopy", "مظلة مخروطية مقلوبة", "سێبەری قووچەکی هەڵگەڕاوە"),
     tagline: tri("Shade that opens like a flower", "ظلٌّ يتفتّح كالزهرة", "سێبەرێک وەک گوڵ دەکرێتەوە"),
     description: tri(
-      "Freestanding funnels on a single column, each with a steel ring at the rim — set in groups across parks, plazas and public squares.",
-      "مظلات قائمة بذاتها على شكل قِمع فوق عمودٍ واحد، لكلٍّ منها حلقة فولاذية عند الحافة — تُوزَّع في مجموعات عبر الحدائق والساحات العامة.",
-      "سێبەری سەربەخۆ بە شێوەی قیف لەسەر یەک کۆڵەکە، هەریەکە بە ئەڵقەیەکی پۆڵایی لە لێوارەکەیدا — بە کۆمەڵ لە پارک و گۆڕەپان و مەیدانە گشتییەکاندا دادەنرێن.",
+      "Freestanding funnel-shaped shades on a single column, each finished with a steel ring at the rim. Set in groups across parks, plazas and public squares, they create pools of shade where people can stop and rest away from the summer heat.",
+      "مظلاتٌ قائمة بذاتها على شكل قِمع فوق عمودٍ واحد، تنتهي كلٌّ منها بحلقةٍ فولاذية عند الحافة. توزَّع في مجموعات عبر الحدائق والساحات والميادين العامة، فتصنع بقعًا من الظل يتوقّف فيها الناس ويستريحون بعيدًا عن حرّ الصيف.",
+      "سێبەری سەربەخۆ بە شێوەی قیف لەسەر یەک کۆڵەکە، کە هەریەکەیان بە ئەڵقەیەکی پۆڵایی لە لێوارەکەیدا تەواو دەبێت. بە کۆمەڵ لە پارک و گۆڕەپان و مەیدانە گشتییەکاندا دادەنرێن، و پەڵەی سێبەر دروست دەکەن کە خەڵک تێیدا ڕادەوەستن و لە گەرمای هاوین پشوو دەدەن.",
     ),
     features: {
       en: ["Single central column", "Steel ring at the rim", "Suits parks, plazas and public squares"],
@@ -1144,9 +1164,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Continuous Walkway Canopy", "مظلة ممرات متصلة", "سێبەری ڕێڕەوی بەردەوام"),
     tagline: tri("Shade along every path", "ظلٌّ على امتداد كل ممر", "سێبەر بە درێژایی هەموو ڕێگایەک"),
     description: tri(
-      "A continuous canopy that follows the paths through a residential community or campus, branching where the routes do, so people stay in the shade from door to door.",
-      "مظلة متصلة تتبع الممرات عبر المجمّعات السكنية والحرم الجامعية، وتتفرّع حيث تتفرّع الطرق ليبقى الناس في الظل من بابٍ إلى باب.",
-      "سێبەرێکی بەردەوام کە بەدوای ڕێگاکانی ناو کۆمەڵگەیەکی نیشتەجێبوون یان کەمپەسێکدا دەڕوات، و لەو شوێنانەی ڕێگاکان لق دەبنەوە ئەویش لق دەبێتەوە، بۆ ئەوەی خەڵک لە دەرگاوە بۆ دەرگا لە سێبەردا بمێننەوە.",
+      "A continuous canopy that follows the paths through a residential community or campus, branching wherever the routes do, so residents, students and staff stay in the shade from door to door. Ideal for long routes where walking in the open summer sun is not an option.",
+      "مظلةٌ متصلة تتبع الممرات عبر المجمّع السكني أو الحرم الجامعي، وتتفرّع حيثما تتفرّع الطرق، ليبقى السكان والطلاب والموظفون في الظل من بابٍ إلى باب. مثالية للمسارات الطويلة حيث لا يمكن المشي تحت شمس الصيف المكشوفة.",
+      "سێبەرێکی بەردەوام کە بەدوای ڕێگاکانی ناو کۆمەڵگەیەکی نیشتەجێبوون یان کەمپەسێکدا دەڕوات و لە هەر شوێنێک ڕێگاکان لق ببنەوە ئەویش لق دەبێتەوە، بۆ ئەوەی دانیشتووان و قوتابیان و کارمەندان لە دەرگاوە بۆ دەرگا لە سێبەردا بمێننەوە. گونجاوە بۆ ڕێگا درێژەکان کە ڕۆیشتن لە ژێر خۆری کراوەی هاویندا ئەستەمە.",
     ),
     features: {
       en: ["Follows and branches with the paths", "Long continuous runs", "Suits residential communities and campuses"],
@@ -1178,9 +1198,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Timber-Look Louvre Walkway", "ممر بشرائح بمظهر خشبي", "ڕێڕەوی لووڤەری بە ڕووکاری دار"),
     tagline: tri("Warm slatted shade for garden paths", "ظلٌّ دافئ بالشرائح لممرات الحدائق", "سێبەری گەرمی شریتی بۆ ڕێگاکانی باخچە"),
     description: tri(
-      "A louvred roof with a warm timber-look finish on slender posts, casting striped shade along park and garden paths.",
-      "سقفٌ بشرائح بمظهرٍ خشبي دافئ على أعمدة رشيقة، يلقي ظلًّا مخطّطًا على ممرات الحدائق والمتنزّهات.",
-      "سەقفێکی لووڤەری بە ڕووکارێکی گەرمی دار لەسەر کۆڵەکەی باریک، سێبەرێکی هێڵدار دەخاتە سەر ڕێگاکانی پارک و باخچە.",
+      "A louvred roof with a warm timber-look finish on slender posts, casting soft striped shade along park and garden paths. It brings the look of natural wood to the garden. Suits villas, parks, gardens and residential compounds.",
+      "سقفٌ بشرائح بمظهرٍ خشبي دافئ على أعمدةٍ رشيقة، يلقي ظلًّا مخطّطًا ناعمًا على ممرات الحدائق والمتنزّهات، ويضفي على الحديقة مظهر الخشب الطبيعي. يناسب الفلل والمتنزّهات والحدائق والمجمّعات السكنية.",
+      "سەقفێکی لووڤەری بە ڕووکارێکی گەرمی دار لەسەر کۆڵەکەی باریک، سێبەرێکی نەرمی هێڵدار دەخاتە سەر ڕێگاکانی پارک و باخچە، و ڕووخساری داری سروشتی دەبەخشێتە باخچەکە. گونجاوە بۆ ڤێلا و پارک و باخچە و کۆمەڵگە نیشتەجێبوونەکان.",
     ),
     features: {
       en: ["Louvred roof with a timber-look finish", "Slender posts", "Suits parks and garden paths"],
@@ -1212,9 +1232,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Industrial Covered Walkway", "ممر مسقوف صناعي", "ڕێڕەوی داپۆشراوی پیشەسازی"),
     tagline: tri("Practical cover from door to door", "غطاءٌ عملي من بابٍ إلى باب", "داپۆشینێکی کرداری لە دەرگاوە بۆ دەرگا"),
     description: tri(
-      "Steel posts and a corrugated metal roof give hard-wearing cover between car parks and the doors of warehouses, factories and logistics sites.",
-      "أعمدة فولاذية وسقف من الألواح المعدنية المموّجة توفّر غطاءً متينًا بين المواقف وأبواب المستودعات والمصانع والمواقع اللوجستية.",
-      "کۆڵەکەی پۆڵایی و سەقفێکی پەڕەی کانزایی شەپۆلی داپۆشینێکی بەرگەگر لە نێوان پارکینگ و دەرگای کۆگا و کارگە و شوێنە لۆجستییەکاندا دابین دەکەن.",
+      "Hard-wearing steel posts and a corrugated metal roof give practical cover between car parks and the entrances of warehouses, factories and logistics sites. Workers stay out of the summer sun and winter rain at every shift change. A durable, low-maintenance solution for industrial sites.",
+      "أعمدةٌ فولاذية متينة وسقفٌ من الألواح المعدنية المموّجة توفّر غطاءً عمليًا بين مواقف السيارات ومداخل المستودعات والمصانع والمواقع اللوجستية. يبقى العمّال بعيدين عن شمس الصيف ومطر الشتاء عند كل تبديلٍ للورديات. حلٌّ متين وقليل الصيانة للمواقع الصناعية.",
+      "کۆڵەکەی پۆڵایی بەرگەگر و سەقفێکی پەڕەی کانزایی شەپۆلی، داپۆشینێکی کرداری لە نێوان پارکینگ و دەروازەی کۆگا و کارگە و شوێنە لۆجستییەکاندا دابین دەکەن. کرێکاران لە هەموو گۆڕینێکی شەفتدا لە خۆری هاوین و بارانی زستان دوور دەمێننەوە. چارەسەرێکی بەرگەگر و کەم چاککردنەوەیە بۆ شوێنە پیشەسازییەکان.",
     ),
     features: {
       en: ["Corrugated metal roof", "Hard-wearing steel posts", "Suits warehouses and factories"],
@@ -1246,9 +1266,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("White Louvre Walkway", "ممر بشرائح بيضاء", "ڕێڕەوی لووڤەری سپی"),
     tagline: tri("A bright, cool passage between buildings", "ممرّ مضيء وبارد بين المباني", "ڕێڕەوێکی ڕووناک و فێنک لە نێوان باڵەخانەکاندا"),
     description: tri(
-      "A white louvred roof on slim columns lets light filter through while keeping the sun off — a calm connecting passage for hotels, resorts and residences.",
-      "سقفٌ أبيض بشرائح على أعمدة نحيلة يسمح بمرور الضوء ويحجب الشمس — ممرٌّ هادئ يربط بين أجزاء الفنادق والمنتجعات والمساكن.",
-      "سەقفێکی لووڤەری سپی لەسەر کۆڵەکەی باریک ڕێگە بە تێپەڕبوونی ڕووناکی دەدات و خۆر ڕادەگرێت — ڕێڕەوێکی ئارام بۆ پەیوەندکردنی بەشەکانی هۆتێل و ڕیزۆرت و نیشتەجێگا.",
+      "A white louvred roof on slim columns lets soft light filter through while keeping the strong sun off — a calm, elegant passage connecting the buildings of hotels, resorts and private residences. Its light colour reflects much of the sun's heat.",
+      "سقفٌ أبيض بشرائح على أعمدةٍ نحيلة يسمح بتسلّل ضوءٍ ناعم ويحجب الشمس القوية — ممرٌّ هادئ وأنيق يربط مباني الفنادق والمنتجعات والمساكن الخاصة. ويعكس لونه الفاتح جزءًا كبيرًا من حرارة الشمس.",
+      "سەقفێکی لووڤەری سپی لەسەر کۆڵەکەی باریک ڕێگە دەدات ڕووناکییەکی نەرم تێبپەڕێت و خۆری بەهێز ڕادەگرێت — ڕێڕەوێکی ئارام و جوان کە باڵەخانەکانی هۆتێل و ڕیزۆرت و نیشتەجێگا تایبەتەکان بە یەکەوە دەبەستێتەوە. ڕەنگە کاڵەکەی بەشێکی زۆری گەرمای خۆر دەداتەوە.",
     ),
     features: {
       en: ["White louvred roof", "Light filters through, sun stays out", "Suits hotels, resorts and residences"],
@@ -1280,9 +1300,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Sail Walkway Shade", "مظلة ممرات بالأشرعة", "سێبەری ڕێڕەو بە چارۆکە"),
     tagline: tri("Sails in a row along the path", "أشرعة متتالية على امتداد الممر", "چارۆکەی ڕیزکراو بە درێژایی ڕێگاکە"),
     description: tri(
-      "Overlapping fabric sails stretched between tall posts shade a long path in a light, open rhythm — at home on campuses and in public grounds.",
-      "أشرعة قماشية متداخلة مشدودة بين أعمدة عالية تظلّل ممرًّا طويلًا بإيقاعٍ خفيف ومفتوح — مثالية للحرم الجامعية والمساحات العامة.",
-      "چارۆکەی قوماشی یەکتربڕ کە لە نێوان کۆڵەکەی بەرزدا ڕاکێشراون ڕێگایەکی درێژ بە ڕیتمێکی سووک و کراوە سێبەر دەکەن — گونجاو بۆ کەمپەس و شوێنە گشتییەکان.",
+      "Overlapping fabric sails stretched between tall posts shade a long path in a light, open rhythm. Air moves freely between the sails, keeping the path comfortable on hot days. An attractive, open way to cover routes across campuses, parks and public grounds.",
+      "أشرعةٌ قماشية متداخلة مشدودة بين أعمدةٍ عالية تظلّل ممرًّا طويلًا بإيقاعٍ خفيف ومفتوح. يتحرّك الهواء بحرية بين الأشرعة، فيبقى الممر مريحًا في الأيام الحارّة. طريقةٌ جذّابة ومفتوحة لتغطية المسارات في الحرم الجامعية والمتنزّهات والمساحات العامة.",
+      "چارۆکەی قوماشی یەکتربڕ کە لە نێوان کۆڵەکەی بەرزدا ڕاکێشراون، ڕێگایەکی درێژ بە ڕیتمێکی سووک و کراوە سێبەر دەکەن. هەوا بە ئازادی لە نێوان چارۆکەکاندا دەجووڵێت، بۆیە ڕێگاکە لە ڕۆژە گەرمەکاندا ئاسوودە دەمێنێتەوە. ڕێگایەکی سەرنجڕاکێش و کراوەیە بۆ داپۆشینی ڕێگاکانی کەمپەس و پارک و شوێنە گشتییەکان.",
     ),
     features: {
       en: ["Overlapping sails along the path", "Tall steel posts", "Suits campuses and public grounds"],
@@ -1314,9 +1334,9 @@ const PRODUCTS: ProductSeed[] = [
     name: tri("Steel Frame Covered Walkway", "ممر مسقوف بهيكل فولاذي", "ڕێڕەوی داپۆشراو بە چوارچێوەی پۆڵایی"),
     tagline: tri("Solid cover with clean lines", "غطاءٌ صلب بخطوطٍ نظيفة", "داپۆشینی پتەو بە هێڵی پاک"),
     description: tri(
-      "A steel frame with a solid panel roof and built-in rainwater downpipes links buildings across a campus, keeping off sun and rain alike.",
-      "هيكل فولاذي بسقفٍ من الألواح الصلبة ومواسير تصريف مدمجة لمياه الأمطار، يربط المباني عبر الحرم ويحمي من الشمس والمطر معًا.",
-      "چوارچێوەیەکی پۆڵایی بە سەقفی پانێڵی پتەو و بۆری ئاوی بارانی تێکەڵکراو، باڵەخانەکانی ناو کەمپەسێک بە یەکەوە دەبەستێتەوە و لە خۆر و باران دەپارێزێت.",
+      "A steel frame with a solid panel roof and built-in rainwater downpipes links buildings across a campus, keeping off the summer sun and winter rain alike. Clean, durable and low-maintenance — ideal for schools, hospitals, universities and government buildings.",
+      "هيكلٌ فولاذي بسقفٍ من الألواح الصلبة ومواسير مدمجة لتصريف مياه الأمطار، يربط المباني عبر الحرم ويحمي من شمس الصيف ومطر الشتاء على حدٍّ سواء. نظيفٌ ومتين وقليل الصيانة — مثالي للمدارس والمستشفيات والجامعات والمباني الحكومية.",
+      "چوارچێوەیەکی پۆڵایی بە سەقفی پانێڵی پتەو و بۆری تێکەڵکراوی ئاوی باران، باڵەخانەکانی ناو کەمپەسێک بە یەکەوە دەبەستێتەوە و بە هەمان شێوە لە خۆری هاوین و بارانی زستان دەپارێزێت. پاک و بەرگەگر و کەم چاککردنەوە — گونجاوە بۆ قوتابخانە و نەخۆشخانە و زانکۆ و باڵەخانە حکومییەکان.",
     ),
     features: {
       en: ["Solid panel roof", "Built-in rainwater downpipes", "Suits schools, hospitals and campuses"],
