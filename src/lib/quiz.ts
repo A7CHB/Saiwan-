@@ -22,6 +22,8 @@ export const AREA_BANDS: Record<AreaBand, { min: number; max: number }> = {
 
 export type CarsBand = "few" | "some" | "many" | "fleet";
 export type Roof = "FABRIC" | "METAL";
+export type LengthBand = "short" | "medium" | "long" | "extended";
+export type Cover = "FABRIC" | "LOUVRE" | "SOLID";
 
 export type QuizAnswers = {
   placement?: UseCase;
@@ -33,43 +35,85 @@ export type QuizAnswers = {
   // Car park questions — asked instead of area, style and colour.
   cars?: CarsBand;
   roof?: Roof;
+  // Covered walkway questions — likewise.
+  length?: LengthBand;
+  cover?: Cover;
 };
 
-export type QuizStepKey = "placement" | "area" | "segment" | "style" | "color" | "tier" | "cars" | "roof";
+export type QuizStepKey =
+  | "placement"
+  | "area"
+  | "segment"
+  | "style"
+  | "color"
+  | "tier"
+  | "cars"
+  | "roof"
+  | "length"
+  | "cover";
 
 /**
- * The questions, in order. A car park is a different structure from an
- * umbrella, so choosing it swaps the umbrella questions (area in m², style,
- * canopy colour) for the two that actually decide a parking shade: how many
- * cars, and fabric or a solid roof.
+ * A setting that is a different kind of structure from an umbrella, and so
+ * gets its own questions: one about size (bays, or metres of path) and one
+ * about the covering, in place of area in m², style and canopy colour.
+ * Choosing it recommends only products tagged with that setting.
+ *
+ * Each design's profile is a structural fact about the type (a cantilever row
+ * suits a frontage, a double arch two rows of bays), not something the
+ * dashboard holds, so it lives here beside the weights. A product added in the
+ * dashboard without one is still offered, scored on what it can be judged on.
  */
+type StructurePath = {
+  steps: QuizStepKey[];
+  sizeKey: "cars" | "length";
+  typeKey: "roof" | "cover";
+  sizeOrder: string[];
+  profiles: Record<string, { type: string; sizes: string[] }>;
+};
+
+const STRUCTURE_PATHS: Partial<Record<UseCase, StructurePath>> = {
+  parking: {
+    steps: ["placement", "cars", "segment", "roof", "tier"],
+    sizeKey: "cars",
+    typeKey: "roof",
+    sizeOrder: ["few", "some", "many", "fleet"] satisfies CarsBand[],
+    profiles: {
+      "cable-stayed-parking-shade": { type: "FABRIC", sizes: ["some", "many"] },
+      "pyramid-parking-shade": { type: "FABRIC", sizes: ["many", "fleet"] },
+      "cantilever-parking-shade": { type: "FABRIC", sizes: ["few", "some"] },
+      "steel-roof-carport": { type: "METAL", sizes: ["few", "some", "many"] },
+      "double-arch-parking-shade": { type: "FABRIC", sizes: ["many", "fleet"] },
+    },
+  },
+  walkway: {
+    steps: ["placement", "length", "segment", "cover", "tier"],
+    sizeKey: "length",
+    typeKey: "cover",
+    sizeOrder: ["short", "medium", "long", "extended"] satisfies LengthBand[],
+    profiles: {
+      "continuous-walkway-canopy": { type: "FABRIC", sizes: ["long", "extended"] },
+      "timber-look-louvre-walkway": { type: "LOUVRE", sizes: ["short", "medium"] },
+      "industrial-covered-walkway": { type: "SOLID", sizes: ["short", "medium", "long"] },
+      "white-louvre-walkway": { type: "LOUVRE", sizes: ["short", "medium"] },
+      "sail-walkway-shade": { type: "FABRIC", sizes: ["medium", "long"] },
+      "steel-frame-covered-walkway": { type: "SOLID", sizes: ["medium", "long", "extended"] },
+    },
+  },
+};
+
+const STRUCTURE_USE_CASES = Object.keys(STRUCTURE_PATHS) as UseCase[];
+
+/** The structure path these answers are on, if the setting is one. */
+export const structurePath = (placement?: UseCase) => (placement ? STRUCTURE_PATHS[placement] : undefined);
+
+/** The questions, in order. Umbrella settings ask about area, style and colour. */
 export const UMBRELLA_STEPS: QuizStepKey[] = ["placement", "area", "segment", "style", "color", "tier"];
-export const PARKING_STEPS: QuizStepKey[] = ["placement", "cars", "segment", "roof", "tier"];
 
-export const isParking = (answers: QuizAnswers) => answers.placement === "parking";
+export const stepsFor = (answers: QuizAnswers) => structurePath(answers.placement)?.steps ?? UMBRELLA_STEPS;
 
-export const stepsFor = (answers: QuizAnswers) => (isParking(answers) ? PARKING_STEPS : UMBRELLA_STEPS);
-
-/**
- * What each parking design suits. These are structural facts about the type
- * (a cantilever row suits a frontage, a double arch two rows of bays), not
- * something the dashboard holds, so they live here beside the weights. A
- * parking product added in the dashboard without an entry is still offered,
- * scored on the answers it can be judged on.
- */
-const PARKING_PROFILES: Record<string, { roof: Roof; cars: CarsBand[] }> = {
-  "cable-stayed-parking-shade": { roof: "FABRIC", cars: ["some", "many"] },
-  "pyramid-parking-shade": { roof: "FABRIC", cars: ["many", "fleet"] },
-  "cantilever-parking-shade": { roof: "FABRIC", cars: ["few", "some"] },
-  "steel-roof-carport": { roof: "METAL", cars: ["few", "some", "many"] },
-  "double-arch-parking-shade": { roof: "FABRIC", cars: ["many", "fleet"] },
-};
-
-const CARS_ORDER: CarsBand[] = ["few", "some", "many", "fleet"];
-
-const PARKING_WEIGHTS = {
-  cars: 30,
-  roof: 24,
+const STRUCTURE_WEIGHTS = {
+  size: 30,
+  type: 24,
   segment: 18,
   tier: 12,
 } as const;
@@ -85,7 +129,8 @@ const WEIGHTS = {
 export type Recommendation = { product: ProductCard; score: number };
 
 export function scoreProducts(products: ProductCard[], answers: QuizAnswers): Recommendation[] {
-  if (isParking(answers)) return scoreParking(products, answers);
+  const path = structurePath(answers.placement);
+  if (path) return scoreStructure(path, products, answers);
 
   // Only the questions actually answered count towards the denominator, so
   // skipping a question lowers confidence rather than penalising every product.
@@ -148,50 +193,52 @@ export function scoreProducts(products: ProductCard[], answers: QuizAnswers): Re
 }
 
 /**
- * Car parks: every candidate is already a parking structure, so the setting
- * earns nothing to tell them apart. Bays, roof, use and tier do, with the same
- * answered-questions-only denominator as above.
+ * Car parks and walkways: every candidate is already that kind of structure,
+ * so the setting earns nothing to tell them apart. Size, covering, use and
+ * tier do, with the same answered-questions-only denominator as above.
  */
-function scoreParking(products: ProductCard[], answers: QuizAnswers): Recommendation[] {
+function scoreStructure(path: StructurePath, products: ProductCard[], answers: QuizAnswers): Recommendation[] {
+  const size = answers[path.sizeKey];
+  const type = answers[path.typeKey];
   const possible =
-    (answers.cars ? PARKING_WEIGHTS.cars : 0) +
-    (answers.roof ? PARKING_WEIGHTS.roof : 0) +
-    (answers.segment ? PARKING_WEIGHTS.segment : 0) +
-    (answers.tier ? PARKING_WEIGHTS.tier : 0);
+    (size ? STRUCTURE_WEIGHTS.size : 0) +
+    (type ? STRUCTURE_WEIGHTS.type : 0) +
+    (answers.segment ? STRUCTURE_WEIGHTS.segment : 0) +
+    (answers.tier ? STRUCTURE_WEIGHTS.tier : 0);
 
   return products
     .map((product) => {
-      // Skipping everything after "car parking" is still a fair answer: every
-      // design is a match for the setting.
+      // Skipping everything after the setting is still a fair answer: every
+      // design is a match for it.
       if (possible === 0) return { product, score: 100 };
 
-      const profile = PARKING_PROFILES[product.slug];
+      const profile = path.profiles[product.slug];
       let earned = 0;
 
-      if (answers.cars) {
-        if (!profile) earned += PARKING_WEIGHTS.cars * 0.5;
-        else if (profile.cars.includes(answers.cars)) earned += PARKING_WEIGHTS.cars;
+      if (size) {
+        if (!profile) earned += STRUCTURE_WEIGHTS.size * 0.5;
+        else if (profile.sizes.includes(size)) earned += STRUCTURE_WEIGHTS.size;
         else {
           // One band away is a stretch, not a mismatch.
-          const wanted = CARS_ORDER.indexOf(answers.cars);
-          const gap = Math.min(...profile.cars.map((band) => Math.abs(CARS_ORDER.indexOf(band) - wanted)));
-          if (gap === 1) earned += PARKING_WEIGHTS.cars * 0.4;
+          const wanted = path.sizeOrder.indexOf(size);
+          const gap = Math.min(...profile.sizes.map((band) => Math.abs(path.sizeOrder.indexOf(band) - wanted)));
+          if (gap === 1) earned += STRUCTURE_WEIGHTS.size * 0.4;
         }
       }
 
-      if (answers.roof) {
-        if (!profile) earned += PARKING_WEIGHTS.roof * 0.5;
-        else if (profile.roof === answers.roof) earned += PARKING_WEIGHTS.roof;
+      if (type) {
+        if (!profile) earned += STRUCTURE_WEIGHTS.type * 0.5;
+        else if (profile.type === type) earned += STRUCTURE_WEIGHTS.type;
       }
 
       if (answers.segment) {
-        if (product.segment === answers.segment) earned += PARKING_WEIGHTS.segment;
-        else if (product.segment === "BOTH") earned += PARKING_WEIGHTS.segment * 0.8;
+        if (product.segment === answers.segment) earned += STRUCTURE_WEIGHTS.segment;
+        else if (product.segment === "BOTH") earned += STRUCTURE_WEIGHTS.segment * 0.8;
       }
 
       if (answers.tier) {
         const gap = Math.abs(product.priceTier - answers.tier);
-        earned += PARKING_WEIGHTS.tier * (gap === 0 ? 1 : gap === 1 ? 0.5 : 0);
+        earned += STRUCTURE_WEIGHTS.tier * (gap === 0 ? 1 : gap === 1 ? 0.5 : 0);
       }
 
       return { product, score: Math.round((earned / possible) * 100) };
@@ -210,18 +257,23 @@ function adjacent(useCase: UseCase): UseCase[] {
     terrace: ["garden", "rooftop", "balcony"],
     balcony: ["terrace", "garden"],
     parking: [],
+    walkway: [],
   };
   return map[useCase] ?? [];
 }
 
+const onStructurePath = (product: ProductCard) =>
+  product.useCases.some((useCase) => STRUCTURE_USE_CASES.includes(useCase));
+
 /**
  * What the consultation may put forward for these answers. Accessories are
- * add-ons, never a recommendation in their own right; a car park gets parking
- * structures and nothing else, and the umbrella questions never get them.
+ * add-ons, never a recommendation in their own right; a car park or a walkway
+ * gets structures tagged for it and nothing else, and the umbrella questions
+ * never get those.
  */
 export function isRecommendable(product: ProductCard, answers: QuizAnswers = {}): boolean {
-  if (isParking(answers)) return product.useCases.includes("parking");
-  if (product.categorySlug === "accessories" || product.useCases.includes("parking")) return false;
+  if (structurePath(answers.placement)) return product.useCases.includes(answers.placement!);
+  if (product.categorySlug === "accessories" || onStructurePath(product)) return false;
   return (product.coverageM2 ?? 0) > 0 || isBuiltToMeasure(product);
 }
 
@@ -231,5 +283,5 @@ export function isRecommendable(product: ProductCard, answers: QuizAnswers = {})
  * consultation, as a grandstand roof does: no setting here is a stadium.
  */
 function isBuiltToMeasure(product: ProductCard): boolean {
-  return (product.coverageM2 ?? 0) <= 0 && product.useCases.length > 0 && !product.useCases.includes("parking");
+  return (product.coverageM2 ?? 0) <= 0 && product.useCases.length > 0 && !onStructurePath(product);
 }

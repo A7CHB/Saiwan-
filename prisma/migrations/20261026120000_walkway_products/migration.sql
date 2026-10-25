@@ -16,12 +16,12 @@ INSERT INTO "Product" ("id", "slug", "sku", "categoryId", "status", "isFeatured"
 SELECT p.id, p.slug, p.sku, c."id", 'PUBLISHED', false, p.ord, NULL, false,
   p.availability, p.style, p.use_cases, p.segment, p.coverage, p.tier, CURRENT_TIMESTAMP
 FROM (VALUES
-  ('prd0continuouswalkwaycano', 'continuous-walkway-canopy', 'SW-WLK-01', 50, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Continuous Walkway Canopy'),
-  ('prd0timberlooklouvrewalkw', 'timber-look-louvre-walkway', 'SW-WLK-02', 51, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Timber-Look Louvre Walkway'),
-  ('prd0industrialcoveredwalk', 'industrial-covered-walkway', 'SW-WLK-03', 52, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Industrial Covered Walkway'),
-  ('prd0whitelouvrewalkway000', 'white-louvre-walkway', 'SW-WLK-04', 53, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'White Louvre Walkway'),
-  ('prd0sailwalkwayshade00000', 'sail-walkway-shade', 'SW-WLK-05', 54, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Sail Walkway Shade'),
-  ('prd0steelframecoveredwalk', 'steel-frame-covered-walkway', 'SW-WLK-06', 55, 'MADE_TO_ORDER', 'MODERN', '[]', 'COMMERCIAL', 0, 3, 'Steel Frame Covered Walkway')
+  ('prd0continuouswalkwaycano', 'continuous-walkway-canopy', 'SW-WLK-01', 50, 'MADE_TO_ORDER', 'MODERN', '["walkway"]', 'COMMERCIAL', 0, 3, 'Continuous Walkway Canopy'),
+  ('prd0timberlooklouvrewalkw', 'timber-look-louvre-walkway', 'SW-WLK-02', 51, 'MADE_TO_ORDER', 'MODERN', '["walkway"]', 'BOTH', 0, 3, 'Timber-Look Louvre Walkway'),
+  ('prd0industrialcoveredwalk', 'industrial-covered-walkway', 'SW-WLK-03', 52, 'MADE_TO_ORDER', 'MODERN', '["walkway"]', 'COMMERCIAL', 0, 3, 'Industrial Covered Walkway'),
+  ('prd0whitelouvrewalkway000', 'white-louvre-walkway', 'SW-WLK-04', 53, 'MADE_TO_ORDER', 'MODERN', '["walkway"]', 'BOTH', 0, 3, 'White Louvre Walkway'),
+  ('prd0sailwalkwayshade00000', 'sail-walkway-shade', 'SW-WLK-05', 54, 'MADE_TO_ORDER', 'MODERN', '["walkway"]', 'COMMERCIAL', 0, 3, 'Sail Walkway Shade'),
+  ('prd0steelframecoveredwalk', 'steel-frame-covered-walkway', 'SW-WLK-06', 55, 'MADE_TO_ORDER', 'MODERN', '["walkway"]', 'COMMERCIAL', 0, 3, 'Steel Frame Covered Walkway')
 ) AS p(id, slug, sku, ord, availability, style, use_cases, segment, coverage, tier, name_en)
 JOIN "Category" c ON c."slug" = 'walkway-shades'
 WHERE NOT EXISTS (

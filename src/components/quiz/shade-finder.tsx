@@ -14,12 +14,13 @@ import { STYLES, USE_CASES, PRICE_TIERS } from "@/lib/constants";
 import {
   scoreProducts,
   isRecommendable,
-  isParking,
+  structurePath,
   stepsFor,
   type QuizAnswers,
   type QuizStepKey,
   type AreaBand,
   type CarsBand,
+  type LengthBand,
 } from "@/lib/quiz";
 import { track } from "@/lib/analytics-client";
 import { buildWhatsAppUrl, composeMessage, quizInquiryPayload } from "@/lib/whatsapp";
@@ -118,6 +119,26 @@ export function ShadeFinder({ products, colors }: { products: ProductCardModel[]
         { value: "", label: d.quiz.colorNoPreference },
       ],
     },
+    {
+      key: "length",
+      title: d.quiz.questions.length.title,
+      body: d.quiz.questions.length.body,
+      options: (["short", "medium", "long", "extended"] as LengthBand[]).map((band) => ({
+        value: band,
+        label: d.quiz.lengthOptions[band],
+      })),
+    },
+    {
+      key: "cover",
+      title: d.quiz.questions.cover.title,
+      body: d.quiz.questions.cover.body,
+      options: [
+        { value: "FABRIC", label: d.quiz.coverOptions.FABRIC },
+        { value: "LOUVRE", label: d.quiz.coverOptions.LOUVRE },
+        { value: "SOLID", label: d.quiz.coverOptions.SOLID },
+        { value: "", label: d.quiz.colorNoPreference },
+      ],
+    },
   ];
 
   // The first answer decides which questions follow (see stepsFor).
@@ -133,9 +154,12 @@ export function ShadeFinder({ products, colors }: { products: ProductCardModel[]
 
   const choose = (key: StepKey, value: string) => {
     setAnswers((current) => {
-      // Moving between a car park and anywhere else changes the questions, so
-      // answers from the other path would only mislead the result.
-      if (key === "placement" && (value === "parking") !== isParking(current)) {
+      // Moving onto or off a structure path (car park, walkway) changes the
+      // questions, so answers from the other path would only mislead the result.
+      if (
+        key === "placement" &&
+        structurePath(value as QuizAnswers["placement"]) !== structurePath(current.placement)
+      ) {
         return { placement: (value || undefined) as QuizAnswers["placement"] };
       }
       return {
@@ -178,6 +202,8 @@ export function ShadeFinder({ products, colors }: { products: ProductCardModel[]
           area: labelFor("area"),
           cars: labelFor("cars"),
           roof: labelFor("roof"),
+          length: labelFor("length"),
+          cover: labelFor("cover"),
           segment: labelFor("segment"),
           style: labelFor("style"),
           color: colorName,

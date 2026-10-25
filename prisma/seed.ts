@@ -1117,9 +1117,10 @@ const PRODUCTS: ProductSeed[] = [
   // --- Walkway shades -----------------------------------------------------
   // Added to the live catalogue by the 20261026120000_walkway_products
   // migration; kept here so a fresh database matches it. Built to measure for
-  // each site, so no price, sizes or colours. No consultation settings: a
-  // covered walkway is not something the umbrella questions ask about. Wide
-  // project photographs with their dimensions recorded, framed whole.
+  // each site, so no price, sizes or colours. The "walkway" setting is the
+  // consultation path they are offered on (STRUCTURE_PATHS in lib/quiz.ts);
+  // the louvre walkways also suit homes. Wide project photographs with their
+  // dimensions recorded, framed whole.
   {
     slug: "continuous-walkway-canopy",
     sku: "SW-WLK-01",
@@ -1129,7 +1130,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["walkway"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/walkway-continuous.webp", width: 1024, height: 576 }],
@@ -1162,8 +1163,8 @@ const PRODUCTS: ProductSeed[] = [
     price: null,
     availability: "MADE_TO_ORDER",
     style: "MODERN",
-    segment: "COMMERCIAL",
-    useCases: [],
+    segment: "BOTH",
+    useCases: ["walkway"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/walkway-timber-louvre.webp", width: 1024, height: 576 }],
@@ -1197,7 +1198,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["walkway"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/walkway-industrial.webp", width: 1024, height: 576 }],
@@ -1230,8 +1231,8 @@ const PRODUCTS: ProductSeed[] = [
     price: null,
     availability: "MADE_TO_ORDER",
     style: "MODERN",
-    segment: "COMMERCIAL",
-    useCases: [],
+    segment: "BOTH",
+    useCases: ["walkway"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/walkway-white-louvre.webp", width: 1024, height: 576 }],
@@ -1265,7 +1266,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["walkway"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/walkway-sails.webp", width: 1024, height: 576 }],
@@ -1299,7 +1300,7 @@ const PRODUCTS: ProductSeed[] = [
     availability: "MADE_TO_ORDER",
     style: "MODERN",
     segment: "COMMERCIAL",
-    useCases: [],
+    useCases: ["walkway"],
     coverageM2: 0,
     priceTier: 3,
     images: [{ url: "/media/walkway-steel-frame.jpg", width: 2000, height: 1125 }],

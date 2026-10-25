@@ -220,6 +220,7 @@ const en = {
       terrace: "Terrace",
       balcony: "Balcony",
       parking: "Car parking",
+      walkway: "Covered walkway",
     },
     tiers: {
       "1": "Essential",
@@ -292,6 +293,14 @@ const en = {
         title: "Fabric, or a solid roof?",
         body: "Fabric gives light, bright shade; a metal roof keeps the rain off too.",
       },
+      length: {
+        title: "How long is the path?",
+        body: "From door to door — an estimate is enough.",
+      },
+      cover: {
+        title: "What kind of cover?",
+        body: "Fabric is light and bright, louvres cast striped shade, and a solid roof keeps the rain off too.",
+      },
     },
     areaOptions: {
       small: "Up to 9 m² — a small terrace or balcony",
@@ -308,6 +317,17 @@ const en = {
     roofOptions: {
       FABRIC: "Tensioned fabric — light, bright shade",
       METAL: "Solid metal roof — cover from sun and rain",
+    },
+    lengthOptions: {
+      short: "Up to 20 m — an entrance or short link",
+      medium: "20–50 m — between two buildings",
+      long: "50–150 m — across a campus or park",
+      extended: "Over 150 m — a network of paths",
+    },
+    coverOptions: {
+      FABRIC: "Fabric or sails — light, bright shade",
+      LOUVRE: "Louvres — slatted, striped shade",
+      SOLID: "Solid roof — cover from sun and rain",
     },
     colorNoPreference: "No preference",
     tierOptions: {
@@ -456,6 +476,8 @@ const en = {
       area: "Area required",
       cars: "Cars",
       roof: "Roof",
+      length: "Path length",
+      cover: "Cover",
       segment: "Use",
       style: "Style",
       budget: "Tier",

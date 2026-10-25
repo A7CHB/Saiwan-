@@ -109,6 +109,8 @@ export type QuizInquiryInput = {
   area?: string;
   cars?: string;
   roof?: string;
+  length?: string;
+  cover?: string;
   segment?: string;
   style?: string;
   color?: string;
@@ -128,6 +130,8 @@ export function quizInquiryPayload(d: Dictionary, input: QuizInquiryInput): What
       { label: f.area, value: input.area ?? "" },
       { label: f.cars, value: input.cars ?? "" },
       { label: f.roof, value: input.roof ?? "" },
+      { label: f.length, value: input.length ?? "" },
+      { label: f.cover, value: input.cover ?? "" },
       { label: f.segment, value: input.segment ?? "" },
       { label: f.style, value: input.style ?? "" },
       { label: f.color, value: input.color ?? "" },
