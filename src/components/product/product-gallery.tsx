@@ -66,6 +66,15 @@ export function ProductGallery({
   // height: the lead photograph's own shape when it must be seen whole
   // (see photoRatio), the house portrait otherwise.
   const frame = images[0].ratio ?? "3 / 4";
+  // A photograph that must be seen whole but is a different shape from the
+  // lead is fitted inside the frame rather than cropped to it. Shapes within
+  // 1% count as the same, so near-identical crops fill the frame edge to edge.
+  const toNumber = (ratio: string) => {
+    const [w, h] = ratio.split("/").map(Number);
+    return w / h;
+  };
+  const fitFor = (image: GalleryImage) =>
+    image.ratio && Math.abs(toNumber(image.ratio) / toNumber(frame) - 1) > 0.01 ? ("contain" as const) : undefined;
 
   return (
     <>
@@ -89,6 +98,7 @@ export function ProductGallery({
                 src={image.url}
                 alt={image.alt}
                 ratio={frame}
+                fit={fitFor(image)}
                 sizes="100vw"
                 priority={image.id === images[0].id}
                 className="w-full"
@@ -151,6 +161,7 @@ export function ProductGallery({
                 <Media
                   src={image.url}
                   alt={image.alt}
+                  fit={fitFor(image)}
                   sizes="(max-width: 1280px) 55vw, 45vw"
                   priority={plateIndex === 0}
                   quality={88}

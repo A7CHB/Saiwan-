@@ -1300,7 +1300,13 @@ const PRODUCTS: ProductSeed[] = [
     useCases: ["walkway"],
     coverageM2: 0,
     priceTier: 3,
-    images: [{ url: "/media/walkway-sails.webp", width: 1024, height: 576 }],
+    // The path, then the owner's close-up of a sail's corner fitting and an
+    // aerial view of the row — taller shapes, fitted whole inside the frame.
+    images: [
+      { url: "/media/walkway-sails.webp", width: 1024, height: 576 },
+      { url: "/media/walkway-sails-fitting.jpg", width: 664, height: 425 },
+      { url: "/media/walkway-sails-aerial.jpg", width: 665, height: 502 },
+    ],
     colors: [],
     sizes: [],
     materials: [],
