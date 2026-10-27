@@ -767,14 +767,7 @@ const PRODUCTS: ProductSeed[] = [
     useCases: ["parking"],
     coverageM2: 0,
     priceTier: 3,
-    // The full site photograph, then three views cut from it: the mast and
-    // cables, the bays under the canopy, and the row along the palms.
-    images: [
-      { url: "/media/parking-cable-stayed.jpg", width: 2000, height: 1130 },
-      { url: "/media/parking-cable-stayed-detail.jpg", width: 840, height: 475 },
-      { url: "/media/parking-cable-stayed-bays.jpg", width: 1100, height: 622 },
-      { url: "/media/parking-cable-stayed-row.jpg", width: 1000, height: 565 },
-    ],
+    images: [{ url: "/media/parking-cable-stayed.jpg", width: 2000, height: 1130 }],
     colors: [],
     sizes: [],
     materials: [],
