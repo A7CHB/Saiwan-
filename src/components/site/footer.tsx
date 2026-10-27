@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import type { Dictionary } from "@/lib/i18n/dictionaries/en";
 import type { Locale } from "@/lib/i18n/config";
 import { localePath } from "@/lib/i18n/config";
+import { SHOW_INSPIRATION } from "@/lib/constants";
 import type { CategoryView } from "@/lib/data/catalog";
 import { CanopyRadial } from "@/components/icons/canopy";
 import { SaiwanLockup } from "@/components/icons/logo";
@@ -32,7 +33,7 @@ export function SiteFooter({
       links: [
         { href: "/collection", label: d.nav.collection },
         { href: "/find-your-shade", label: d.nav.findYourShade },
-        { href: "/inspiration", label: d.nav.inspiration },
+        ...(SHOW_INSPIRATION ? [{ href: "/inspiration", label: d.nav.inspiration }] : []),
         { href: "/search", label: d.common.search },
       ],
     },

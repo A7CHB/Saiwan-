@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { isLocale, localePath, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n";
 import { buildMetadata } from "@/lib/seo";
 import { getGallery } from "@/lib/data/catalog";
-import { GALLERY_TAGS } from "@/lib/constants";
+import { GALLERY_TAGS, SHOW_INSPIRATION } from "@/lib/constants";
 import { GalleryMosaic } from "@/components/site/gallery-mosaic";
 import { Reveal } from "@/components/motion/reveal";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
@@ -39,6 +39,10 @@ export default async function InspirationPage({
   const { locale: raw } = await params;
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
+
+  // Hidden for now (see SHOW_INSPIRATION). src/proxy.ts answers /inspiration
+  // with a proper 307 before this renders; this is only the fallback.
+  if (!SHOW_INSPIRATION) redirect(localePath(locale, "/"));
 
   const query = await searchParams;
   const tagParam = Array.isArray(query.tag) ? query.tag[0] : query.tag;

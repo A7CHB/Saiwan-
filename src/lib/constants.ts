@@ -95,6 +95,13 @@ export const PUBLIC_PRODUCT_WHERE = { status: "PUBLISHED" as const };
 export const ADD_ON_CATEGORIES = ["accessories"] as const;
 
 /**
+ * Inspiration (the installed-work gallery) is hidden for now: off, it leaves
+ * the header, mobile menu, footer and sitemap, and /inspiration sends visitors
+ * to the home page. Set to true to bring all of it back as it was.
+ */
+export const SHOW_INSPIRATION = false;
+
+/**
  * Built-to-measure structures, as opposed to umbrellas. The home page gives
  * them a section of their own, because the showroom and the collection spread
  * above it are about the umbrella.

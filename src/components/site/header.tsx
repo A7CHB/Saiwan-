@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, Search as SearchIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SHOW_INSPIRATION } from "@/lib/constants";
 import { useLocale } from "@/components/i18n/locale-provider";
 import { SaiwanWordmark } from "@/components/icons/logo";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
@@ -57,7 +58,7 @@ export function SiteHeader({ categories }: { categories: HeaderCategory[] }) {
   const links = [
     { href: "/collection", label: d.nav.collection },
     { href: "/find-your-shade", label: d.nav.findYourShade },
-    { href: "/inspiration", label: d.nav.inspiration },
+    ...(SHOW_INSPIRATION ? [{ href: "/inspiration", label: d.nav.inspiration }] : []),
     { href: "/about", label: d.nav.about },
     { href: "/contact", label: d.nav.contact },
   ];

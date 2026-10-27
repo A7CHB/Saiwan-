@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { defaultLocale, negotiateLocale, isLocale } from "@/lib/i18n/config";
-import { LOCALE_COOKIE, SESSION_COOKIE, VISITOR_COOKIE, hasRole } from "@/lib/constants";
+import { LOCALE_COOKIE, SESSION_COOKIE, SHOW_INSPIRATION, VISITOR_COOKIE, hasRole } from "@/lib/constants";
 import { verifySessionToken } from "@/lib/auth/jwt";
 
 const PUBLIC_FILE = /\.(?:png|jpg|jpeg|gif|webp|avif|svg|ico|txt|xml|json|webmanifest|woff2?)$/i;
@@ -37,6 +37,16 @@ export default async function proxy(request: NextRequest) {
   const maybeLocale = segments[1];
 
   if (isLocale(maybeLocale)) {
+    // Inspiration is hidden for now (SHOW_INSPIRATION). Redirected here rather
+    // than in the page: the locale layout streams a loading state first, after
+    // which a page can only redirect client-side, with a 200 status.
+    if (!SHOW_INSPIRATION && segments[2] === "inspiration") {
+      const url = request.nextUrl.clone();
+      url.pathname = `/${maybeLocale}`;
+      url.search = "";
+      return withVisitor(request, NextResponse.redirect(url, 307));
+    }
+
     const response = NextResponse.next();
     // Remember the choice so the next bare-URL visit lands in the same language.
     if (request.cookies.get(LOCALE_COOKIE)?.value !== maybeLocale) {

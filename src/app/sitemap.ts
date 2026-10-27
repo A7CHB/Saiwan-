@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { locales, localeMeta } from "@/lib/i18n/config";
 import { absoluteUrl } from "@/lib/seo";
 import { prisma } from "@/lib/db";
+import { SHOW_INSPIRATION } from "@/lib/constants";
 
 /**
  * Every public route in every language, with `alternates.languages` so search
@@ -13,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "", priority: 1, changeFrequency: "weekly" },
     { path: "/collection", priority: 0.9, changeFrequency: "weekly" },
     { path: "/find-your-shade", priority: 0.8, changeFrequency: "monthly" },
-    { path: "/inspiration", priority: 0.7, changeFrequency: "weekly" },
+    ...(SHOW_INSPIRATION ? [{ path: "/inspiration", priority: 0.7, changeFrequency: "weekly" as const }] : []),
     { path: "/about", priority: 0.6, changeFrequency: "monthly" },
     { path: "/contact", priority: 0.7, changeFrequency: "monthly" },
   ];
