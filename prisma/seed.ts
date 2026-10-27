@@ -842,7 +842,13 @@ const PRODUCTS: ProductSeed[] = [
     useCases: ["parking"],
     coverageM2: 0,
     priceTier: 3,
-    images: [{ url: "/media/parking-cantilever.jpg", width: 2000, height: 1109 }],
+    // The frontage, then the owner's aerial view of a row of bays and a
+    // close-up of the arm's fixing to its post — fitted whole in the frame.
+    images: [
+      { url: "/media/parking-cantilever.jpg", width: 2000, height: 1109 },
+      { url: "/media/parking-cantilever-aerial.jpg", width: 772, height: 463 },
+      { url: "/media/parking-cantilever-fitting.jpg", width: 758, height: 461 },
+    ],
     colors: [],
     sizes: [],
     materials: [],
