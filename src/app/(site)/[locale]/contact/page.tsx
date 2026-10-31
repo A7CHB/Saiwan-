@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Clock, MessageCircle } from "lucide-react";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n";
-import { buildMetadata, faqSchema, JsonLd } from "@/lib/seo";
+import { buildMetadata, faqSchema, breadcrumbSchema, JsonLd, absoluteUrl } from "@/lib/seo";
 import { getSettings } from "@/lib/data/catalog";
 import { Reveal } from "@/components/motion/reveal";
 import { ContactForm } from "@/components/site/contact-form";
@@ -104,7 +104,15 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       {/* Below both routes to reach us, because it answers the questions that
           would otherwise be the first message — not instead of sending one. */}
       <Faq d={d} />
-      <JsonLd data={faqSchema(d.contact.faq.items)} />
+      <JsonLd
+        data={[
+          faqSchema(d.contact.faq.items),
+          breadcrumbSchema([
+            { name: d.nav.home, url: absoluteUrl(`/${locale}`) },
+            { name: d.contact.title, url: absoluteUrl(`/${locale}/contact`) },
+          ]),
+        ]}
+      />
     </div>
   );
 }

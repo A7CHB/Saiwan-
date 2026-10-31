@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, breadcrumbSchema, JsonLd, absoluteUrl } from "@/lib/seo";
 import { getContent, getMaterials } from "@/lib/data/catalog";
 import { Media } from "@/components/ui/media";
 import { Reveal } from "@/components/motion/reveal";
@@ -146,6 +146,13 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           </Reveal>
         </div>
       </section>
+
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: d.nav.home, url: absoluteUrl(`/${locale}`) },
+          { name: d.about.title, url: absoluteUrl(`/${locale}/about`) },
+        ])}
+      />
     </>
   );
 }

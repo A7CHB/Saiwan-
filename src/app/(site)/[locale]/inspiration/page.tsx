@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { isLocale, localePath, type Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, breadcrumbSchema, JsonLd, absoluteUrl } from "@/lib/seo";
 import { getGallery } from "@/lib/data/catalog";
 import { GALLERY_TAGS, SHOW_INSPIRATION } from "@/lib/constants";
 import { GalleryMosaic } from "@/components/site/gallery-mosaic";
@@ -117,6 +117,13 @@ export default async function InspirationPage({
           </Reveal>
         </div>
       </section>
+
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: d.nav.home, url: absoluteUrl(`/${locale}`) },
+          { name: d.inspiration.title, url: absoluteUrl(`/${locale}/inspiration`) },
+        ])}
+      />
     </>
   );
 }
