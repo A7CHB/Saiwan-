@@ -434,6 +434,50 @@ const en = {
     hours: "Response hours",
     hoursValue: "Saturday–Thursday, 9:00–18:00",
     location: "Studio",
+    faq: {
+      eyebrow: "Questions",
+      title: "Asked before",
+      intro:
+        "The things people ask before they send the first message. If yours is not here, ask it on WhatsApp — it is the same desk that answers either way.",
+      items: [
+        {
+          q: "How do I place an order?",
+          a: "Through WhatsApp. Configure the piece on its page — size, canopy colour, quantity, any accessories — and the order button opens a chat with that specification already written out. There is no account to create and no checkout to complete.",
+        },
+        {
+          q: "What are the canopies made of?",
+          a: "Solution-dyed acrylic, which means the colour is locked into the fibre rather than printed onto the surface. It is the difference between a canopy that holds its colour for years in direct sun and one that goes chalky in a season.",
+        },
+        {
+          q: "And the frames?",
+          a: "Marine-grade anodised aluminium, with stainless steel fixings throughout. Both are specified for sun, heat and the salt and dust that come with an open terrace.",
+        },
+        {
+          q: "Can a canopy be replaced later?",
+          a: "Yes. Canopies are replaceable and fixings are serviceable, and the frames are built to outlast both. A piece that looks tired usually needs a new canopy, not a new umbrella.",
+        },
+        {
+          q: "How long does an order take?",
+          a: "It depends on the piece. Each product page states whether it is in stock or made to order, and made-to-order pieces list a typical lead time. Ask on WhatsApp for a current date before you commit to one.",
+        },
+        {
+          q: "Where do you deliver?",
+          a: "Erbil, the Kurdistan Region and across Iraq. Tell us where the space is when you first message and we will confirm what is possible for your address.",
+        },
+        {
+          q: "How do I work out what size I need?",
+          a: "Send a photograph of the space and a rough measurement — that is usually enough for us to specify from. If you would rather narrow it down yourself first, the consultation asks six questions and returns a shortlist.",
+        },
+        {
+          q: "What language can I write to you in?",
+          a: "Kurdish, Arabic or English. The site is published in all three and so is the desk behind it.",
+        },
+        {
+          q: "When will I get a reply?",
+          a: "Saturday to Thursday, 9:00 to 18:00. Messages sent outside those hours are answered when the desk opens.",
+        },
+      ],
+    },
   },
 
   search: {

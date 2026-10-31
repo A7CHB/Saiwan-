@@ -255,6 +255,30 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
   };
 }
 
+/**
+ * A page of questions and their answers.
+ *
+ * This is the one schema on the site that an answer engine can quote directly:
+ * everything else describes what a thing *is*, while this says what the
+ * business *replies* when asked. Google renders it as a rich result, and an
+ * assistant asked "do Saiwan deliver outside Erbil" can lift the answer whole.
+ *
+ * It must mirror text that is actually on the page. Schema describing answers a
+ * visitor cannot read is cloaking, and Google drops the rich result for it —
+ * so the component renders from the same dictionary entries this is built from.
+ */
+export function faqSchema(items: { q: string; a: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+}
+
 /** Renders a JSON-LD block. Kept in one place so escaping is handled once. */
 export function JsonLd({ data }: { data: object | object[] }) {
   // Several entities on one page are emitted as a single document with an
