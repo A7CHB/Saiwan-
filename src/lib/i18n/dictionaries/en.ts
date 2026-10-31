@@ -441,20 +441,12 @@ const en = {
         "The things people ask before they send the first message. If yours is not here, ask it on WhatsApp — it is the same desk that answers either way.",
       items: [
         {
-          q: "How much does a Saiwan umbrella cost?",
-          a: "Some pieces list a price on their page; others are specified to the space and quoted on request. Size, canopy colour and accessories all move the figure, so the quickest route to a real number is to configure the piece you are looking at and send it — the message arrives with your specification already attached.",
-        },
-        {
           q: "How do I order from Saiwan?",
           a: "Through WhatsApp. Configure the piece on its page — size, canopy colour, quantity, any accessories — and the order button opens a chat with that specification already written out. There is no account to create and no checkout to complete.",
         },
         {
           q: "Do you deliver outside Erbil?",
           a: "Yes. We deliver in Erbil, across the Kurdistan Region and to the rest of Iraq. Tell us where the space is in your first message and we will confirm what is possible for your address.",
-        },
-        {
-          q: "What size umbrella do I need for my terrace?",
-          a: "Send a photograph of the space and a rough measurement — that is usually enough for us to specify from. If you would rather narrow it down yourself first, the consultation asks six questions about the space and returns a shortlist.",
         },
         {
           q: "Can you make a size that is not in the collection?",
